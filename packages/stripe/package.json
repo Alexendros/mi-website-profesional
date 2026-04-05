@@ -1,0 +1,20 @@
+{
+  "name": "@repo/stripe",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "@repo/config": "workspace:*",
+    "typescript": "^5.8.0",
+    "@eslint/js": "^9.27.0",
+    "typescript-eslint": "^8.33.0",
+    "eslint": "^9.27.0"
+  }
+}
