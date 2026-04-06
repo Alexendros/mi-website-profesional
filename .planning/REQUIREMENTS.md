@@ -166,23 +166,99 @@
 
 ## Traceability
 
-| Requirement | Phase | Status |
-|-------------|-------|--------|
-| INFRA-01..07 | Phase 1 | Pending |
-| BRAND-01..04, UI-01..03 | Phase 2 | Pending |
-| ME-01..07 | Phase 3 | Pending |
-| DB-01..06 | Phase 4 | Pending |
-| PAY-01..06, EMAIL-01..03 | Phase 5 | Pending |
-| AUTH-01..04, PRO-01..08 | Phase 6 | Pending |
-| SK-01..10 | Phase 7 | Pending |
-| N8N-01..07 | Phase 8 | Pending |
-| HARD-01..05 | Phase 9 | Pending |
-| DEPLOY-01..05 | Phase 9 | Pending |
+| Requirement | Phase | Phase Name | Status |
+|-------------|-------|------------|--------|
+| INFRA-01 | Phase 1 | Monorepo Scaffold | Pending |
+| INFRA-02 | Phase 1 | Monorepo Scaffold | Pending |
+| INFRA-03 | Phase 1 | Monorepo Scaffold | Pending |
+| INFRA-04 | Phase 1 | Monorepo Scaffold | Pending |
+| INFRA-05 | Phase 1 | Monorepo Scaffold | Pending |
+| INFRA-06 | Phase 1 | Monorepo Scaffold | Pending |
+| INFRA-07 | Phase 1 | Monorepo Scaffold | Pending |
+| BRAND-01 | Phase 2 | Design System | Pending |
+| BRAND-02 | Phase 2 | Design System | Pending |
+| BRAND-03 | Phase 2 | Design System | Pending |
+| BRAND-04 | Phase 2 | Design System | Pending |
+| UI-01 | Phase 2 | Design System | Pending |
+| UI-02 | Phase 2 | Design System | Pending |
+| UI-03 | Phase 2 | Design System | Pending |
+| ME-01 | Phase 3 | Landing alexendros.me | Pending |
+| ME-02 | Phase 3 | Landing alexendros.me | Pending |
+| ME-03 | Phase 3 | Landing alexendros.me | Pending |
+| ME-04 | Phase 3 | Landing alexendros.me | Pending |
+| ME-05 | Phase 3 | Landing alexendros.me | Pending |
+| ME-06 | Phase 3 | Landing alexendros.me | Pending |
+| ME-07 | Phase 3 | Landing alexendros.me | Pending |
+| DB-01 | Phase 4 | Base de Datos | Pending |
+| DB-02 | Phase 4 | Base de Datos | Pending |
+| DB-03 | Phase 4 | Base de Datos | Pending |
+| DB-04 | Phase 4 | Base de Datos | Pending |
+| DB-05 | Phase 4 | Base de Datos | Pending |
+| DB-06 | Phase 4 | Base de Datos | Pending |
+| PAY-01 | Phase 5 | Pagos y Email | Pending |
+| PAY-02 | Phase 5 | Pagos y Email | Pending |
+| PAY-03 | Phase 5 | Pagos y Email | Pending |
+| PAY-04 | Phase 5 | Pagos y Email | Pending |
+| PAY-05 | Phase 5 | Pagos y Email | Pending |
+| PAY-06 | Phase 5 | Pagos y Email | Pending |
+| EMAIL-01 | Phase 5 | Pagos y Email | Pending |
+| EMAIL-02 | Phase 5 | Pagos y Email | Pending |
+| EMAIL-03 | Phase 5 | Pagos y Email | Pending |
+| AUTH-01 | Phase 6 | Hub alexendros.pro | Pending |
+| AUTH-02 | Phase 6 | Hub alexendros.pro | Pending |
+| AUTH-03 | Phase 6 | Hub alexendros.pro | Pending |
+| AUTH-04 | Phase 6 | Hub alexendros.pro | Pending |
+| PRO-01 | Phase 6 | Hub alexendros.pro | Pending |
+| PRO-02 | Phase 6 | Hub alexendros.pro | Pending |
+| PRO-03 | Phase 6 | Hub alexendros.pro | Pending |
+| PRO-04 | Phase 6 | Hub alexendros.pro | Pending |
+| PRO-05 | Phase 6 | Hub alexendros.pro | Pending |
+| PRO-06 | Phase 6 | Hub alexendros.pro | Pending |
+| PRO-07 | Phase 6 | Hub alexendros.pro | Pending |
+| PRO-08 | Phase 6 | Hub alexendros.pro | Pending |
+| SK-01 | Phase 7 | StageKit MVP | Pending |
+| SK-02 | Phase 7 | StageKit MVP | Pending |
+| SK-03 | Phase 7 | StageKit MVP | Pending |
+| SK-04 | Phase 7 | StageKit MVP | Pending |
+| SK-05 | Phase 7 | StageKit MVP | Pending |
+| SK-06 | Phase 7 | StageKit MVP | Pending |
+| SK-07 | Phase 7 | StageKit MVP | Pending |
+| SK-08 | Phase 7 | StageKit MVP | Pending |
+| SK-09 | Phase 7 | StageKit MVP | Pending |
+| SK-10 | Phase 7 | StageKit MVP | Pending |
+| N8N-01 | Phase 8 | Automatizaciones n8n | Pending |
+| N8N-02 | Phase 8 | Automatizaciones n8n | Pending |
+| N8N-03 | Phase 8 | Automatizaciones n8n | Pending |
+| N8N-04 | Phase 8 | Automatizaciones n8n | Pending |
+| N8N-05 | Phase 8 | Automatizaciones n8n | Pending |
+| N8N-06 | Phase 8 | Automatizaciones n8n | Pending |
+| N8N-07 | Phase 8 | Automatizaciones n8n | Pending |
+| HARD-01 | Phase 9 | Hardening y Deploy | Pending |
+| HARD-02 | Phase 9 | Hardening y Deploy | Pending |
+| HARD-03 | Phase 9 | Hardening y Deploy | Pending |
+| HARD-04 | Phase 9 | Hardening y Deploy | Pending |
+| HARD-05 | Phase 9 | Hardening y Deploy | Pending |
+| DEPLOY-01 | Phase 9 | Hardening y Deploy | Pending |
+| DEPLOY-02 | Phase 9 | Hardening y Deploy | Pending |
+| DEPLOY-03 | Phase 9 | Hardening y Deploy | Pending |
+| DEPLOY-04 | Phase 9 | Hardening y Deploy | Pending |
+| DEPLOY-05 | Phase 9 | Hardening y Deploy | Pending |
 
 **Coverage:**
 - v1 requirements: 72 total
 - Mapped to phases: 72
 - Unmapped: 0 ✓
+
+**Phase summary:**
+- Phase 1 (Monorepo Scaffold): 7 requirements (INFRA-01..07)
+- Phase 2 (Design System): 7 requirements (BRAND-01..04, UI-01..03)
+- Phase 3 (Landing alexendros.me): 7 requirements (ME-01..07)
+- Phase 4 (Base de Datos): 6 requirements (DB-01..06)
+- Phase 5 (Pagos y Email): 9 requirements (PAY-01..06, EMAIL-01..03)
+- Phase 6 (Hub alexendros.pro): 12 requirements (AUTH-01..04, PRO-01..08)
+- Phase 7 (StageKit MVP): 10 requirements (SK-01..10)
+- Phase 8 (Automatizaciones n8n): 7 requirements (N8N-01..07)
+- Phase 9 (Hardening y Deploy): 10 requirements (HARD-01..05, DEPLOY-01..05)
 
 ---
 *Requirements defined: 2026-04-06*
