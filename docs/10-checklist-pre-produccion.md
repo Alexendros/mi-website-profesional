@@ -6,7 +6,7 @@
 > **Estado:** 🟡 EN REVISIÓN — completar todos los bloques antes de marcar LISTO
 > 
 
-> **Última revisión:** 2026-04-05
+> **Última revisión:** 2026-04-05 (actualizado: modelos DB 11, eventos Stripe 5, env vars multi-Kit)
 > 
 
 ---
@@ -19,7 +19,7 @@
 - [ ]  **01 Stack** — Versiones de todas las dependencias especificadas (no rangos vagos)
 - [ ]  **02 Design System** — Tokens CSS verificados contra modo oscuro
 - [ ]  **03 Schema DB** — Todos los modelos tienen `@@map()` y relaciones definidas
-- [ ]  **04 Pagos** — `STRIPE_PRICE_PRO_MONTHLY` y `STRIPE_PRICE_AGENCY_MONTHLY` tienen IDs reales (no placeholder)
+- [ ]  **04 Pagos** — `STRIPE_PRICE_STAGEKIT_PRO_MONTHLY` y `STRIPE_PRICE_STAGEKIT_AGENCY_MONTHLY` tienen IDs reales (no placeholder)
 - [ ]  **05 Marketing** — UVP aprobado por el owner. Headlines no son borradores.
 - [ ]  **06 Fases** — Semana 0 completada antes de iniciar Semana 1
 - [ ]  **07 Compliance** — Textos legales `/legal/*` revisados por letrado
@@ -77,9 +77,9 @@
 
 ### C.2 Prisma + Supabase
 
-- [ ]  `prisma/schema.prisma` contiene todos los modelos del doc/03 (User, Subscription, ArtistProfile, EPK, BookingRequest)
+- [ ]  `prisma/schema.prisma` contiene los 11 modelos del doc/03 (Kit, User, Plan, Subscription, ClientProfile, KitProfile, InboundRequest, Affiliate, AffiliatePayout, AuditLog, DigitalRegistration)
 - [ ]  `npx prisma migrate dev --name init` ejecutado sin errores
-- [ ]  `npx prisma studio` abre y muestra las 5 tablas
+- [ ]  `npx prisma studio` abre y muestra las 11 tablas
 - [ ]  Policies RLS del doc/03 aplicadas en Supabase SQL Editor
 - [ ]  Verificación RLS: request sin JWT devuelve 0 filas en tablas protegidas
 
@@ -162,7 +162,7 @@
 ## BLOQUE H — Tests
 
 - [ ]  **Unit (Vitest):** funciones de `lib/stripe/plans.ts`, helpers de Prisma, validaciones Zod
-- [ ]  **Integration:** webhook handler procesando los 4 eventos Stripe del doc/04
+- [ ]  **Integration:** webhook handler procesando los 5 eventos Stripe del doc/04
 - [ ]  **E2E (Playwright):**
     - [ ]  Registro de usuario nuevo → onboarding → primer EPK publicado
     - [ ]  Flujo de checkout Pro (Stripe test mode)
@@ -180,10 +180,10 @@
 
 | # | Gap detectado | Documento afectado | Acción requerida | Prioridad |
 | --- | --- | --- | --- | --- |
-| G1 | `STRIPE_PRICE_PRO_MONTHLY` y `STRIPE_PRICE_AGENCY_MONTHLY` son placeholders | doc/04 | Crear planes en Stripe Dashboard y actualizar IDs reales | 🔴 ALTA |
+| G1 | `STRIPE_PRICE_STAGEKIT_PRO_MONTHLY` y `STRIPE_PRICE_STAGEKIT_AGENCY_MONTHLY` son placeholders | doc/04 | Crear planes en Stripe Dashboard y actualizar IDs reales | 🔴 ALTA |
 | G2 | `stagekit.app` sin confirmar disponibilidad/registro | doc/00, doc/05 | Verificar y registrar dominio en Namecheap/Cloudflare | 🔴 ALTA |
 | G3 | Design System sin paleta de colores validada en dark mode real | doc/02 | Crear `design-test.html` con tokens y verificar contraste WCAG AA | 🟡 MEDIA |
-| G4 | Schema DB no tiene modelo `AuditLog` para trazabilidad RGPD | doc/03 | Añadir modelo `AuditLog` con `userId`, `action`, `ip`, `timestamp` | 🟡 MEDIA |
+| G4 | ~~Schema DB no tiene modelo `AuditLog`~~ **RESUELTO** — AuditLog + DigitalRegistration añadidos | doc/03 | ✅ Completado | ✅ |
 | G5 | No hay definición de SLA en Términos de Servicio | doc/07 | Definir uptime mínimo (99.5%) y proceso de reembolso | 🟡 MEDIA |
 | G6 | Falta `env.ts` con validación Zod de variables de entorno | doc/00 | Crear `/lib/env.ts` antes de primer deploy | 🔴 ALTA |
 | G7 | No hay estrategia de backup de DB documentada | doc/03 | Documentar backup diario Supabase + retención 30 días | 🟡 MEDIA |

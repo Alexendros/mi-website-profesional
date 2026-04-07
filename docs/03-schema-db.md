@@ -216,43 +216,149 @@ enum PayoutStatus {
   PAID
   FAILED
 }
+
+// ============ AUDIT LOG (RGPD Art. 30 — Registro de Actividades) ============
+model AuditLog {
+  id          String   @id @default(cuid())
+  userId      String?                            // null para acciones de sistema
+  entity      String                             // nombre de la tabla/modelo afectado
+  entityId    String?                            // ID del registro afectado
+  action      String                             // 'create' | 'update' | 'delete' | 'export' | 'anonymize'
+  metadata    Json     @default("{}")            // datos relevantes del cambio (diff, motivo, IP anonimizada)
+  createdAt   DateTime @default(now())
+
+  @@map("audit_logs")
+  @@index([userId])
+  @@index([entity, entityId])
+  @@index([createdAt(sort: Desc)])
+}
+
+// ============ REGISTRO DIGITAL / TOKENIZACIÓN ============
+model DigitalRegistration {
+  id                String   @id @default(cuid())
+  userId            String
+  kitId             String
+  assetType         String                       // 'epk' | 'brand_manual' | 'contract' | 'template'
+  assetHash         String                       // SHA-256 del archivo
+  registryPlatform  String                       // 'safecreative' | 'polygon' | 'oepm'
+  registryId        String                       // ID del registro externo
+  registryUrl       String?                      // URL de verificación pública
+  certificateUrl    String?                      // URL del PDF certificado en Supabase Storage
+  status            String   @default("pending") // pending | registered | failed
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@map("digital_registrations")
+  @@index([userId])
+  @@index([assetHash])
+}
 ```
 
 ## RLS Policies (ejecutar en Supabase SQL Editor)
 
+> **IMPORTANTE:** Los nombres de tabla corresponden a los `@@map()` del schema Prisma.
+
 ```sql
--- Habilitar RLS en todas las tablas
-ALTER TABLE users ENABLE ROW LEVEL SECURITY;
-ALTER TABLE subscriptions ENABLE ROW LEVEL SECURITY;
-ALTER TABLE artist_profiles ENABLE ROW LEVEL SECURITY;
-ALTER TABLE epks ENABLE ROW LEVEL SECURITY;
-ALTER TABLE booking_requests ENABLE ROW LEVEL SECURITY;
+-- ============ HABILITAR RLS EN TODAS LAS TABLAS ============
+ALTER TABLE public.kits ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.plans ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.subscriptions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.client_profiles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.kit_profiles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.inbound_requests ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.affiliates ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.affiliate_payouts ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.audit_logs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.digital_registrations ENABLE ROW LEVEL SECURITY;
 
--- users: solo su propio perfil
-CREATE POLICY "users_own" ON users
-  FOR ALL USING (supabase_id = auth.uid()::text);
+-- ============ KITS (lectura pública, escritura solo service_role) ============
+CREATE POLICY "kits_public_read" ON public.kits
+  FOR SELECT USING (true);
+CREATE POLICY "kits_service_write" ON public.kits
+  FOR ALL TO service_role USING (true) WITH CHECK (true);
 
--- artist_profiles: propietario full-access, público solo lectura de perfiles activos
-CREATE POLICY "artist_own" ON artist_profiles
-  FOR ALL USING (user_id IN (SELECT id FROM users WHERE supabase_id = auth.uid()::text));
+-- ============ PLANS (lectura pública, escritura solo service_role) ============
+CREATE POLICY "plans_public_read" ON public.plans
+  FOR SELECT USING (true);
+CREATE POLICY "plans_service_write" ON public.plans
+  FOR ALL TO service_role USING (true) WITH CHECK (true);
 
--- epks: propietario full-access, público solo EPKs is_public=true
-CREATE POLICY "epk_own" ON epks
-  FOR ALL USING (artist_id IN (
-    SELECT id FROM artist_profiles
-    WHERE user_id IN (SELECT id FROM users WHERE supabase_id = auth.uid()::text)
+-- ============ USERS (solo su propio perfil) ============
+CREATE POLICY "users_own" ON public.users
+  FOR ALL TO authenticated
+  USING (supabase_id = auth.uid()::text)
+  WITH CHECK (supabase_id = auth.uid()::text);
+CREATE POLICY "users_service" ON public.users
+  FOR ALL TO service_role USING (true) WITH CHECK (true);
+
+-- ============ SUBSCRIPTIONS (solo su propia suscripción) ============
+CREATE POLICY "subscriptions_own" ON public.subscriptions
+  FOR ALL TO authenticated
+  USING (user_id IN (SELECT id FROM public.users WHERE supabase_id = auth.uid()::text))
+  WITH CHECK (user_id IN (SELECT id FROM public.users WHERE supabase_id = auth.uid()::text));
+CREATE POLICY "subscriptions_service" ON public.subscriptions
+  FOR ALL TO service_role USING (true) WITH CHECK (true);
+
+-- ============ CLIENT_PROFILES (propietario full-access) ============
+CREATE POLICY "client_profiles_own" ON public.client_profiles
+  FOR ALL TO authenticated
+  USING (user_id IN (SELECT id FROM public.users WHERE supabase_id = auth.uid()::text))
+  WITH CHECK (user_id IN (SELECT id FROM public.users WHERE supabase_id = auth.uid()::text));
+CREATE POLICY "client_profiles_service" ON public.client_profiles
+  FOR ALL TO service_role USING (true) WITH CHECK (true);
+
+-- ============ KIT_PROFILES (propietario full-access, público lectura si isPublic) ============
+CREATE POLICY "kit_profiles_own" ON public.kit_profiles
+  FOR ALL TO authenticated
+  USING (profile_id IN (
+    SELECT id FROM public.client_profiles
+    WHERE user_id IN (SELECT id FROM public.users WHERE supabase_id = auth.uid()::text)
   ));
-
-CREATE POLICY "epk_public_read" ON epks
+CREATE POLICY "kit_profiles_public_read" ON public.kit_profiles
   FOR SELECT USING (is_public = true);
+CREATE POLICY "kit_profiles_service" ON public.kit_profiles
+  FOR ALL TO service_role USING (true) WITH CHECK (true);
 
--- booking_requests: artista ve las suyas, promotor puede INSERT
-CREATE POLICY "booking_artist_read" ON booking_requests
-  FOR SELECT USING (artist_id IN (
-    SELECT id FROM artist_profiles
-    WHERE user_id IN (SELECT id FROM users WHERE supabase_id = auth.uid()::text)
+-- ============ INBOUND_REQUESTS (profesional ve las suyas, público puede INSERT) ============
+CREATE POLICY "inbound_requests_own" ON public.inbound_requests
+  FOR SELECT TO authenticated
+  USING (profile_id IN (
+    SELECT id FROM public.client_profiles
+    WHERE user_id IN (SELECT id FROM public.users WHERE supabase_id = auth.uid()::text)
   ));
+CREATE POLICY "inbound_requests_public_insert" ON public.inbound_requests
+  FOR INSERT WITH CHECK (true);  -- visitantes no autenticados pueden enviar solicitudes
+CREATE POLICY "inbound_requests_service" ON public.inbound_requests
+  FOR ALL TO service_role USING (true) WITH CHECK (true);
 
-CREATE POLICY "booking_public_insert" ON booking_requests
-  FOR INSERT WITH CHECK (true);  -- promotores no autenticados pueden enviar
+-- ============ AFFILIATES (solo su propio registro de afiliado) ============
+CREATE POLICY "affiliates_own" ON public.affiliates
+  FOR ALL TO authenticated
+  USING (user_id IN (SELECT id FROM public.users WHERE supabase_id = auth.uid()::text))
+  WITH CHECK (user_id IN (SELECT id FROM public.users WHERE supabase_id = auth.uid()::text));
+CREATE POLICY "affiliates_service" ON public.affiliates
+  FOR ALL TO service_role USING (true) WITH CHECK (true);
+
+-- ============ AFFILIATE_PAYOUTS (solo sus propios payouts) ============
+CREATE POLICY "affiliate_payouts_own" ON public.affiliate_payouts
+  FOR SELECT TO authenticated
+  USING (affiliate_id IN (
+    SELECT id FROM public.affiliates
+    WHERE user_id IN (SELECT id FROM public.users WHERE supabase_id = auth.uid()::text)
+  ));
+CREATE POLICY "affiliate_payouts_service" ON public.affiliate_payouts
+  FOR ALL TO service_role USING (true) WITH CHECK (true);
+
+-- ============ AUDIT_LOGS (solo lectura service_role, nunca acceso directo) ============
+CREATE POLICY "audit_logs_service_only" ON public.audit_logs
+  FOR ALL TO service_role USING (true) WITH CHECK (true);
+
+-- ============ DIGITAL_REGISTRATIONS (usuario ve las suyas) ============
+CREATE POLICY "digital_registrations_own" ON public.digital_registrations
+  FOR ALL TO authenticated
+  USING (user_id IN (SELECT id FROM public.users WHERE supabase_id = auth.uid()::text))
+  WITH CHECK (user_id IN (SELECT id FROM public.users WHERE supabase_id = auth.uid()::text));
+CREATE POLICY "digital_registrations_service" ON public.digital_registrations
+  FOR ALL TO service_role USING (true) WITH CHECK (true);
 ```

@@ -15,7 +15,7 @@ Implementar desde cero el monorepo `alexendros-monorepo` documentado en Notion (
 
 **Stack:** Next.js 15 App Router, TypeScript strict, Tailwind v4, shadcn/ui, Supabase, Prisma 5, Stripe, Resend, Turborepo, pnpm, Vercel (mad1).
 
-**Estado actual:** Repo con commit inicial + Export Notion en GitHub (github.com/alexendros/alexendros-monorepo). Node v24.14.1, pnpm 2.9.3.
+**Estado actual:** Repo con commit inicial + Export Notion en GitHub (github.com/alexendros/alexendros-monorepo). Node v22.x LTS, pnpm 9.x.
 
 **Dominios actuales:** alexendros.me y alexendros.pro registrados en Hostinger. Pendiente migracion DNS a Vercel.
 
@@ -82,7 +82,7 @@ Implementar desde cero el monorepo `alexendros-monorepo` documentado en Notion (
    ```
    .claude/
    ├── agents/  (5: brand-auditor, db-architect, stripe-engineer, seo-geo-specialist, gdpr-compliance)
-   └── skills/  (5: create-kit, new-db-migration, add-stripe-plan, deploy-vercel, gdpr-audit)
+   └── skills/  (6: create-kit, new-db-migration, add-stripe-plan, deploy-vercel, gdpr-audit, brand-manual)
    ```
 
 5. **Instalar UI/UX Pro Max skill**
@@ -250,8 +250,13 @@ Contenido desde PF-0 (Biografia & Posicionamiento):
    - `webhook-handler.ts` — eventos Stripe
 
 2. **packages/email/**
-   - Templates React Email: bienvenida, booking, upgrade, trial, payment failed
+   - Templates React Email: bienvenida, booking, upgrade, trial, payment failed, certificado tokenización
    - Resend client factory
+
+3. **Servicios transversales KitOS** (integración en fases posteriores)
+   - **Dossier de presencia digital:** Entregable incluido en Pro/Agency — plataformas, publicaciones, almacenamiento, suite Proton.me
+   - **Tokenización digital:** Servicio bajo demanda — registro SafeCreative/blockchain con hash SHA-256, workflow n8n automatizado, modelo `DigitalRegistration` en DB
+   - **Contratos Afiladocs:** Integración con afiladocs.com — generación automática de contratos por evento (checkout, booking, alta afiliado), firma electrónica eIDAS, almacenamiento en Supabase Storage
 
 ---
 
@@ -327,9 +332,239 @@ Contenido desde PF-0 (Biografia & Posicionamiento):
 
 ---
 
+## FASE 7.5 — Automatizaciones n8n (Plantillas de workflows KitOS)
+> **Objetivo:** Implementar todos los flujos automatizados de ciclo de vida del cliente: onboarding, engagement, cobro, impago, recuperación y baja. Desplegados en n8n (Hostinger VPS) con webhooks desde KitOS.
+> **Prerequisito:** FASES 5 (stripe/email) + FASE 6 o 7 (app con webhooks operativos)
+> **Infraestructura:** n8n self-hosted en Hostinger VPS (`n8n.alexendros.me`), Resend para email, Stripe para eventos de pago.
+
+### 7.5.1 — Workflows de ciclo de vida del cliente
+
+#### A. Onboarding (post-registro)
+
+| # | Workflow | Trigger | Acciones |
+|---|---------|---------|----------|
+| W-01 | **Welcome sequence** | `checkout.session.completed` (webhook Stripe) | 1. Email bienvenida (inmediato) → 2. Email "completa tu perfil" (24h) → 3. Email "publica tu primer Kit Profile" (72h) → 4. Si no ha publicado en 7d: email con tutorial paso a paso |
+| W-02 | **Onboarding checklist tracker** | Webhook KitOS `profile_updated` | Marcar pasos completados → si completa 100%: email felicitación + badge → si < 50% a los 5d: email recordatorio |
+| W-03 | **Setup fee confirmation** | `checkout.session.completed` con setup fee | Email confirmación de pago único + factura PDF + contrato Afiladocs generado |
+
+#### B. Engagement y retención activa
+
+| # | Workflow | Trigger | Acciones |
+|---|---------|---------|----------|
+| W-04 | **Weekly digest** | Cron: lunes 9:00 CET | Agregar métricas semanales del cliente (views, bookings, requests) → Email resumen personalizado con comparativa semana anterior |
+| W-05 | **Booking notification** | Webhook KitOS `booking_request_created` | Email inmediato al artista/profesional → Notificación push (si PWA) → Actualizar dashboard |
+| W-06 | **Milestone celebration** | Webhook KitOS `milestone_reached` | Detectar hitos (10 bookings, 100 views, 1 año activo) → Email personalizado + badge → Post en redes (opcional, con consentimiento) |
+| W-07 | **Inactivity re-engagement** | Cron: diario 10:00 CET | Consultar usuarios sin login en >14d → Día 14: email "te echamos de menos" + novedades → Día 30: email con oferta especial (descuento 20% próximo mes) → Día 60: email final "tu perfil sigue activo" |
+
+#### C. Trial y conversión
+
+| # | Workflow | Trigger | Acciones |
+|---|---------|---------|----------|
+| W-08 | **Trial progress** | Cron: diario | Consultar trials activos → Día 3: email tips para aprovechar el trial → Día 10: email "quedan 4 días" + comparativa Free vs Pro → Día 13: email urgencia "último día mañana" con CTA directo a checkout |
+| W-09 | **Trial expired** | `customer.subscription.updated` (status → canceled/free) | Email "tu trial ha terminado" → Mostrar qué pierde (feature comparison) → Oferta: volver a Pro con 30% descuento primer mes (código único, 7 días validez) |
+| W-10 | **Upgrade celebration** | `customer.subscription.updated` (plan upgrade) | Email felicitación + guía de nuevas features desbloqueadas → Activar onboarding de features Pro/Agency |
+
+#### D. Impago y dunning (secuencia de recobro legítimo)
+
+> **Base legal:** Art. 6.1.b RGPD (ejecución de contrato) + Art. 1100-1108 Código Civil (mora del deudor) + Ley 3/2004 de morosidad en operaciones comerciales (si B2B).
+> **Principio:** Comunicación gradual, transparente y proporcional. Nunca amenazante, nunca publicar la deuda, siempre ofrecer solución.
+
+| # | Workflow | Trigger / Timing | Acción | Canal |
+|---|---------|------------------|--------|-------|
+| W-11 | **Payment failed — Intento 1** | `invoice.payment_failed` (inmediato) | Email informativo: "No hemos podido procesar tu pago" + enlace directo a actualizar método de pago en Stripe Billing Portal + motivo del fallo (si Stripe lo proporciona: fondos insuficientes, tarjeta expirada, etc.) | Email |
+| W-12 | **Payment failed — Intento 2** | `invoice.payment_failed` (retry automático Stripe, ~3 días) | Email recordatorio: "Segundo intento fallido" + enlace Billing Portal + "Si necesitas ayuda, responde a este email" | Email |
+| W-13 | **Payment failed — Intento 3** | `invoice.payment_failed` (retry ~7 días) | Email urgente: "Último intento antes de suspender servicio" + enlace Billing Portal + plazo concreto ("tienes hasta el [fecha]") + teléfono/email de soporte | Email |
+| W-14 | **Servicio suspendido** | `customer.subscription.updated` (status: `past_due` → `unpaid`, ~14 días) | 1. Suspender acceso a features Pro/Agency (downgrade a Free, NO borrar datos) → 2. Email: "Tu suscripción ha sido suspendida por impago" + qué se mantiene (datos, perfil) + qué se pierde (features) + enlace para reactivar → 3. Registrar en AuditLog | Email + In-app |
+| W-15 | **Recordatorio post-suspensión** | Cron: 7 días tras W-14 | Email: "Tus datos siguen seguros" + oferta de reactivación (posible descuento) + plazo de retención de datos (90 días) | Email |
+| W-16 | **Aviso pre-eliminación** | Cron: 60 días tras suspensión | Email formal: "En 30 días eliminaremos tus datos conforme a nuestra política de retención" + enlace para exportar datos (ARCO portabilidad) + enlace para reactivar | Email |
+| W-17 | **Eliminación de datos** | Cron: 90 días tras suspensión | 1. Ejecutar anonimización RGPD (mantener datos fiscales 5 años) → 2. Email confirmación de eliminación → 3. Registrar en AuditLog → 4. Actualizar Registro de Actividades (Art. 30) | Sistema |
+
+**Configuración Stripe para dunning:**
+```
+Stripe Dashboard → Settings → Subscriptions → Smart Retries:
+  - Retry schedule: 3, 5, 7 días
+  - After all retries fail: Mark subscription as unpaid
+  - Send emails: Desactivar (gestionar desde n8n para control total)
+  - Customer portal: Permitir actualizar método de pago
+```
+
+**Reglas de impago:**
+- ❌ NUNCA comunicar la deuda a terceros (prohibido sin consentimiento, Art. 6 RGPD)
+- ❌ NUNCA usar lenguaje amenazante o coercitivo
+- ❌ NUNCA borrar datos del cliente sin agotar el plazo de retención (90 días)
+- ❌ NUNCA cobrar intereses sin cláusula contractual previa (Art. 1108 CC)
+- ✅ SIEMPRE ofrecer vía de solución en cada comunicación
+- ✅ SIEMPRE enlace a soporte humano (email directo)
+- ✅ SIEMPRE respetar derecho de exportación de datos antes de eliminar
+- ✅ SIEMPRE registrar cada acción en AuditLog
+
+#### E. Baja voluntaria y recuperación (churn prevention)
+
+| # | Workflow | Trigger / Timing | Acción |
+|---|---------|------------------|--------|
+| W-18 | **Cancelación iniciada** | `customer.subscription.updated` (cancel_at_period_end = true) | 1. Email inmediato: "Lamentamos que te vayas" + encuesta de motivo (3 opciones: precio, no uso, competidor, otro) → 2. Según motivo: |
+| | | — Si **precio**: Ofrecer descuento 30% durante 3 meses (código único) | |
+| | | — Si **no uso**: Ofrecer sesión de onboarding personalizada (Calendly link) | |
+| | | — Si **competidor**: Ofrecer comparativa + migración gratuita de datos | |
+| | | — Si **otro**: Agradecimiento + invitación a compartir feedback | |
+| W-19 | **Último día de suscripción** | Cron: día antes de period_end | Email: "Tu suscripción termina mañana" + resumen de lo que pierde + CTA "Reconsidera" con descuento vigente (si aplica) |
+| W-20 | **Post-baja inmediata** | `customer.subscription.deleted` | 1. Downgrade a Free (NO borrar datos ni perfil) → 2. Email: "Tu plan ha cambiado a Free" + qué mantiene + qué pierde → 3. Registrar motivo en CRM |
+| W-21 | **Win-back 30 días** | Cron: 30 días tras baja | Email: "¿Qué tal todo?" + novedades lanzadas desde su baja + oferta reactivación (40% descuento primer mes) |
+| W-22 | **Win-back 90 días** | Cron: 90 días tras baja | Email final: "Seguimos aquí" + caso de éxito de un cliente similar + oferta definitiva. Si no reacciona: marcar como churned definitivo en CRM |
+
+**Reglas de baja:**
+- ❌ NUNCA dificultar la baja (dark patterns prohibidos, Directiva 2005/29/CE)
+- ❌ NUNCA seguir cobrando tras cancelación confirmada
+- ❌ NUNCA enviar más de 3 emails de recuperación post-baja
+- ✅ SIEMPRE confirmar baja por email con fecha efectiva
+- ✅ SIEMPRE permitir exportar datos antes de downgrade
+- ✅ SIEMPRE mantener acceso Free (datos + perfil público) salvo eliminación explícita
+
+#### F. Automatizaciones operativas del Kit contratado
+
+| # | Workflow | Trigger | Acciones |
+|---|---------|---------|----------|
+| W-23 | **Nuevo booking → notificación + CRM** | Webhook KitOS `booking_request_created` | 1. Email al profesional con datos del booking → 2. Crear/actualizar lead en CRM (docs/09) → 3. Si Pro/Agency: crear evento en Proton Calendar (si integrado) |
+| W-24 | **Kit Profile publicado → SEO check** | Webhook KitOS `kit_profile_published` | 1. Invocar agente seo-geo-specialist (verificar JSON-LD, OG) → 2. Ping Google Search Console (indexación) → 3. Email al cliente: "Tu perfil está live" + URL |
+| W-25 | **Generación de contrato** | Webhook KitOS `contract_requested` | 1. POST API Afiladocs con merge fields → 2. PDF generado → Supabase Storage → 3. Email al cliente con enlace de firma → 4. Si tokenización activa: registrar hash |
+| W-26 | **Tokenización de producto** | Webhook KitOS `tokenization_requested` | Flujo completo de 7 pasos documentado en docs/08 (SHA-256 → SafeCreative → certificado → email) |
+| W-27 | **Renovación mensual → factura** | `invoice.paid` | 1. Generar factura PDF (Stripe Invoice + datos fiscales) → 2. Email con factura adjunta → 3. Actualizar contabilidad (si integración Holded/Quaderno) |
+| W-28 | **Affiliate payout** | `transfer.created` | 1. Registrar payout en tabla AffiliatePayout → 2. Email al afiliado: "Comisión recibida" + detalle → 3. Generar recibo |
+
+### 7.5.2 — Arquitectura técnica de los workflows
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                    KitOS Apps                            │
+│  (alexendros.pro / stagekit.app / lexkit.pro)           │
+│                                                         │
+│  Eventos → POST /api/n8n/trigger                        │
+│            (webhook autenticado con N8N_WEBHOOK_SECRET)  │
+└──────────────────────┬──────────────────────────────────┘
+                       │ HTTPS
+                       ▼
+┌─────────────────────────────────────────────────────────┐
+│              n8n (Hostinger VPS)                         │
+│              n8n.alexendros.me                           │
+│                                                         │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐    │
+│  │ Lifecycle   │  │ Dunning     │  │ Operations  │    │
+│  │ W-01..W-10  │  │ W-11..W-17  │  │ W-23..W-28  │    │
+│  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘    │
+│         │                │                │             │
+│         ▼                ▼                ▼             │
+│  ┌─────────────────────────────────────────────────┐   │
+│  │              Servicios externos                  │   │
+│  │  Resend (email) · Stripe (pagos) · Supabase    │   │
+│  │  Afiladocs (contratos) · SafeCreative (tokens) │   │
+│  │  Google Search Console · Proton Calendar        │   │
+│  └─────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────┘
+```
+
+### 7.5.3 — Variables de entorno n8n
+
+```bash
+# En n8n (Hostinger VPS) — Environment Variables
+N8N_WEBHOOK_SECRET=           # Compartido con KitOS apps para autenticar webhooks
+RESEND_API_KEY=               # Envío de emails
+STRIPE_SECRET_KEY=            # Consultar estado de suscripciones
+SUPABASE_URL=                 # Consultar datos de usuario
+SUPABASE_SERVICE_ROLE_KEY=    # Acceso server-side sin RLS
+AFILADOCS_API_KEY=            # Generación de contratos
+SAFECREATIVE_API_KEY=         # Registro de tokenización
+```
+
+### 7.5.4 — Plantilla base de workflow n8n (SDK)
+
+> Cada workflow sigue esta estructura estándar para mantener consistencia y facilitar el mantenimiento.
+
+```typescript
+// Estructura base para cada workflow n8n
+// Crear con skill: /n8n create_workflow_from_code
+
+import { WorkflowBuilder } from 'n8n-workflow-sdk';
+
+const workflow = new WorkflowBuilder('W-XX — [Nombre del workflow]')
+  // Trigger
+  .addTrigger({
+    type: 'webhook' | 'cron' | 'stripe',
+    config: { /* ... */ }
+  })
+  // Paso 1: Obtener datos de contexto
+  .addNode('fetch-context', {
+    type: 'supabase',
+    operation: 'getRows',
+    table: '...',
+    filters: { /* ... */ }
+  })
+  // Paso 2: Lógica condicional
+  .addNode('check-condition', {
+    type: 'if',
+    condition: { /* ... */ }
+  })
+  // Paso 3: Acción principal
+  .addNode('send-email', {
+    type: 'resend',
+    template: '...',
+    to: '{{ $json.email }}',
+    variables: { /* merge fields */ }
+  })
+  // Paso 4: Registrar en audit log
+  .addNode('audit-log', {
+    type: 'supabase',
+    operation: 'insert',
+    table: 'audit_logs',
+    data: {
+      entity: 'workflow',
+      action: 'W-XX executed',
+      userId: '{{ $json.userId }}',
+      metadata: { /* resultado */ }
+    }
+  })
+  .build();
+```
+
+### 7.5.5 — Tabla resumen de workflows
+
+| ID | Nombre | Categoría | Trigger | Emails | Prioridad |
+|----|--------|-----------|---------|--------|-----------|
+| W-01 | Welcome sequence | Onboarding | Stripe webhook | 4 | MVP |
+| W-02 | Onboarding tracker | Onboarding | KitOS webhook | 2 | MVP |
+| W-03 | Setup fee confirmation | Onboarding | Stripe webhook | 1 | MVP |
+| W-04 | Weekly digest | Engagement | Cron semanal | 1 | MVP |
+| W-05 | Booking notification | Engagement | KitOS webhook | 1 | MVP |
+| W-06 | Milestone celebration | Engagement | KitOS webhook | 1 | Post-MVP |
+| W-07 | Inactivity re-engagement | Engagement | Cron diario | 3 | Post-MVP |
+| W-08 | Trial progress | Conversión | Cron diario | 3 | MVP |
+| W-09 | Trial expired | Conversión | Stripe webhook | 1 | MVP |
+| W-10 | Upgrade celebration | Conversión | Stripe webhook | 1 | MVP |
+| W-11 | Payment failed — 1 | Dunning | Stripe webhook | 1 | MVP |
+| W-12 | Payment failed — 2 | Dunning | Stripe webhook | 1 | MVP |
+| W-13 | Payment failed — 3 | Dunning | Stripe webhook | 1 | MVP |
+| W-14 | Servicio suspendido | Dunning | Stripe webhook | 1 | MVP |
+| W-15 | Recordatorio post-susp. | Dunning | Cron | 1 | MVP |
+| W-16 | Aviso pre-eliminación | Dunning | Cron | 1 | MVP |
+| W-17 | Eliminación de datos | Dunning | Cron | 1 | MVP |
+| W-18 | Cancelación iniciada | Churn | Stripe webhook | 1 | MVP |
+| W-19 | Último día suscripción | Churn | Cron | 1 | MVP |
+| W-20 | Post-baja inmediata | Churn | Stripe webhook | 1 | MVP |
+| W-21 | Win-back 30d | Churn | Cron | 1 | Post-MVP |
+| W-22 | Win-back 90d | Churn | Cron | 1 | Post-MVP |
+| W-23 | Booking → CRM | Operativo | KitOS webhook | 1 | MVP |
+| W-24 | Profile → SEO check | Operativo | KitOS webhook | 1 | Post-MVP |
+| W-25 | Contrato Afiladocs | Operativo | KitOS webhook | 1 | Post-MVP |
+| W-26 | Tokenización | Operativo | KitOS webhook | 1 | Post-MVP |
+| W-27 | Renovación → factura | Operativo | Stripe webhook | 1 | MVP |
+| W-28 | Affiliate payout | Operativo | Stripe webhook | 1 | MVP |
+
+**MVP: 20 workflows · Post-MVP: 8 workflows**
+
+---
+
 ## FASE 8 — Hardening Pre-Produccion
 > **Objetivo:** Checklist de Auditoria Pre-Produccion completo.
-> **Prerequisito:** FASES 6-7
+> **Prerequisito:** FASES 6-7 + 7.5 (workflows n8n operativos)
 
 - **Bloque B:** Cuentas activas (Vercel, Supabase, Stripe, Resend, Sentry, PostHog, GitHub)
 - **Bloque C:** Build limpio (sin `any`, sin keys hardcodeadas)
@@ -376,7 +611,11 @@ FASE 0 (Scaffolding + ui-ux-pro-max)
         FASE 6 (alexendros.pro)       ← hub completo, aplica branding de .me
               |
               FASE 7 (stagekit MVP)
-                    |
+              |     |
+              |     FASE 7.5 (n8n workflows)  ← 28 automatizaciones:
+              |           |                      onboarding, engagement,
+              |           |                      dunning, churn, operativo
+              |           |
                     FASE 8 (hardening)
                           |
                           FASE 9 (deploy produccion .pro + stagekit)
@@ -429,6 +668,15 @@ FASE 0 (Scaffolding + ui-ux-pro-max)
 - Registro → onboarding → perfil publicado (E2E)
 - Checkout Pro con card test 4242
 - Booking request anonimo → artista lo recibe
+
+### Tras FASE 7.5 (n8n workflows):
+- W-01 welcome sequence dispara tras checkout test → 4 emails programados
+- W-08 trial progress envia email dia 3 a trial activo
+- W-11/12/13 dunning sequence completa con card declinada (4000 0000 0000 0341)
+- W-18 cancelacion: encuesta motivo + oferta descuento generada
+- W-23 booking → email al artista + lead creado en CRM
+- W-27 invoice.paid → factura PDF enviada
+- Todos los workflows registran en AuditLog
 
 ### Tras FASE 9:
 - 3 dominios activos con SSL

@@ -113,7 +113,20 @@
 ❌ API pública
 ❌ White-label
 ❌ Integración Resident Advisor
+❌ Tokenización de productos digitales (servicio bajo demanda)
+❌ Contratos automatizados via Afiladocs (integración n8n)
 ```
+
+---
+
+## Servicios transversales KitOS (todos los Kits)
+
+| Servicio | Tipo | Incluido en plan | Descripción |
+|---------|------|-----------------|-------------|
+| **Dossier de presencia digital** | Entregable | Pro/Agency | Manual profesional de ecosistema digital: plataformas, plantillas de publicación, almacenamiento, suite Proton.me |
+| **Brand Manual profesional** | Entregable/servicio | Agency (incluido) / Pro (bajo demanda) | Manual de identidad de marca con logo, paleta, tipografía, aplicaciones — estándares ISO/PMS/WCAG |
+| **Tokenización digital** | Bajo demanda | Facturado aparte | Registro en SafeCreative/blockchain de productos digitales con hash verificable y certificado |
+| **Contratos Afiladocs** | Automatizado | Pro/Agency (contrato base incluido) | Contratos generados desde afiladocs.com con merge de datos del cliente y firma electrónica |
 
 ---
 

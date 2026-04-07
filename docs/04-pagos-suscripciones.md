@@ -22,7 +22,7 @@ export const PLANS = {
     id: 'pro',
     name: 'Pro',
     priceMonthly: 29,
-    stripePriceId: process.env.STRIPE_PRICE_PRO_MONTHLY!,
+    stripePriceId: process.env.STRIPE_PRICE_STAGEKIT_PRO_MONTHLY!,
     features: [
       'EPKs ilimitados + multitemplate',
       'Booking manager completo (calendario, bloqueos)',
@@ -37,7 +37,7 @@ export const PLANS = {
     id: 'agency',
     name: 'Agency',
     priceMonthly: 199,
-    stripePriceId: process.env.STRIPE_PRICE_AGENCY_MONTHLY!,
+    stripePriceId: process.env.STRIPE_PRICE_STAGEKIT_AGENCY_MONTHLY!,
     features: [
       'Todo Pro',
       'Gestión multi-artista (hasta 20)',
@@ -78,6 +78,7 @@ export async function POST(req: Request) {
     return Response.json({ error: 'Invalid signature' }, { status: 400 });
   }
 
+  // 5 eventos obligatorios
   switch (event.type) {
     case 'checkout.session.completed':
       await handleCheckoutComplete(event.data.object);
@@ -88,6 +89,9 @@ export async function POST(req: Request) {
       break;
     case 'invoice.payment_failed':
       await handlePaymentFailed(event.data.object);
+      break;
+    case 'transfer.created':
+      await handleAffiliateTransfer(event.data.object);
       break;
   }
 
@@ -124,10 +128,16 @@ export async function payAffiliateCommission({
   })
 }
 
-// Tasa de comisión por defecto: 15% del primer año
-// Calculada en el webhook checkout.session.completed:
-// commission = priceMonthly * 12 * 0.15
-// Pagada mensualmente en proporcional: commission / 12
+// Comisión afiliado: 15% de la suscripción mensual (NO del setup fee)
+// Duración: 12 meses desde la activación del referido
+// Cálculo: commission_monthly = priceMonthly * 0.15
+// Pago: mensual vía Stripe Connect Transfer
+// Total máximo por referido: priceMonthly * 12 * 0.15
+
+// Trial: 14 días sin tarjeta
+// Configuración Stripe: trial_period_days = 14
+// Sin método de pago requerido al inicio
+// Al expirar: auto-conversión a plan Free si no convierte
 ```
 
 ## Compliance PCI DSS + GDPR

@@ -5,6 +5,8 @@
 > **Uso:** Copiar el contenido de cada sección al archivo correspondiente en el repo.
 Ruta destino: `alexendros-monorepo/.claude/agents/` y `.claude/skills/`
 Claude Code carga agentes con `/agents` y skills con `/skills` dentro de la sesión.
+>
+> **Estado:** Ficheros activos creados en `.claude/`. Este documento es la referencia de diseño y documentación detallada.
 > 
 
 ---
@@ -26,7 +28,8 @@ alexendros-monorepo/
         ├── new-db-migration.md
         ├── add-stripe-plan.md
         ├── deploy-vercel.md
-        └── gdpr-audit.md
+        ├── gdpr-audit.md
+        └── brand-manual.md
 ```
 
 ---
@@ -129,6 +132,45 @@ de brand strategy + technical SEO.
 }
 ~~~
 
+## Flujo de subagentes (ejecución paralela)
+
+Cuando la auditoría es completa (BAS full), lanzar estos subagentes en paralelo:
+
+```
+brand-auditor (orquestador)
+  │
+  ├── [PARALELO] Subagente: visual-consistency-checker
+  │   Tipo: Explore
+  │   Tarea: Fetch alexendros.me + perfiles LinkedIn/GitHub/Twitter
+  │   → Extraer: fotos de perfil, paletas dominantes, tipografías
+  │   → Comparar consistencia visual entre plataformas
+  │   → Output: score visual_consistency + lista de divergencias
+  │
+  ├── [PARALELO] Subagente: seo-technical-auditor
+  │   Tipo: Explore
+  │   Tarea: Analizar JSON-LD, OG tags, robots.txt, sitemap
+  │   → Validar schema.org/Person contra spec
+  │   → Verificar CWV con Lighthouse/PageSpeed
+  │   → Output: score seo_geo + web_performance + fixes priorizados
+  │
+  ├── [PARALELO] Subagente: narrative-analyzer
+  │   Tipo: Explore
+  │   Tarea: Leer docs PF-0 a PF-4 (brand positioning, bio, experiencia)
+  │   → Evaluar coherencia entre bio web, LinkedIn, GitHub README
+  │   → Verificar UVP clarity (test 5 segundos simulado)
+  │   → Output: score uvp_clarity + narrative_coherence + recomendaciones
+  │
+  └── [SECUENCIAL] brand-auditor consolida resultados
+      → Calcular BAS ponderado total
+      → Generar priority_fixes ordenados por impacto/esfuerzo
+      → Publicar en Notion: "Brand Audit Report - [fecha]"
+```
+
+### Cuándo usar subagentes vs. ejecución directa
+- **BAS completo (6 dimensiones):** Siempre paralelo — ahorra ~60% tiempo
+- **Auditoría parcial (1-2 dimensiones):** Ejecución directa sin subagentes
+- **Re-auditoría post-fix:** Solo el subagente de la dimensión afectada
+
 ## Reglas
 - Nunca modificar código de producción sin mostrar diff primero
 - Siempre comparar resultado con benchmark de referencia (leerob.com, antfu.me)
@@ -196,6 +238,68 @@ CREATE POLICY "service_role_all" ON public.<tabla>
 ## Modelos actuales (referencia)
 - Kit, User, Plan, Subscription, ClientProfile, KitProfile, InboundRequest, Affiliate, AffiliatePayout
 - Ver schema completo en doc/03 Schema DB (Notion)
+
+## Flujo de subagentes (migraciones complejas)
+
+### Escenario: Añadir nuevo Kit con todas sus tablas + RLS + seed
+
+```
+db-architect (orquestador)
+  │
+  ├── [PARALELO] Subagente: schema-designer
+  │   Tipo: Plan
+  │   Tarea: Diseñar modelos Prisma para el nuevo Kit
+  │   → Analizar requisitos del Kit (doc de specs)
+  │   → Definir modelos con relaciones, índices, @@map
+  │   → Marcar campos RGPD con base legal
+  │   → Output: bloque schema.prisma listo para insertar
+  │
+  ├── [PARALELO] Subagente: rls-policy-generator
+  │   Tipo: general-purpose
+  │   Tarea: Generar policies RLS para todas las tablas nuevas
+  │   → Policy por tabla: authenticated_own_data + service_role_bypass
+  │   → Policies especiales: tablas públicas (kit_profiles con isPublic)
+  │   → Output: script SQL completo ejecutable en Supabase
+  │
+  ├── [PARALELO] Subagente: seed-data-builder
+  │   Tipo: general-purpose
+  │   Tarea: Crear seed data para el nuevo Kit
+  │   → Kit entry + planes + datos de demo
+  │   → Output: seed.ts actualizado
+  │
+  └── [SECUENCIAL] db-architect integra y ejecuta
+      → Insertar schema del subagente 1
+      → Ejecutar migración: prisma migrate dev
+      → Aplicar RLS del subagente 2
+      → Ejecutar seed del subagente 3
+      → Verificar: prisma generate + test RLS con anon key
+```
+
+### Escenario: Migración con data transformation (cambio breaking)
+
+```
+db-architect (orquestador)
+  │
+  ├── [SECUENCIAL] Subagente: impact-analyzer
+  │   Tipo: Explore
+  │   Tarea: Analizar impacto del cambio en el codebase
+  │   → Buscar todas las referencias al modelo/campo afectado
+  │   → Identificar queries, tRPC routers, componentes UI afectados
+  │   → Output: lista de ficheros a actualizar + riesgo estimado
+  │
+  ├── [SECUENCIAL] Subagente: migration-writer
+  │   Tipo: general-purpose
+  │   Tarea: Escribir migración con data transformation
+  │   → Schema change + SQL para migrar datos existentes
+  │   → Rollback script (por si falla)
+  │   → Output: migration file + rollback.sql
+  │
+  └── [SECUENCIAL] db-architect ejecuta y verifica
+      → Ejecutar migración en dev
+      → Verificar datos migrados correctamente
+      → Actualizar código afectado (del impact-analyzer)
+      → Test completo: build + RLS + E2E
+```
 
 ## Reglas absolutas
 - ❌ NUNCA editar schema en Supabase Studio sin migration Prisma
@@ -277,6 +381,67 @@ switch (event.type) {
 5. Actualizar pricing page del Kit
 6. Test en modo test: card `4242 4242 4242 4242` + `4000 0025 0000 3155` (3DS)
 7. Verificar webhook recibe `checkout.session.completed`
+
+## Flujo de subagentes (tareas complejas de pagos)
+
+### Escenario: Setup completo de un nuevo Kit con pagos
+
+```
+stripe-engineer (orquestador)
+  │
+  ├── [PARALELO] Subagente: plan-configurator
+  │   Tipo: Plan
+  │   Tarea: Diseñar estructura de planes del Kit
+  │   → Definir tiers (Free/Pro/Agency o equivalentes)
+  │   → Calcular pricing con análisis competitivo del sector
+  │   → Definir feature gates por plan
+  │   → Output: especificación completa de planes + pricing
+  │
+  ├── [PARALELO] Subagente: webhook-implementor
+  │   Tipo: general-purpose
+  │   Tarea: Implementar webhook handler para el nuevo Kit
+  │   → Crear/extender route handler en /api/webhooks/stripe
+  │   → Mapear 5 eventos obligatorios a acciones de DB
+  │   → Integrar triggers n8n (onboarding, churn, dunning)
+  │   → Output: código webhook handler + tests
+  │
+  ├── [PARALELO] Subagente: affiliate-setup
+  │   Tipo: general-purpose
+  │   Tarea: Configurar Stripe Connect para afiliados del Kit
+  │   → Definir comisiones específicas del sector
+  │   → Configurar schedule de payouts
+  │   → Crear onboarding flow para afiliados
+  │   → Output: código affiliate + tests
+  │
+  └── [SECUENCIAL] stripe-engineer integra y verifica
+      → Crear productos/precios en Stripe Dashboard (manual)
+      → Integrar outputs de los 3 subagentes
+      → Test E2E: checkout → webhook → DB → email → affiliate payout
+      → Actualizar docs/04 con nueva configuración
+```
+
+### Escenario: Integración Afiladocs (generación de contratos post-checkout)
+
+```
+stripe-engineer (orquestador)
+  │
+  ├── [SECUENCIAL] Subagente: contract-flow-builder
+  │   Tipo: general-purpose
+  │   Tarea: Implementar flujo checkout → contrato Afiladocs
+  │   → Extender webhook checkout.session.completed
+  │   → POST a API Afiladocs con merge fields del cliente
+  │   → Almacenar PDF en Supabase Storage
+  │   → Notificar cliente con enlace de firma
+  │   → Output: código integración + workflow n8n
+  │
+  └── [SECUENCIAL] Subagente: tokenization-registrar
+      Tipo: general-purpose
+      Tarea: Registrar hash del contrato ejecutado (opcional)
+      → Calcular SHA-256 del PDF firmado
+      → POST a SafeCreative API
+      → Guardar en tabla digital_registrations
+      → Output: código + certificado template
+```
 
 ## Reglas absolutas
 - ❌ NUNCA almacenar números de tarjeta
@@ -384,6 +549,46 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 }
 ~~~
 
+## Flujo de subagentes (auditoría SEO/GEO completa)
+
+### Escenario: Auditoría pre-launch de un dominio completo
+
+```
+seo-geo-specialist (orquestador)
+  │
+  ├── [PARALELO] Subagente: technical-seo-crawler
+  │   Tipo: Explore
+  │   Tarea: Crawl completo del dominio
+  │   → Verificar JSON-LD en cada página (validator.schema.org)
+  │   → Comprobar metadata (title, description, OG, twitter card)
+  │   → Verificar sitemap.xml incluye todas las rutas públicas
+  │   → Comprobar robots.txt (indexa marketing, bloquea /dashboard y /api)
+  │   → Verificar canonical URLs y hreflang
+  │   → Output: informe técnico con errores y warnings
+  │
+  ├── [PARALELO] Subagente: cwv-performance-auditor
+  │   Tipo: general-purpose
+  │   Tarea: Medir Core Web Vitals en todas las landing pages
+  │   → Ejecutar Lighthouse en desktop y mobile para cada ruta
+  │   → Medir LCP, INP, CLS por página
+  │   → Identificar recursos bloqueantes, imágenes sin optimizar, JS innecesario
+  │   → Output: tabla de métricas + fixes priorizados por impacto
+  │
+  ├── [PARALELO] Subagente: geo-citability-checker
+  │   Tipo: Explore
+  │   Tarea: Evaluar citabilidad en motores AI
+  │   → Buscar marca en Perplexity, ChatGPT, Claude
+  │   → Verificar entity clarity (@id, sameAs network)
+  │   → Comprobar freshness signals (dateModified)
+  │   → Evaluar named methodology ("KitOS Framework")
+  │   → Output: score GEO + recomendaciones de citabilidad
+  │
+  └── [SECUENCIAL] seo-geo-specialist consolida
+      → Generar informe unificado SEO + CWV + GEO
+      → Priorizar fixes: ALTA (bloquea indexación) > MEDIA > BAJA
+      → Publicar en Notion: "SEO Audit - [dominio] - [fecha]"
+```
+
 ## Checklist pre-deploy
 - [ ] validator.schema.org sin errores en JSON-LD
 - [ ] PageSpeed Insights: LCP < 2.0s desktop
@@ -463,6 +668,54 @@ Términos y Condiciones → Ley 34/2002 + Ley 7/1998 CGC
 ## Registro de actividades (Art. 30 RGPD)
 Mantener actualizado en Notion: página "Registro de Actividades de Tratamiento"
 - Responsable, finalidad, categorías de datos, destinatarios, plazo retención, medidas técnicas
+
+## Flujo de subagentes (auditoría RGPD completa pre-launch)
+
+### Escenario: Auditoría de compliance completa antes de producción
+
+```
+gdpr-compliance (orquestador)
+  │
+  ├── [PARALELO] Subagente: data-inventory-scanner
+  │   Tipo: Explore
+  │   Tarea: Escanear codebase para inventario de datos personales
+  │   → Buscar todos los INSERT/CREATE/UPDATE de datos personales
+  │   → Verificar que cada uno tiene comentario con base legal (// RGPD Art.6.1.X)
+  │   → Mapear flujo de datos: entrada → procesamiento → almacenamiento → terceros
+  │   → Output: inventario de tratamientos + gaps sin base legal documentada
+  │
+  ├── [PARALELO] Subagente: consent-flow-auditor
+  │   Tipo: Explore
+  │   Tarea: Verificar implementación de consentimiento
+  │   → Revisar cookie banner: ¿bloquea JS de terceros antes de consentimiento?
+  │   → Verificar checkboxes de formularios: ¿no pre-marcados? ¿link a privacidad?
+  │   → Comprobar PostHog: ¿inicializa solo tras consent === 'accepted'?
+  │   → Comprobar Sentry beforeSend: ¿elimina email y userId?
+  │   → Output: checklist de consentimiento con estado por componente
+  │
+  ├── [PARALELO] Subagente: legal-text-validator
+  │   Tipo: Explore
+  │   Tarea: Verificar textos legales publicados
+  │   → Comprobar existencia y contenido de: aviso-legal, privacidad, cookies, terminos
+  │   → Verificar que mencionan: responsable, finalidad, base legal, derechos ARCO, DPO
+  │   → Comprobar inventario de cookies (nombre, duración, finalidad, tercero)
+  │   → Output: checklist de textos legales con campos faltantes
+  │
+  ├── [PARALELO] Subagente: security-rls-checker
+  │   Tipo: general-purpose
+  │   Tarea: Verificar seguridad técnica Art. 32 RGPD
+  │   → Comprobar RLS activo en TODAS las tablas con datos personales
+  │   → Test: query con anon key debe devolver 0 filas en tablas protegidas
+  │   → Verificar rate limiting en endpoints de auth
+  │   → Buscar secretos expuestos: grep tokens/keys en código
+  │   → Output: informe de seguridad técnica + vulnerabilidades
+  │
+  └── [SECUENCIAL] gdpr-compliance consolida
+      → Generar informe RGPD unificado: VERDE / ROJO por sección
+      → Si ROJO: lista de fixes obligatorios antes de deploy
+      → Actualizar Registro de Actividades en Notion (Art. 30)
+      → Publicar en Notion: "RGPD Audit - [app] - [fecha]"
+```
 
 ## Reglas absolutas
 - ❌ NUNCA activar PostHog sin consentimiento
@@ -836,4 +1089,217 @@ ROJO → algún check sin marcar → NO desplegar hasta resolver
 - LSSI-CE: Ley 34/2002, BOE 12/07/2002
 - AEPD Guía Cookies 2023: aepd.es/guias/guia-cookies.pdf
 - PCI DSS v4.0: pcisecuritystandards.org
+```
+
+---
+
+### 📄 skills/brand-manual.md
+
+```markdown
+# Skill: brand-manual
+# Uso: crear manual de identidad de marca profesional certificable
+# Activar con: /skills brand-manual
+
+## Objetivo
+Generar un Brand Manual (Manual de Identidad Corporativa) completo que cumpla
+estándares profesionales del sector de imagen de marca, diseño gráfico y branding.
+El resultado debe ser un documento entregable a clientes con calidad de agencia.
+
+## Estándares y referencias profesionales
+
+| Referencia | Ámbito | Aplicación |
+|-----------|--------|------------|
+| ISO 10668:2010 | Valoración de marca | Estructura de activos de marca |
+| ISO 20671:2019 | Evaluación de marca | Métricas de percepción y consistencia |
+| Pantone Matching System (PMS) | Color profesional | Conversión oklch → PMS + CMYK + RGB + HEX |
+| WCAG 2.1 AA | Accesibilidad | Ratios de contraste mínimos 4.5:1 (texto) / 3:1 (UI) |
+| PDF/X-4 (ISO 15930-7) | Preimpresión | Exportación para impresión profesional |
+| SVG 1.1 / SVG 2.0 | Formatos vectoriales | Logos y marcas gráficas escalables |
+
+## Estructura del Brand Manual (secciones obligatorias)
+
+### 1. Estrategia de marca
+- **Brand Positioning Statement** (plantilla: Para [audiencia] que [necesidad], [marca] es [categoría] que [diferencial] porque [razón])
+- **Brand Personality:** Arquetipos (Jung), tono de voz, vocabulario permitido/prohibido
+- **Brand Values:** 3-5 valores con descripción aplicada
+- **Tagline / Claim principal + variantes**
+
+### 2. Identidad visual — Logotipo
+- **Marca gráfica principal** (logo completo: imagotipo, isotipo, logotipo o isologo — justificar elección)
+- **Versiones:** horizontal, vertical, reducida (favicon), monocromática, negativo
+- **Área de respeto:** Mínimo 1x la altura del símbolo en cada dirección
+- **Tamaño mínimo:** Definir en px (digital) y mm (impresión)
+- **Usos incorrectos:** Mínimo 6 ejemplos de qué NO hacer (estirar, rotar, recolorear, añadir sombras, sobre fondos conflictivos, etc.)
+- **Formatos de entrega:**
+  - SVG (vectorial, web)
+  - PNG con transparencia (digital, alta resolución: 2x y 3x)
+  - PDF vectorial (impresión)
+  - Favicon .ico + .svg + apple-touch-icon (192×192, 512×512)
+
+### 3. Sistema de color
+- **Paleta primaria:** Máx. 3 colores con valores en:
+  - oklch (fuente de verdad CSS)
+  - HEX / RGB (pantalla)
+  - CMYK (impresión offset)
+  - Pantone PMS (impresión spot)
+- **Paleta secundaria/apoyo:** Máx. 4 colores complementarios
+- **Paleta funcional:** success, warning, error, info (semántica UI)
+- **Gradientes permitidos:** Definir dirección, stops y contextos de uso
+- **Ratios de contraste WCAG AA:** Tabla de combinaciones fondo/texto validadas
+- **Proporción de uso recomendada:** Regla 60-30-10
+
+### 4. Tipografía
+- **Fuente principal (headings):** Nombre, peso, tracking, referencia de licencia
+- **Fuente secundaria (body):** Nombre, peso, line-height, tamaño base
+- **Fuente monoespaciada (código/datos):** Si aplica
+- **Escala tipográfica:** Basada en ratio (1.25 Major Third o similar)
+- **Jerarquía:** h1–h6 con tamaño, peso, color y spacing definidos
+- **Licencias:** Verificar y documentar tipo de licencia (OFL, comercial, etc.)
+
+### 5. Iconografía y gráficos
+- **Set de iconos:** Librería base (lucide-react para digital) + estilo (outline, solid, duotone)
+- **Tamaños estándar:** 16px, 20px, 24px, 32px
+- **Estilo ilustrativo:** Si aplica (flat, isométrico, line-art...)
+- **Fotografía:** Directrices de estilo fotográfico (tonos, filtros, composición)
+
+### 6. Aplicaciones y mockups
+- **Digital:** Tarjeta de visita, firma de email, OG image template, avatar
+- **Web:** Capturas de componentes clave con la marca aplicada
+- **Social media:** Plantillas para Instagram (feed + stories), Twitter/X header, LinkedIn banner
+- **Impresión (si aplica):** Papelería, carpeta, pegatinas
+
+### 7. Tono y voz
+- **Principios de comunicación:** 3-4 adjetivos (ej: directo, técnico, cercano, sin jerga innecesaria)
+- **Ejemplos do/don't** por canal (web, email, redes sociales)
+- **Vocabulario de marca:** Términos propios (KitOS, StageKit, etc.)
+
+### 8. Arquitectura de marca
+- **Marca madre vs. submarcas:** Relación Alexendros ↔ KitOS ↔ Kits individuales
+- **Reglas de co-branding:** Cómo aplicar junto a marcas de clientes/partners
+- **Nomenclatura:** Convención de nombres para productos futuros
+
+## Proceso de elaboración (con subagentes)
+
+### Flujo completo con ejecución paralela
+
+```
+brand-manual (skill orquestadora)
+  │
+  ├── [PASO 1 — SECUENCIAL] Invocar agente brand-auditor
+  │   → Obtener BAS actual como baseline
+  │   → Identificar fortalezas y debilidades de marca existente
+  │
+  ├── [PASO 2 — SECUENCIAL] Briefing de marca
+  │   → Recopilar: audiencia, valores, competidores, referencias visuales
+  │   → Definir Brand Positioning Statement
+  │
+  ├── [PASO 3 — PARALELO] Exploración y diseño
+  │   │
+  │   ├── Subagente: logo-designer
+  │   │   Tipo: general-purpose
+  │   │   → Generar 3 direcciones creativas con moodboard
+  │   │   → Diseñar logotipo: bocetos → 2 propuestas → variantes
+  │   │   → Exportar en todos los formatos (SVG, PNG 2x/3x, favicon)
+  │   │   → Documentar área de respeto, tamaño mínimo, usos incorrectos
+  │   │   → Output: carpeta assets/logo/ completa
+  │   │
+  │   ├── Subagente: color-system-builder
+  │   │   Tipo: general-purpose
+  │   │   → Definir paleta primaria + secundaria + funcional
+  │   │   → Convertir a todos los formatos: oklch, HEX, RGB, CMYK, Pantone PMS
+  │   │   → Validar ratios contraste WCAG AA (4.5:1 texto, 3:1 UI)
+  │   │   → Generar gradientes permitidos + regla 60-30-10
+  │   │   → Output: palette.json + palette.ase + tabla de contraste
+  │   │
+  │   └── Subagente: typography-selector
+  │       Tipo: general-purpose
+  │       → Seleccionar fuentes (heading, body, mono) con licencia verificada
+  │       → Definir escala tipográfica (ratio, jerarquía h1-h6)
+  │       → Configurar para next/font (Geist o alternativa)
+  │       → Output: spec tipográfica + ficheros .woff2
+  │
+  ├── [PASO 4 — SECUENCIAL] Selección y refinamiento
+  │   → Presentar propuestas al usuario → selección
+  │   → Refinar dirección elegida
+  │
+  ├── [PASO 5 — PARALELO] Construcción del sistema completo
+  │   │
+  │   ├── Subagente: application-designer
+  │   │   Tipo: general-purpose
+  │   │   → Crear mockups de aplicaciones (tarjeta, firma email, OG, social)
+  │   │   → Generar plantillas para Instagram, Twitter, LinkedIn
+  │   │   → Output: carpeta assets/templates/
+  │   │
+  │   └── Subagente: token-synchronizer
+  │       Tipo: general-purpose
+  │       → Actualizar packages/brand/tokens.ts con colores y tipografía finales
+  │       → Generar tokens.css (custom properties)
+  │       → Actualizar tailwind preset si aplica
+  │       → Output: tokens actualizados en el repo
+  │
+  └── [PASO 6 — SECUENCIAL] Validación y exportación
+      → Verificar contraste WCAG AA
+      → Verificar logo legible a tamaño mínimo
+      → Verificar CMYK sin desviación crítica (ΔE < 3)
+      → Exportar PDF manual (interactivo + versión web)
+      → Generar carpeta brand-manual/ completa
+```
+
+### Resumen de pasos
+1. **Auditoría previa** — Ejecutar agente `brand-auditor` para obtener BAS actual
+2. **Briefing de marca** — Recopilar: audiencia, valores, competidores, referencias visuales
+3. **Exploración visual** — 3 direcciones creativas con moodboard (referencias, no diseño final)
+4. **Diseño de logotipo** — Bocetos → 2 propuestas → selección → refinamiento
+5. **Sistema completo** — Construir secciones 1-8 con la propuesta seleccionada
+6. **Validación técnica:**
+   - Contraste WCAG AA verificado (herramienta: whocanuse.com o similar)
+   - Logo legible a tamaño mínimo
+   - Paleta reproducible en CMYK sin desviación crítica (ΔE < 3)
+   - Fuentes con licencia válida para uso comercial + web
+7. **Exportación y entrega:**
+   - PDF interactivo del manual (navegable, con índice)
+   - Carpeta `/brand-assets/` con todos los ficheros organizados
+   - Tokens CSS actualizados en `packages/brand/tokens.ts`
+
+## Entregables finales
+
+```
+brand-manual/
+├── brand-manual-[marca]-v1.pdf          ← Manual completo (PDF/X-4 compatible)
+├── brand-manual-[marca]-v1-web.pdf      ← Versión ligera optimizada para pantalla
+├── assets/
+│   ├── logo/
+│   │   ├── [marca]-logo-full.svg
+│   │   ├── [marca]-logo-horizontal.svg
+│   │   ├── [marca]-logo-icon.svg
+│   │   ├── [marca]-logo-mono-light.svg
+│   │   ├── [marca]-logo-mono-dark.svg
+│   │   ├── [marca]-logo-full@2x.png
+│   │   ├── [marca]-logo-full@3x.png
+│   │   ├── favicon.ico
+│   │   ├── favicon.svg
+│   │   └── apple-touch-icon.png
+│   ├── colors/
+│   │   ├── palette.ase              ← Adobe Swatch Exchange
+│   │   └── palette.json             ← Tokens exportados
+│   ├── typography/
+│   │   └── fonts/                   ← Ficheros .woff2 o referencia a CDN
+│   └── templates/
+│       ├── social-instagram-feed.fig
+│       ├── social-instagram-story.fig
+│       ├── email-signature.html
+│       └── og-image-template.fig
+└── tokens/
+    ├── tokens.css                    ← CSS custom properties
+    └── tokens.ts                     ← TypeScript (para packages/brand)
+```
+
+## Reglas
+- ❌ NUNCA entregar logo solo en PNG sin versión vectorial SVG
+- ❌ NUNCA definir colores solo en HEX — siempre incluir oklch (CSS) + PMS (impresión)
+- ❌ NUNCA usar fuentes sin verificar licencia comercial + web
+- ✅ SIEMPRE validar contraste WCAG AA antes de finalizar paleta
+- ✅ SIEMPRE incluir usos incorrectos del logo (mínimo 6)
+- ✅ SIEMPRE entregar en formatos digitales + impresión
+- ✅ SIEMPRE sincronizar tokens finales con packages/brand/tokens.ts
 ```

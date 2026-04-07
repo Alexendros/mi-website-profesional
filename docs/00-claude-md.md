@@ -183,6 +183,7 @@ packages:
 | add-stripe-plan | Nuevo plan o precio en cualquier Kit |
 | deploy-vercel | Configurar deploy o dominio nuevo |
 | gdpr-audit | Pre-deploy de feature con datos personales |
+| brand-manual | Crear manual de identidad de marca profesional (logo, paleta, tipografía, aplicaciones) |
 
 ---
 
@@ -249,6 +250,69 @@ NOTION_TOKEN=secret_xxx
 N8N_WEBHOOK_SECRET=
 N8N_BASE_URL=https://n8n.alexendros.me
 ```
+
+---
+
+## 6.5. VALIDACIÓN ENV — `lib/env.ts`
+
+Todas las variables de entorno se validan al arrancar con Zod. Si falta alguna, el build falla con error descriptivo.
+
+```typescript
+// lib/env.ts
+import { z } from 'zod';
+
+const envSchema = z.object({
+  // Supabase
+  NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(1),
+  SUPABASE_SERVICE_ROLE_KEY: z.string().min(1),
+
+  // Prisma
+  DATABASE_URL: z.string().url(),
+  DIRECT_URL: z.string().url(),
+
+  // Stripe
+  STRIPE_SECRET_KEY: z.string().startsWith('sk_'),
+  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().startsWith('pk_'),
+  STRIPE_WEBHOOK_SECRET: z.string().startsWith('whsec_'),
+  STRIPE_CONNECT_CLIENT_ID: z.string().min(1),
+
+  // Precios Stripe (por Kit — StageKit MVP)
+  STRIPE_PRICE_STAGEKIT_PRO_MONTHLY: z.string().startsWith('price_'),
+  STRIPE_PRICE_STAGEKIT_AGENCY_MONTHLY: z.string().startsWith('price_'),
+
+  // Email
+  RESEND_API_KEY: z.string().startsWith('re_'),
+
+  // Monitoring
+  NEXT_PUBLIC_SENTRY_DSN: z.string().url(),
+  NEXT_PUBLIC_POSTHOG_KEY: z.string().min(1),
+  NEXT_PUBLIC_POSTHOG_HOST: z.string().url().default('https://eu.posthog.com'),
+
+  // Notion MCP
+  NOTION_TOKEN: z.string().startsWith('secret_'),
+
+  // n8n
+  N8N_WEBHOOK_SECRET: z.string().min(1),
+  N8N_BASE_URL: z.string().url(),
+
+  // Rate Limiting (Upstash)
+  UPSTASH_REDIS_REST_URL: z.string().url(),
+  UPSTASH_REDIS_REST_TOKEN: z.string().min(1),
+});
+
+// Validar al importar — falla en build si hay error
+export const env = envSchema.parse(process.env);
+
+// Tipo inferido para autocompletado
+export type Env = z.infer<typeof envSchema>;
+```
+
+**Reglas de uso:**
+- Importar siempre desde `@repo/config/env` (nunca `process.env` directo)
+- Variables `NEXT_PUBLIC_*` son las únicas expuestas al cliente
+- `SUPABASE_SERVICE_ROLE_KEY` NUNCA debe tener prefijo `NEXT_PUBLIC_`
+- En tests, usar `.env.test` con valores mock (nunca credenciales reales)
 
 ---
 
@@ -351,3 +415,7 @@ Configurar vercel.json, dominios, env vars, deploy automático con turbo-ignore 
 ### [gdpr-audit.md](http://gdpr-audit.md)
 
 Checklist pre-deploy: datos, base legal, consentimiento, derechos, seguridad técnica, textos legales.
+
+### [brand-manual.md](http://brand-manual.md)
+
+Genera manuales de identidad de marca profesionales siguiendo estándares del sector (ISO 10668/20671, PMS, WCAG AA, PDF/X-4). Incluye logotipo con variantes, sistema de color multi-formato, tipografía, aplicaciones y entregables listos para producción.

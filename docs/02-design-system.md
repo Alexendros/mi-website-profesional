@@ -77,6 +77,55 @@ npx shadcn@latest add toast sonner
 npx shadcn@latest add skeleton separator
 ```
 
+## Tokens por Kit (temas)
+
+Cada Kit tiene su propia paleta que extiende los tokens base. El cambio de tema se aplica mediante CSS custom properties override en el `<html>` o `<body>` del layout de cada app.
+
+### StageKit — `dark-acid`
+```css
+[data-kit="stagekit"] {
+  --brand-primary: oklch(0.72 0.22 142);     /* Verde acid */
+  --brand-secondary: oklch(0.15 0.01 240);   /* Negro azulado profundo */
+  --brand-accent: oklch(0.65 0.18 55);       /* Ámbar sutil */
+}
+```
+
+### LexKit — `legal-navy`
+```css
+[data-kit="lexkit"] {
+  --brand-primary: oklch(0.45 0.12 250);     /* Azul marino profesional */
+  --brand-secondary: oklch(0.12 0.01 250);   /* Negro azul oscuro */
+  --brand-accent: oklch(0.70 0.10 80);       /* Dorado sobrio */
+}
+```
+
+### GestKit — `gestoria-slate`
+```css
+[data-kit="gestkit"] {
+  --brand-primary: oklch(0.55 0.08 220);     /* Gris azulado corporativo */
+  --brand-secondary: oklch(0.13 0.005 220);  /* Negro neutro */
+  --brand-accent: oklch(0.65 0.15 160);      /* Verde esmeralda tenue */
+}
+```
+
+### Mecanismo de cambio de tema
+
+```typescript
+// packages/brand/kit-theme.ts
+export function getKitThemeAttribute(kitId: string): string {
+  // Devuelve el atributo data-kit para el <html>
+  // Ejemplo: <html data-kit="stagekit">
+  return kitId; // 'stagekit' | 'lexkit' | 'gestkit'
+}
+
+// En el layout de cada app:
+// <html data-kit={kitId}> → CSS selectors [data-kit="X"] aplican tokens
+```
+
+**Regla:** Todos los colores en componentes usan `var(--brand-primary)`, nunca valores oklch directos. Así el cambio de Kit es automático.
+
+---
+
 ## Reglas UI para Claude Code
 
 ```
