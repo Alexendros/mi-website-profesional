@@ -1,5 +1,6 @@
 # Skill: add-stripe-plan
 # Uso: crear o modificar plan/precio en cualquier Kit
+# Activar con: /skills add-stripe-plan
 
 ## Proceso
 
@@ -11,7 +12,7 @@
    - Copiar `price_xxx` ID del precio mensual
    - Copiar `price_yyy` ID del setup fee (si existe)
 
-2. **Anadir env vars**
+2. **Añadir env vars**
 ```bash
 # .env.local
 STRIPE_PRICE_<KITNAME>_<PLAN>=price_xxx
@@ -26,8 +27,8 @@ vercel env add STRIPE_PRICE_<KITNAME>_<PLAN> production
   <PLAN>: {
     id: '<kit>_<plan>',
     name: '<PlanName>',
-    priceSetup: <numero>,
-    priceMonthly: <numero>,
+    priceSetup: <número>,
+    priceMonthly: <número>,
     stripePriceId: process.env.STRIPE_PRICE_<KIT>_<PLAN>!,
     stripeSetupPriceId: process.env.STRIPE_PRICE_<KIT>_<PLAN>_SETUP,
     features: [...],
@@ -37,7 +38,7 @@ vercel env add STRIPE_PRICE_<KITNAME>_<PLAN> production
 }
 ```
 
-4. **Anadir a env.ts (validacion Zod)**
+4. **Añadir a env.ts (validación Zod)**
 ```typescript
 STRIPE_PRICE_<KITNAME>_<PLAN>: z.string().min(1),
 ```

@@ -1,5 +1,6 @@
 # Skill: create-kit
-# Uso: cuando hay que anadir un Kit nuevo al monorepo
+# Uso: cuando hay que añadir un Kit nuevo al monorepo
+# Activar con: /skills create-kit
 
 ## Pasos numerados (ejecutar en orden)
 
@@ -9,7 +10,7 @@ cd apps/
 pnpm create next-app@latest <kit-name> --typescript --tailwind --app --no-src-dir --import-alias "@/*"
 ```
 
-2. **Crear CLAUDE.md especifico del Kit**
+2. **Crear CLAUDE.md específico del Kit**
 ```bash
 cat > apps/<kit-name>/CLAUDE.md << 'EOF'
 # CLAUDE.md — <KitName>
@@ -18,32 +19,32 @@ cat > apps/<kit-name>/CLAUDE.md << 'EOF'
 - Dominio: [definir]
 - Theme token: [definir en packages/brand/tokens.ts]
 - Planes: [Free/Pro/Agency o equivalentes]
-## Reglas especificas
+## Reglas específicas
 - Paleta de colores: usar SOLO tokens de packages/brand con prefijo <kit-name>-*
-- Copywriting: tono [definir segun audiencia]
+- Copywriting: tono [definir según audiencia]
 - Compliance adicional: [regulaciones sectoriales si aplica]
 EOF
 ```
 
 3. **Registrar Kit en packages/db/prisma/schema.prisma**
 ```typescript
-// Anadir seed entry para el nuevo Kit
+// Añadir seed entry para el nuevo Kit
 // Archivo: packages/db/prisma/seed.ts
 await prisma.kit.create({
   data: {
-    id: '<kit-slug>',
-    name: '<KitName>',
-    domain: '<domain>',
+    id: '<kit-slug>',          // 'lexkit'
+    name: '<KitName>',         // 'LexKit'
+    domain: '<domain>',        // 'lexkit.pro'
     status: 'COMING_SOON',
     config: {}
   }
 })
 ```
 
-4. **Anadir tokens de color en packages/brand/tokens.ts**
+4. **Añadir tokens de color en packages/brand/tokens.ts**
 ```typescript
 <kitSlug>: {
-  accent: '',
+  accent: '',        // color principal del Kit
   secondary: '',
   surface: '',
   text: '',
@@ -53,8 +54,8 @@ await prisma.kit.create({
 5. **Crear planes en Stripe Dashboard**
 - Crear Producto: "<KitName> Pro" + "<KitName> Agency" (u equivalentes)
 - Copiar Price IDs
-- Anadir a `.env.local`: `STRIPE_PRICE_<KITNAME>_PRO=price_xxx`
-- Anadir a `lib/stripe/kit-plans.ts`
+- Añadir a `.env.local`: `STRIPE_PRICE_<KITNAME>_PRO=price_xxx`
+- Añadir a `lib/stripe/kit-plans.ts`
 
 6. **Configurar proyecto Vercel**
 ```bash
@@ -64,10 +65,10 @@ vercel env add NEXT_PUBLIC_SUPABASE_ANON_KEY production
 vercel domains add <domain> --project <kit-name>-app
 ```
 
-7. **Verificacion final**
+7. **Verificación final**
 ```bash
 pnpm turbo build --filter=<kit-name>
 # → Build exitoso sin errores TypeScript
 # → Variables de entorno validadas por env.ts
-# → Kit registrado en DB
+# → Kit registrado en DB: pnpm --filter=@repo/db prisma studio
 ```

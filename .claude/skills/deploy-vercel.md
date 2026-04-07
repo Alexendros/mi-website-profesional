@@ -1,5 +1,6 @@
 # Skill: deploy-vercel
 # Uso: configurar deploy, nuevo dominio o primer setup de app en Vercel
+# Activar con: /skills deploy-vercel
 
 ## Setup inicial de app nueva
 
@@ -10,7 +11,7 @@ vercel link --project <app-name>
 # Seleccionar: scope alexendros, proyecto existente o crear nuevo
 ```
 
-2. **vercel.json (en raiz de la app)**
+2. **vercel.json (en raíz de la app)**
 ```json
 {
   "buildCommand": "cd ../.. && pnpm turbo build --filter=<app-name>",
@@ -52,15 +53,15 @@ vercel domains add <dominio.com> --project <app-name>
 }
 ```
 
-6. **Webhook Stripe en produccion**
+6. **Webhook Stripe en producción**
 ```bash
 stripe webhooks create \
   --url https://<dominio>/api/webhooks/stripe \
-  --events checkout.session.completed,customer.subscription.updated,customer.subscription.deleted,invoice.payment_failed
+  --events checkout.session.completed,customer.subscription.updated,customer.subscription.deleted,invoice.payment_failed,transfer.created
 # Copiar webhook secret → STRIPE_WEBHOOK_SECRET en Vercel
 ```
 
-7. **Verificacion post-deploy**
+7. **Verificación post-deploy**
 ```bash
 # CWV
 npx @unlighthouse/cli https://<dominio> --reporter json

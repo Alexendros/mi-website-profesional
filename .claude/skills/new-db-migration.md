@@ -1,5 +1,6 @@
 # Skill: new-db-migration
 # Uso: cualquier cambio en schema Prisma, agregar/modificar modelos, relaciones
+# Activar con: /skills new-db-migration
 
 ## Proceso obligatorio (NO saltarse pasos)
 
@@ -10,18 +11,18 @@ cat packages/db/prisma/schema.prisma
 
 2. **Documentar el cambio antes de ejecutar**
 ```
-Que tabla/modelo cambia? →
-Por que? (justificacion de negocio) →
-Afecta a datos existentes? →
-Requiere data migration? →
+¿Qué tabla/modelo cambia? →
+¿Por qué? (justificación de negocio) →
+¿Afecta a datos existentes? →
+¿Requiere data migration? →
 ```
 
 3. **Editar schema.prisma**
-- Anadir `// RGPD Art.6.1.X` si el campo almacena datos personales
-- Anadir `@@index` para campos de busqueda frecuente
-- Anadir `@@map("snake_case")` en todo modelo nuevo
+- Añadir `// RGPD Art.6.1.X` si el campo almacena datos personales
+- Añadir `@@index` para campos de búsqueda frecuente
+- Añadir `@@map("snake_case")` en todo modelo nuevo
 
-4. **Ejecutar migracion**
+4. **Ejecutar migración**
 ```bash
 pnpm --filter=@repo/db prisma migrate dev --name <descripcion-clara-en-ingles>
 # Ejemplo: --name add-audit-log-table
