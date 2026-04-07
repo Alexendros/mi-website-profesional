@@ -8,14 +8,14 @@ See: .planning/PROJECT.md (updated 2026-04-06)
 ---
 
 ## Current Phase
-- **Phase:** 1 — Monorepo Scaffold
+- **Phase:** 2 — Design System
 - **Status:** Not Started
-- **Plans:** 0/3 complete
+- **Plans:** 0/2 complete
 
 ---
 
 ## Phase History
-(None yet)
+- **Phase 1 — Monorepo Scaffold:** Completed 2026-04-07. SC 1-4 verified. Build/typecheck/lint 0 errors. 24 env vars validated via Zod. globalEnv configured. .nvmrc Node 22. Pending: GitHub branch protection (manual), Next.js 15→16 upgrade (Phase 2).
 
 ---
 
