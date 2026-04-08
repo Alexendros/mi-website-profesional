@@ -7,10 +7,13 @@
     "./tsconfig.nextjs.json": "./tsconfig.nextjs.json",
     "./tsconfig.library.json": "./tsconfig.library.json",
     "./eslint": "./eslint.config.mjs",
-    "./env": "./src/env.ts"
+    "./env": "./src/env.ts",
+    "./ratelimit": "./src/ratelimit.ts"
   },
   "dependencies": {
     "@eslint/js": "^9.27.0",
+    "@upstash/ratelimit": "^2.0.8",
+    "@upstash/redis": "^1.37.0",
     "typescript-eslint": "^8.33.0",
     "zod": "^3.24.0"
   },
