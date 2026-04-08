@@ -693,7 +693,7 @@ pnpm dlx shadcn@latest add form
 | A4 | Los valores oklch propuestos para tokens oscuros (L=0.09 bg, L=0.95 fg) cumplen WCAG AA 4.5:1 | Phase Requirements UI-03 | Contraste insuficiente; verificar con OddContrast antes de mergear |
 | A5 | `@import "shadcn/tailwind.css"` funciona cuando shadcn esta instalado como dependencia de packages/ui y el CSS se importa desde packages/brand | Architecture Pattern 1 | Import falla si shadcn no esta en el tree de dependencies de la app; fix: instalar shadcn tambien en brand o como root dependency |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **Valores oklch exactos para los 31 tokens de los 3 kits**
    - What we know: tokens.ts tiene valores base para alexendros core + 3 kits. docs/02-design-system.md tiene valores para brand/surface/text pero NO para los 31 tokens semanticos de shadcn.
