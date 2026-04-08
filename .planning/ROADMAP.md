@@ -52,9 +52,9 @@
 **Plans:** 3 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — Tokens oklch, globals.css, tipografia Geist, PostCSS por app
-- [ ] 02-02-PLAN.md — shadcn/ui init, 15 componentes, barrel exports, ratelimit skeleton
-- [ ] 02-03-PLAN.md — Build verification, dark mode WCAG AA, checkpoint visual
+- [x] 02-01-PLAN.md — Tokens oklch, globals.css, tipografia Geist, PostCSS por app
+- [x] 02-02-PLAN.md — shadcn/ui init, 15 componentes, barrel exports, ratelimit skeleton
+- [x] 02-03-PLAN.md — Build verification, dark mode WCAG AA, checkpoint visual
 
 ### Success Criteria
 1. `packages/brand/tokens.ts` exporta paletas oklch para `dark-acid`, `legal-navy` y `gestoria-slate`; selector `[data-kit="x"]` cambia tema visualmente en un playground.
