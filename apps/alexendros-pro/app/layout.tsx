@@ -3,13 +3,13 @@ import "./globals.css";
 import type { Metadata } from "next";
 
 const geistSans = localFont({
-  src: "../../packages/brand/fonts/GeistVF.woff2",
+  src: "../public/fonts/GeistVF.woff2",
   variable: "--font-geist-sans",
   display: "swap",
 });
 
 const geistMono = localFont({
-  src: "../../packages/brand/fonts/GeistMonoVF.woff2",
+  src: "../public/fonts/GeistMonoVF.woff2",
   variable: "--font-geist-mono",
   display: "swap",
 });
