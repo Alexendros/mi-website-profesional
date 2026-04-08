@@ -1,6 +1,9 @@
 import localFont from "next/font/local";
 import "./globals.css";
 import type { Metadata } from "next";
+import { Nav } from "@/components/nav";
+import { Footer } from "@/components/footer";
+import { siteConfig } from "@/lib/site";
 
 const geistSans = localFont({
   src: "../public/fonts/GeistVF.woff2",
@@ -15,17 +18,17 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://alexendros.me"),
+  metadataBase: new URL(siteConfig.url),
   title: {
-    default: "Alejandro Agustí — Fullstack Developer",
-    template: "%s | Alexendros",
+    default: siteConfig.title,
+    template: `%s | ${siteConfig.name}`,
   },
-  description:
-    "Fullstack developer especializado en Next.js y Supabase. Fundador de KitOS. Madrid.",
+  description: siteConfig.description,
   openGraph: {
     type: "website",
     locale: "es_ES",
-    siteName: "Alexendros",
+    siteName: siteConfig.name,
+    url: siteConfig.url,
   },
   twitter: {
     card: "summary_large_image",
@@ -42,9 +45,12 @@ export default function RootLayout({
     <html
       lang="es"
       className={`dark ${geistSans.variable} ${geistMono.variable}`}
-      data-kit="stagekit"
     >
-      <body>{children}</body>
+      <body className="flex min-h-screen flex-col">
+        <Nav />
+        <main className="flex-1">{children}</main>
+        <Footer />
+      </body>
     </html>
   );
 }

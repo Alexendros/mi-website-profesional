@@ -177,29 +177,6 @@
   --sidebar-ring: oklch(0.72 0.22 142);
 }
 
-[data-kit="lexkit"] {
-  --primary: oklch(0.45 0.12 250);
-  --primary-foreground: oklch(0.95 0.005 250);
-  --accent: oklch(0.70 0.10 80);
-  --accent-foreground: oklch(0.12 0.01 250);
-  --ring: oklch(0.45 0.12 250);
-  --chart-1: oklch(0.45 0.12 250);
-  --chart-2: oklch(0.70 0.10 80);
-  --sidebar-primary: oklch(0.45 0.12 250);
-  --sidebar-ring: oklch(0.45 0.12 250);
-}
-
-[data-kit="gestkit"] {
-  --primary: oklch(0.55 0.08 220);
-  --primary-foreground: oklch(0.95 0.005 220);
-  --accent: oklch(0.65 0.15 160);
-  --accent-foreground: oklch(0.13 0.005 220);
-  --ring: oklch(0.55 0.08 220);
-  --chart-1: oklch(0.55 0.08 220);
-  --chart-2: oklch(0.65 0.15 160);
-  --sidebar-primary: oklch(0.55 0.08 220);
-  --sidebar-ring: oklch(0.55 0.08 220);
-}
 
 @layer base {
   * {
