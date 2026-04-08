@@ -1,2 +1,2 @@
-export { alexendrosTokens, kitTokens } from "./tokens";
+export { alexendrosTokens, kitTokens, semanticTokens } from "./tokens";
 export { fontConfig } from "./fonts";
