@@ -14,7 +14,7 @@
 | 1 | Monorepo Scaffold | Turborepo funcional con todos los packages base y tooling configurado | INFRA-01..07 | 1-3 |
 | 2 | Design System | Tokens de marca, tipografía y componentes UI compartidos listos para todas las apps | BRAND-01..04, UI-01..03 | 3 plans |
 | 3 | alexendros.me | Landing personal estática en producción antes del día 30 para validar branding | ME-01..07 | 1-3 |
-| 4 | Base de Datos | Schema Prisma completo con RLS, Supabase client factory y seed data | DB-01..06 | 1-3 |
+| 4 | Base de Datos | Schema Prisma completo con RLS, Supabase client factory y seed data | DB-01..06 | 2 plans |
 | 5 | Pagos y Email | Stripe plans, webhook handler idempotente, Connect Express y templates email | PAY-01..06, EMAIL-01..03 | 1-3 |
 | 6 | Hub alexendros.pro | Auth SSR, dashboard de usuario, legal completo y rate limiting | AUTH-01..04, PRO-01..08 | 1-4 |
 | 7 | StageKit MVP | Producto vertical completo: onboarding → EPK builder → booking pipeline → Stripe | SK-01..10 | 1-4 |
@@ -94,6 +94,12 @@ Plans:
 **Goal:** Schema Prisma completo con 11 modelos, RLS habilitado en todas las tablas Supabase, Supabase client factory SSR y seed data con Kits y planes.
 **Requirements:** DB-01, DB-02, DB-03, DB-04, DB-05, DB-06
 **UI hint:** no
+
+**Plans:** 2 plans
+
+Plans:
+- [ ] 04-01-PLAN.md — Prisma schema 11 modelos, Supabase client factory SSR (3 variantes)
+- [ ] 04-02-PLAN.md — Migracion inicial con RLS policies, seed data (2 Kits, 6 Plans, 1 user)
 
 ### Success Criteria
 1. `pnpm --filter=@repo/db prisma migrate dev` aplica la migración inicial sin errores; los 11 modelos (Kit, User, Plan, Subscription, ClientProfile, KitProfile, InboundRequest, Affiliate, AffiliatePayout, AuditLog, DigitalRegistration) existen en Supabase.
