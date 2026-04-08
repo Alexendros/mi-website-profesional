@@ -78,8 +78,8 @@ Plans:
 **Plans:** 3 plans
 
 Plans:
-- [ ] 03-01-PLAN.md — Layout refactor (eliminar data-kit), nav, footer, hero con posicionamiento real
-- [ ] 03-02-PLAN.md — Paginas de contenido (About, Projects, Uses, Contact) y legales (aviso-legal, privacidad, cookies)
+- [x] 03-01-PLAN.md — Layout refactor (eliminar data-kit), nav, footer, hero con posicionamiento real
+- [x] 03-02-PLAN.md — Paginas de contenido (About, Projects, Uses, Contact) y legales (aviso-legal, privacidad, cookies)
 - [ ] 03-03-PLAN.md — SEO (JSON-LD, sitemap, robots, OG image), security headers, build verification y deploy
 
 ### Success Criteria
