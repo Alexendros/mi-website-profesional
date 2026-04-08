@@ -13,7 +13,7 @@
 |---|-------|------|--------------|-------|
 | 1 | Monorepo Scaffold | Turborepo funcional con todos los packages base y tooling configurado | INFRA-01..07 | 1-3 |
 | 2 | Design System | Tokens de marca, tipografía y componentes UI compartidos listos para todas las apps | BRAND-01..04, UI-01..03 | 3 plans |
-| 3 | alexendros.me | Landing personal estática en producción antes del día 30 para validar branding | ME-01..07 | 1-3 |
+| 3 | alexendros.me | Landing personal estática en producción antes del día 30 para validar branding | ME-01..07 | 3 plans |
 | 4 | Base de Datos | Schema Prisma completo con RLS, Supabase client factory y seed data | DB-01..06 | 1-3 |
 | 5 | Pagos y Email | Stripe plans, webhook handler idempotente, Connect Express y templates email | PAY-01..06, EMAIL-01..03 | 1-3 |
 | 6 | Hub alexendros.pro | Auth SSR, dashboard de usuario, legal completo y rate limiting | AUTH-01..04, PRO-01..08 | 1-4 |
@@ -74,6 +74,13 @@ Plans:
 **Goal:** Landing personal estática de Alejandro en producción en alexendros.me antes del día 30 — valida el branding real y desbloquea DNS + SSL para fases posteriores.
 **Requirements:** ME-01, ME-02, ME-03, ME-04, ME-05, ME-06, ME-07
 **UI hint:** yes
+
+**Plans:** 3 plans
+
+Plans:
+- [ ] 03-01-PLAN.md — Layout refactor (eliminar data-kit), nav, footer, hero con posicionamiento real
+- [ ] 03-02-PLAN.md — Paginas de contenido (About, Projects, Uses, Contact) y legales (aviso-legal, privacidad, cookies)
+- [ ] 03-03-PLAN.md — SEO (JSON-LD, sitemap, robots, OG image), security headers, build verification y deploy
 
 ### Success Criteria
 1. `apps/alexendros-me` buildea con `output: 'export'` (Next.js 16.2 static) y despliega en Vercel con dominio `alexendros.me` activo con SSL — **antes del día 30**.
