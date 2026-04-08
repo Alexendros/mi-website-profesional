@@ -12,7 +12,7 @@
 | # | Phase | Goal | Requirements | Plans |
 |---|-------|------|--------------|-------|
 | 1 | Monorepo Scaffold | Turborepo funcional con todos los packages base y tooling configurado | INFRA-01..07 | 1-3 |
-| 2 | Design System | Tokens de marca, tipografía y componentes UI compartidos listos para todas las apps | BRAND-01..04, UI-01..03 | 1-2 |
+| 2 | Design System | Tokens de marca, tipografía y componentes UI compartidos listos para todas las apps | BRAND-01..04, UI-01..03 | 3 plans |
 | 3 | alexendros.me | Landing personal estática en producción antes del día 30 para validar branding | ME-01..07 | 1-3 |
 | 4 | Base de Datos | Schema Prisma completo con RLS, Supabase client factory y seed data | DB-01..06 | 1-3 |
 | 5 | Pagos y Email | Stripe plans, webhook handler idempotente, Connect Express y templates email | PAY-01..06, EMAIL-01..03 | 1-3 |
@@ -48,6 +48,13 @@
 **Goal:** Sistema de diseño completo con tokens oklch por Kit, tipografía Geist, Tailwind v4 preset y 15+ componentes shadcn/ui exportables como `@repo/ui`, testados en dark mode.
 **Requirements:** BRAND-01, BRAND-02, BRAND-03, BRAND-04, UI-01, UI-02, UI-03
 **UI hint:** no (outputs son packages, no páginas)
+
+**Plans:** 3 plans
+
+Plans:
+- [ ] 02-01-PLAN.md — Tokens oklch, globals.css, tipografia Geist, PostCSS por app
+- [ ] 02-02-PLAN.md — shadcn/ui init, 15 componentes, barrel exports, ratelimit skeleton
+- [ ] 02-03-PLAN.md — Build verification, dark mode WCAG AA, checkpoint visual
 
 ### Success Criteria
 1. `packages/brand/tokens.ts` exporta paletas oklch para `dark-acid`, `legal-navy` y `gestoria-slate`; selector `[data-kit="x"]` cambia tema visualmente en un playground.
