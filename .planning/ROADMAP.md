@@ -80,7 +80,7 @@ Plans:
 Plans:
 - [x] 03-01-PLAN.md — Layout refactor (eliminar data-kit), nav, footer, hero con posicionamiento real
 - [x] 03-02-PLAN.md — Paginas de contenido (About, Projects, Uses, Contact) y legales (aviso-legal, privacidad, cookies)
-- [ ] 03-03-PLAN.md — SEO (JSON-LD, sitemap, robots, OG image), security headers, build verification y deploy
+- [x] 03-03-PLAN.md — SEO (JSON-LD, sitemap, robots, OG image), security headers, build verification y deploy
 
 ### Success Criteria
 1. `apps/alexendros-me` buildea con `output: 'export'` (Next.js 16.2 static) y despliega en Vercel con dominio `alexendros.me` activo con SSL — **antes del día 30**.

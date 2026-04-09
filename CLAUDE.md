@@ -222,16 +222,20 @@ Todas las variables se validan al arrancar con Zod en `lib/env.ts` (ver spec com
 
 ---
 
-## 8. FASE ACTUAL: PRE-FASE (Abril 2026)
+## 8. FASE ACTUAL (Abril 2026)
 
-Antes de cualquier trabajo en alexendros.pro (KitOS), completar:
+### Completadas
+- **Phase 1 — Monorepo Scaffold:** Turborepo, TypeScript strict, Zod env validation, globalEnv
+- **Phase 2 — Design System:** 31 tokens oklch, Geist fonts, Tailwind v4 CSS-first, 15 shadcn/ui components
+- **Phase 3 — alexendros.me:** 11 paginas estaticas, legal real, JSON-LD, SEO, security headers. Pendiente: deploy Vercel + DNS
 
-- PF-0: Brand Audit de alexendros.me
-- PF-1: Brand Positioning Statement
-- PF-2: Design Token System en packages/brand
-- PF-3: Rebuild alexendros.me production-ready
-- PF-4: CWV < 2.0s LCP + JSON-LD Person validado
-- PF-5: Monorepo Turborepo + Vercel multi-proyecto activo
+### En curso
+- **Phase 4 — Base de Datos:** Planificada (2 plans). Pendiente credenciales Supabase en `.env.local`
+
+### Proximas
+- Phase 5 — Pagos y Email (Stripe + React Email)
+- Phase 6 — Hub alexendros.pro (Auth, dashboard, tRPC)
+- Phase 7 — StageKit MVP
 
 ---
 

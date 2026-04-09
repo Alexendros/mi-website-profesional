@@ -1,4 +1,18 @@
+import localFont from "next/font/local";
+import "./globals.css";
 import type { Metadata } from "next";
+
+const geistSans = localFont({
+  src: "../public/fonts/GeistVF.woff2",
+  variable: "--font-geist-sans",
+  display: "swap",
+});
+
+const geistMono = localFont({
+  src: "../public/fonts/GeistMonoVF.woff2",
+  variable: "--font-geist-mono",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://stagekit.app"),
@@ -22,7 +36,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es">
+    <html
+      lang="es"
+      className={`dark ${geistSans.variable} ${geistMono.variable}`}
+      data-kit="stagekit"
+    >
       <body>{children}</body>
     </html>
   );

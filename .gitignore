@@ -39,6 +39,10 @@ Thumbs.db
 coverage/
 playwright-report/
 
+# Claude Code local config
+.claude/settings.local.json
+.claude/worktrees/
+
 # Debug
 npm-debug.log*
 pnpm-debug.log*
