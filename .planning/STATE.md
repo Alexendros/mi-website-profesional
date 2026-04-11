@@ -34,7 +34,7 @@ See: .planning/PROJECT.md (updated 2026-04-06)
 
 - **Phase 1 — Monorepo Scaffold:** Completed 2026-04-07. SC 1-4 verified. Build/typecheck/lint 0 errors. 24 env vars Zod. globalEnv. .nvmrc Node 22.
 - **Phase 2 — Design System:** Completed 2026-04-08. 3/3 plans. 31 oklch tokens globals.css, Geist fonts, Tailwind v4 CSS-first, 15 shadcn/ui components en @repo/ui, WCAG AA verified, ratelimit skeleton.
-- **Phase 3 — alexendros.me:** Completed 2026-04-09. 3/3 plans. Layout+hero, 7 paginas contenido real+legal (LSSI-CE/RGPD/AEPD), JSON-LD Person+WebSite, sitemap, robots, OG image, vercel.json security headers. Pendiente: deploy manual Vercel + DNS migration.
+- **Phase 3 — alexendros.me:** Completed 2026-04-09. 3/3 plans. Extraido a repositorio standalone en ~/Apps/alexendros-me/ el 2026-04-11 (commit origen a180d73). Historial granular vive en ese repo (docs/history/phase-03-alexendros-me/). Pendiente: deploy manual Vercel + DNS migration en el nuevo repo.
 
 ---
 
@@ -48,5 +48,5 @@ See: .planning/PROJECT.md (updated 2026-04-06)
 - 6 eventos Stripe webhook (añadido account.updated para KYC afiliados)
 - n8n requiere PostgreSQL desde el primer día (no SQLite)
 - Sentry configurar ANTES del primer deploy de producción (Phase 6)
-- alexendros.me debe estar en producción antes del día 30 (Phase 3 hardcap)
+- alexendros.me extraido a repo standalone el 2026-04-11 — deploy desde ~/Apps/alexendros-me/
 - North Star Metric: booking requests recibidos / semana (StageKit)

@@ -1,5 +1,5 @@
 {
-  "name": "alexendros-monorepo",
+  "name": "alexendros-pro",
   "private": true,
   "scripts": {
     "build": "turbo run build",

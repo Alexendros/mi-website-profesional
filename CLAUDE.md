@@ -1,6 +1,12 @@
-# CLAUDE.md — alexendros-monorepo
+# CLAUDE.md — alexendros-pro (monorepo)
 
 > Punto de entrada obligatorio para Claude Code. Léelo íntegro antes de ejecutar cualquier tarea.
+>
+> **Nota 2026-04-11**: este repositorio se conocía antes como `alexendros-monorepo` y contenía
+> `apps/alexendros-me`. El 11 de abril de 2026 se extrajo `alexendros-me` a un repositorio standalone
+> (`~/Apps/alexendros-me/`) y el monorepo cambió de nombre a **`alexendros-pro`**. El directorio local
+> todavía puede llamarse `alexendros-monorepo` hasta que el usuario ejecute el `mv` + rename del remote
+> de GitHub (ver sección 12 al final de este documento).
 
 ---
 
@@ -39,19 +45,17 @@
 ## 1. PROYECTO
 
 ```yaml
-name: alexendros-monorepo
-type: personal-brand + multi-kit SaaS platform
+name: alexendros-pro
+type: multi-kit SaaS platform (monorepo)
 owner: Alejandro Domingo Agustí
-package_manager: pnpm@9+
-repo: Turborepo monorepo
+package_manager: pnpm@10+
+repo: Turborepo monorepo (github.com/alexendros/alexendros-monorepo — pendiente rename a alexendros-pro)
 
 apps:
-  alexendros-me:
-    domain: alexendros.me
-    status: PREFASE_ACTIVE
   alexendros-pro:
     domain: alexendros.pro
     status: PLANNED
+    notes: Hub central. Auth, dashboard, tRPC, pagos. Fase 6 del roadmap.
   stagekit:
     domain: stagekit.app
     status: MVP_ACTIVE
@@ -256,18 +260,18 @@ Todas las variables se validan al arrancar con Zod en `lib/env.ts` (ver spec com
 
 ## 8. FASE ACTUAL (Abril 2026)
 
-### Completadas
+### Completadas (dentro de este monorepo)
 - **Phase 1 — Monorepo Scaffold:** Turborepo, TypeScript strict, Zod env validation, globalEnv
 - **Phase 2 — Design System:** 31 tokens oklch, Geist fonts, Tailwind v4 CSS-first, 15 shadcn/ui components
-- **Phase 3 — alexendros.me:** 11 paginas estaticas, legal real, JSON-LD, SEO, security headers. Pendiente: deploy Vercel + DNS
+- **Phase 3 — alexendros.me:** Completada. **Extraida a repositorio standalone `~/Apps/alexendros-me/` el 2026-04-11** (commit origen `a180d73`). Pendiente deploy Vercel + DNS en ese repo.
 
 ### En curso
 - **Phase 4 — Base de Datos:** Planificada (2 plans). Pendiente credenciales Supabase en `.env.local`
 
 ### Proximas
 - Phase 5 — Pagos y Email (Stripe + React Email)
-- Phase 6 — Hub alexendros.pro (Auth, dashboard, tRPC)
-- Phase 7 — StageKit MVP
+- Phase 6 — Hub alexendros.pro (Auth, dashboard, tRPC) — app `apps/alexendros-pro/`
+- Phase 7 — StageKit MVP — app `apps/kitos/stagekit/`
 
 ---
 
@@ -501,6 +505,7 @@ Do not make direct repo edits outside a GSD workflow unless the user explicitly 
 
 > ⚠️ Hipotesis preliminar — refinar con Alejandro (ver `~/.claude/projects/-var-home-soyalexendros/memory/feedback_relaciones_proyectos.md`).
 
+- **alexendros-me** 🟢 **HERMANA** — landing standalone en `~/Apps/alexendros-me/` (extraida de este monorepo el 2026-04-11). Redirige a alexendros.pro para productos. No comparte codigo; tiene su propio shadcn inline. Cualquier cambio de branding validado primero alli antes de aplicarse aqui.
 - **ai-act-ready** 🟡 **inferida** — misma arquitectura Next.js 15 + Supabase. Candidato a reutilizar `@repo/ui` y `@repo/config` si se publican desde este monorepo.
 - **afiladocs-website** 🟡 **inferida** — misma familia de stack (Next.js + Prisma + Stripe + Supabase). Potencial consumidor de los packages `@repo/stripe` y `@repo/email` en el futuro.
 - **techno-website** ⚫ — independiente, no forma parte del monorepo aunque comparte patrones de Stripe.
@@ -509,3 +514,39 @@ Do not make direct repo edits outside a GSD workflow unless the user explicitly 
 ## 11. SKILLS RECOMENDADAS
 
 `app-maestria` · `app-monorepo` · `app-arquitectura` · `app-migracion-bd` · `app-seguridad` · `app-despliegue` · `infra-stripe` · `dev-revision` · `dev-arquitectura` · `ux-sistema` · `shadcn` · `legal-cumplimiento`
+
+---
+
+## 12. RENAME PENDIENTE (DIRECTORIO + GITHUB)
+
+> Acciones pendientes para completar el rename de `alexendros-monorepo` → `alexendros-pro`.
+> El usuario tiene que ejecutarlas manualmente; no se hicieron automaticamente porque afectan
+> a cualquier clone existente y al remote de GitHub.
+
+**1. Renombrar el directorio local**
+
+```bash
+# Cerrar editores/terminals apuntando al path antiguo primero
+mv ~/Apps/alexendros-monorepo ~/Apps/alexendros-pro
+cd ~/Apps/alexendros-pro
+```
+
+**2. Renombrar el repositorio en GitHub**
+
+- Ir a `github.com/alexendros/alexendros-monorepo/settings`
+- Cambiar el nombre a `alexendros-pro`
+- GitHub mantiene el redirect automatico por un tiempo, pero conviene actualizar el remote:
+
+```bash
+cd ~/Apps/alexendros-pro
+git remote set-url origin git@github.com:alexendros/alexendros-pro.git
+git remote -v
+```
+
+**3. Actualizar cache de Claude Code**
+
+La sesion actual (y el path `~/.claude/projects/-var-home-soyalexendros-Apps-alexendros-monorepo/`)
+seguira funcionando hasta que se renombre. Tras el `mv`:
+
+- La proxima sesion creara `~/.claude/projects/-var-home-soyalexendros-Apps-alexendros-pro/`
+- El historial anterior queda en el path antiguo (archivalo o copia la memoria que necesites)
