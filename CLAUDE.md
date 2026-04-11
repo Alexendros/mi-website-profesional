@@ -4,6 +4,38 @@
 
 ---
 
+## 0. REFERENCIA AL HUB CENTRAL (SIMBIOSIS)
+
+> **Contexto global**: antes de operar, consulta `~/.claude/PROYECTOS.md` para
+> conocer el estado, prioridad y urgencia del resto de apps de Alexendros.
+> Este indice se actualiza via la cadena: `mem-sintetizar → dev-arquitectura →
+> prod-actualizar-stakeholders → mem-actualizar` (nodo N13 de `omni-maestria`).
+>
+> **Alertas cruzadas**: `~/.claude/projects/-var-home-soyalexendros/memory/cross-app-alerts.md`
+> — consulta obligatoria antes de deploys, rotaciones de secretos u operaciones destructivas.
+>
+> **Registro dinamico**: `~/.claude/projects/-var-home-soyalexendros/memory/apps-registry.md`
+> — estado por app (commits, CI, PRs, alertas).
+>
+> **⚠️ HERENCIA GSD en este repo**: este monorepo tiene `.planning/` con estructura GSD
+> completa (ROADMAP.md, phases/, STATE.md, PROJECT.md, research/) y directivas
+> `<!-- GSD:* -->` en este mismo CLAUDE.md. **GSD esta descatalogado y fue desinstalado**.
+> Para operar sobre el contenido de `.planning/` usa la cadena de skills aprobada:
+>
+> ```
+> prod-brainstorming → prod-especificacion → app-maestria → dev-revision
+> ```
+>
+> - **NO invocar** `gsd-quick`, `gsd-debug`, `gsd-execute-phase`, ni cualquier otro comando `gsd-*`.
+> - **NO crear** nada nuevo bajo `.planning/` usando nomenclatura `gsd-*`.
+> - **Se conserva** la estructura `.planning/` existente como historial.
+> - Los bloques `<!-- GSD:project-start -->`, `<!-- GSD:stack-start -->`, `<!-- GSD:conventions-start -->`, `<!-- GSD:architecture-start -->`, `<!-- GSD:skills-start -->`, `<!-- GSD:profile-start -->` son contenido heredado; no regenerar.
+> - **El bloque `<!-- GSD:workflow-start -->` mas abajo esta obsoleto y no debe seguirse** — usar la cadena de skills indicada arriba.
+>
+> Ver tabla completa de equivalencias en `~/.claude/Deportacion_GSD.md`.
+
+---
+
 ## 1. PROYECTO
 
 ```yaml
@@ -272,12 +304,12 @@ Plataforma SaaS multi-producto de kits digitales temáticos para profesionales, 
 ## Recommended Stack (2025/2026)
 ### Framework — Next.js 16.x
 - **Turbopack es ahora el bundler por defecto** — reemplaza Webpack. 2–5x builds más rápidos, hasta 10x Fast Refresh. Sin configuración requerida.
-- **`proxy.ts` reemplaza `middleware.ts`** — renombrar el archivo y la función exportada. La lógica es idéntica. `middleware.ts` sigue funcionando para Edge runtime pero está deprecado.
+- **`proxy.ts` reemplaza `middleware.ts`** — renombrar el archivo y la función exportada. La lógica es idéntica. `middleware.ts` sigue funcionando para Edge runtime pero está descatalogado.
 - **Params y cookies async son obligatorios** — `await params`, `await cookies()`, `await headers()`. En v15 eran warnings; en v16 son errores en build.
 - **Node.js 20.9+ requerido** — Node 18 ya no está soportado. Actualizar VPS y Vercel runtime.
 - **`cacheComponents: true`** — nuevo modelo de caché explícito con directiva `"use cache"`. PPR evoluciona hacia este modelo. No activo por defecto, opt-in.
 - **React 19.2** incluido — View Transitions, `useEffectEvent`, `Activity` component.
-- **`revalidateTag()` requiere segundo argumento** — `revalidateTag('tag', 'max')`. El form de un argumento está deprecado.
+- **`revalidateTag()` requiere segundo argumento** — `revalidateTag('tag', 'max')`. El form de un argumento está descatalogado.
 - **`after()` estable** — útil para logs y analytics post-respuesta sin bloquear al usuario.
 ### Auth — Supabase Auth SSR via `@supabase/ssr`
 - `createServerClient()` → Server Components, Route Handlers, Server Actions
@@ -350,7 +382,7 @@ Plataforma SaaS multi-producto de kits digitales temáticos para profesionales, 
 ## Validation of Current Choices
 ### Next.js 15 → Actualizar a Next.js 16
 - El proyecto aún no tiene código, por lo que no hay deuda de migración. Iniciar directamente en Next.js 16.
-- `middleware.ts` → renombrar a `proxy.ts` desde el inicio para evitar deprecation warnings.
+- `middleware.ts` → renombrar a `proxy.ts` desde el inicio para evitar avisos de descatalogado.
 - Node.js 20.9+ requerido — verificar que la configuración de Vercel y el VPS usen Node 20 LTS.
 - `params` y `cookies()` async obligatorio — escribir código async desde el inicio.
 - `revalidateTag()` con segundo argumento obligatorio.
@@ -425,8 +457,25 @@ Architecture not yet mapped. Follow existing patterns found in the codebase.
 No project skills found. Add skills to any of: `.claude/skills/`, `.agents/skills/`, `.cursor/skills/`, or `.github/skills/` with a `SKILL.md` index file.
 <!-- GSD:skills-end -->
 
-<!-- GSD:workflow-start source:GSD defaults -->
-## GSD Workflow Enforcement
+<!-- GSD:workflow-start DESCATALOGADO 2026-04-10 -->
+## ~~GSD Workflow Enforcement~~ · DESCATALOGADO
+
+> ⚠️ **Esta seccion esta obsoleta.** GSD fue desinstalado. Los comandos `/gsd-quick`,
+> `/gsd-debug`, `/gsd-execute-phase` y cualquier otro `gsd-*` **ya no existen y no deben invocarse**.
+>
+> **Cadena de skills equivalente** (operar sobre `.planning/` de este repo):
+>
+> ```
+> prod-brainstorming → prod-especificacion → app-maestria → dev-revision
+> ```
+>
+> Ver `~/.claude/Deportacion_GSD.md` para la tabla completa de equivalencias
+> (nuevo proyecto, scan, debug, review, deploy, etc.).
+>
+> El bloque original se ha conservado como comentario historico abajo.
+
+<!--
+CONTENIDO HISTORICO (NO SEGUIR):
 
 Before using Edit, Write, or other file-changing tools, start work through a GSD command so planning artifacts and execution context stay in sync.
 
@@ -436,11 +485,27 @@ Use these entry points:
 - `/gsd-execute-phase` for planned phase work
 
 Do not make direct repo edits outside a GSD workflow unless the user explicitly asks to bypass it.
+-->
 <!-- GSD:workflow-end -->
 
-<!-- GSD:profile-start -->
-## Developer Profile
+<!-- GSD:profile-start DESCATALOGADO 2026-04-10 -->
+## ~~Developer Profile~~ · DESCATALOGADO
 
-> Profile not yet configured. Run `/gsd-profile-user` to generate your developer profile.
-> This section is managed by `generate-claude-profile` -- do not edit manually.
+> Esta seccion referenciaba `generate-claude-profile` (comando GSD descatalogado).
+> Para contexto del usuario, leer `~/.claude/projects/-var-home-soyalexendros/memory/user_profile.md`.
 <!-- GSD:profile-end -->
+
+---
+
+## 10. INTEGRACIONES CON OTRAS APPS DE ALEXENDROS
+
+> ⚠️ Hipotesis preliminar — refinar con Alejandro (ver `~/.claude/projects/-var-home-soyalexendros/memory/feedback_relaciones_proyectos.md`).
+
+- **ai-act-ready** 🟡 **inferida** — misma arquitectura Next.js 15 + Supabase. Candidato a reutilizar `@repo/ui` y `@repo/config` si se publican desde este monorepo.
+- **afiladocs-website** 🟡 **inferida** — misma familia de stack (Next.js + Prisma + Stripe + Supabase). Potencial consumidor de los packages `@repo/stripe` y `@repo/email` en el futuro.
+- **techno-website** ⚫ — independiente, no forma parte del monorepo aunque comparte patrones de Stripe.
+- **n8n-automations** 🟠 **potencial** — podria orquestar los workflows de dunning (W-11..W-17) mencionados en `.planning/research/`.
+
+## 11. SKILLS RECOMENDADAS
+
+`app-maestria` · `app-monorepo` · `app-arquitectura` · `app-migracion-bd` · `app-seguridad` · `app-despliegue` · `infra-stripe` · `dev-revision` · `dev-arquitectura` · `ux-sistema` · `shadcn` · `legal-cumplimiento`
