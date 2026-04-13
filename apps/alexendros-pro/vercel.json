@@ -3,6 +3,5 @@
   "buildCommand": "cd ../.. && pnpm turbo build --filter=alexendros-pro",
   "installCommand": "pnpm install --frozen-lockfile",
   "outputDirectory": ".next",
-  "framework": "nextjs",
-  "regions": ["mad1"]
+  "framework": "nextjs"
 }
