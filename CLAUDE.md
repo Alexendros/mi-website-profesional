@@ -2,11 +2,9 @@
 
 > Punto de entrada obligatorio para Claude Code. Léelo íntegro antes de ejecutar cualquier tarea.
 >
-> **Nota 2026-04-11**: este repositorio se conocía antes como `alexendros-monorepo` y contenía
-> `apps/alexendros-me`. El 11 de abril de 2026 se extrajo `alexendros-me` a un repositorio standalone
-> (`~/Apps/alexendros-me/`) y el monorepo cambió de nombre a **`alexendros-pro`**. El directorio local
-> todavía puede llamarse `alexendros-monorepo` hasta que el usuario ejecute el `mv` + rename del remote
-> de GitHub (ver sección 12 al final de este documento).
+> **Historia**: este repositorio se conocía como `alexendros-monorepo` y contenía `apps/alexendros-me`.
+> El 11 de abril de 2026 se extrajo `alexendros-me` a un repo standalone (`~/Apps/alexendrosme-website/`)
+> y el monorepo pasó a llamarse **`alexendrospro-website`** (directorio y remote GitHub).
 
 ---
 
@@ -516,37 +514,3 @@ Do not make direct repo edits outside a GSD workflow unless the user explicitly 
 `app-maestria` · `app-monorepo` · `app-arquitectura` · `app-migracion-bd` · `app-seguridad` · `app-despliegue` · `infra-stripe` · `dev-revision` · `dev-arquitectura` · `ux-sistema` · `shadcn` · `legal-cumplimiento`
 
 ---
-
-## 12. RENAME PENDIENTE (DIRECTORIO + GITHUB)
-
-> Acciones pendientes para completar el rename de `alexendros-monorepo` → `alexendros-pro`.
-> El usuario tiene que ejecutarlas manualmente; no se hicieron automaticamente porque afectan
-> a cualquier clone existente y al remote de GitHub.
-
-**1. Renombrar el directorio local**
-
-```bash
-# Cerrar editores/terminals apuntando al path antiguo primero
-mv ~/Apps/alexendros-monorepo ~/Apps/alexendros-pro
-cd ~/Apps/alexendros-pro
-```
-
-**2. Renombrar el repositorio en GitHub**
-
-- Ir a `github.com/alexendros/alexendros-monorepo/settings`
-- Cambiar el nombre a `alexendros-pro`
-- GitHub mantiene el redirect automatico por un tiempo, pero conviene actualizar el remote:
-
-```bash
-cd ~/Apps/alexendros-pro
-git remote set-url origin git@github.com:alexendros/alexendros-pro.git
-git remote -v
-```
-
-**3. Actualizar cache de Claude Code**
-
-La sesion actual (y el path `~/.claude/projects/-var-home-soyalexendros-Apps-alexendros-monorepo/`)
-seguira funcionando hasta que se renombre. Tras el `mv`:
-
-- La proxima sesion creara `~/.claude/projects/-var-home-soyalexendros-Apps-alexendros-pro/`
-- El historial anterior queda en el path antiguo (archivalo o copia la memoria que necesites)
