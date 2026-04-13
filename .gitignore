@@ -47,3 +47,5 @@ playwright-report/
 # Debug
 npm-debug.log*
 pnpm-debug.log*
+.vercel
+.env*.local
