@@ -201,12 +201,173 @@
   --sidebar-ring: oklch(0.55 0.08 220);
 }
 
+/* ── Fluid type scale (alineado con alexendros.me) ───────── */
+@theme {
+  --text-display: clamp(2rem, 4vw + 1rem, 3.5rem);
+  --text-headline: clamp(1.5rem, 2.5vw + 0.75rem, 2.25rem);
+  --text-body: clamp(1rem, 0.25vw + 0.95rem, 1.125rem);
+  --text-small: 0.875rem;
+}
+
+/* Tokens derivados — glows/rings/easings/layout */
+:root {
+  --shadow-glow-primary: 0 0 40px color-mix(in oklch, var(--primary) 25%, transparent);
+  --shadow-glow-accent: 0 0 48px color-mix(in oklch, var(--accent) 32%, transparent);
+  --ring-focus: 0 0 0 3px color-mix(in oklch, var(--ring) 60%, transparent);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-fast: 150ms;
+  --measure-prose: 65ch;
+  --safe-inset-x: max(1rem, env(safe-area-inset-left));
+}
+
 @layer base {
   * {
     @apply border-border;
   }
+
+  html {
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground relative;
+    overflow-x: hidden;
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    min-height: 100svh;
+  }
+
+  /* Ambient halo — matiz pro: acento naranja dominante (en .me manda el verde) */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -20;
+    pointer-events: none;
+    background:
+      radial-gradient(
+        ellipse 65% 55% at 20% 0%,
+        color-mix(in oklch, var(--accent) 14%, transparent),
+        transparent 60%
+      ),
+      radial-gradient(
+        ellipse 55% 45% at 85% 100%,
+        color-mix(in oklch, var(--primary) 9%, transparent),
+        transparent 60%
+      );
+  }
+
+  ::selection {
+    background: color-mix(in oklch, var(--accent) 35%, transparent);
+    color: var(--foreground);
+  }
+
+  :focus-visible {
+    outline: none;
+    box-shadow: var(--ring-focus);
+    border-radius: var(--radius-sm);
+  }
+}
+
+@layer components {
+  .site-shell {
+    margin-inline: auto;
+    width: 100%;
+    max-width: 72rem;
+    padding-inline: var(--safe-inset-x);
+  }
+
+  /* Matiz de formato: pro centra el hero; .me lo alinea a la izquierda */
+  .hero-section {
+    min-height: calc(100svh - 2rem);
+    padding-block: clamp(4rem, 12vw, 8rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: clamp(1rem, 2vw, 1.75rem);
+    max-width: 52rem;
+  }
+
+  .hero-signature {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: var(--text-display);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    /* Matiz de color: glow en acento naranja (en .me es primary verde) */
+    text-shadow: var(--shadow-glow-accent);
+    text-wrap: balance;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-small);
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .prose-lead {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    line-height: 1.65;
+    color: var(--muted-foreground);
+    max-width: var(--measure-prose);
+    margin-inline: auto;
+  }
+
+  .link-inline {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+    text-decoration-color: color-mix(in oklch, var(--accent) 60%, transparent);
+    transition: text-decoration-color var(--duration-fast) var(--ease-smooth);
+  }
+  .link-inline:hover {
+    text-decoration-color: var(--accent);
+  }
+
+  /* Píldora de estado "próximamente" — sello propio de pro */
+  .pro-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.5rem 0.875rem;
+    border: 1px solid color-mix(in oklch, var(--accent) 35%, var(--border));
+    border-radius: 9999px;
+    background: color-mix(in oklch, var(--card) 92%, var(--accent));
+    font-family: var(--font-mono);
+    font-size: var(--text-small);
+    color: var(--foreground);
+    margin-top: 0.5rem;
+  }
+  .pro-status__dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 9999px;
+    background: var(--accent);
+    box-shadow: 0 0 12px var(--accent);
+    animation: pro-pulse 2.4s var(--ease-smooth) infinite;
+  }
+  .pro-status__label {
+    letter-spacing: 0.04em;
+  }
+
+  @keyframes pro-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.55; transform: scale(0.85); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pro-status__dot { animation: none; }
+    html { scroll-behavior: auto; }
   }
 }
 
