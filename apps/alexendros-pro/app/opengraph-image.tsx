@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
 export const alt =
-  "KitOS — Plataforma de kits digitales profesionales. En construcción.";
+  "alexendros.pro — Plataforma de Alexendros. En construcción.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -35,7 +35,7 @@ export default function OpengraphImage() {
             fontFamily: "monospace",
           }}
         >
-          KitOS · by Alexendros
+          alexendros.pro · by Alexendros
         </div>
         <div
           style={{
@@ -56,7 +56,7 @@ export default function OpengraphImage() {
             maxWidth: 900,
           }}
         >
-          Plataforma de kits digitales profesionales.
+          Plataforma de Alexendros.
         </div>
         <div
           style={{

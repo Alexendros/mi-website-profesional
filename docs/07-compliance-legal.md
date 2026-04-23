@@ -110,7 +110,7 @@ Secciones obligatorias:
 
 ```
 Secciones obligatorias:
-1. Descripción del servicio: plataforma KitOS (kits digitales por suscripción)
+1. Descripción del servicio: plataforma Alexendros (servicios digitales por suscripción)
 2. Planes y precios: Free / Pro / Agency (referencia a pricing page)
 3. Trial: 14 días sin tarjeta, auto-conversión a Free
 4. Facturación: mensual, mediante Stripe

@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { ArrowUpRight, Bell } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "KitOS — Próximamente",
+  title: "alexendros.pro — Próximamente",
   description:
-    "KitOS — Plataforma de kits digitales profesionales. Apúntate a la waitlist y sé el primero en acceder.",
+    "Plataforma de Alexendros. Apúntate a la waitlist y sé el primero en acceder.",
   alternates: { canonical: "/" },
 };
 
@@ -30,7 +30,7 @@ export default function Home() {
             className="block h-px w-10 bg-[var(--color-border-strong)]"
           />
           <span className="text-[var(--color-brand-accent)]">
-            KitOS · by Alexendros
+            alexendros.pro · by Alexendros
           </span>
         </div>
 
@@ -60,17 +60,17 @@ export default function Home() {
             lineHeight: "var(--leading-relaxed)",
           }}
         >
-          <span className="text-[var(--color-text-primary)]">KitOS</span> es la
-          plataforma de kits digitales verticalizados para profesionales —
-          artistas, abogados, gestores. Presencia web, booking y pagos en un
-          solo kit. Lanzamiento en Q3 2026.
+          <span className="text-[var(--color-text-primary)]">Alexendros</span>{" "}
+          es la marca personal de Alejandro Domingo Agustí, desarrollador
+          fullstack en Valencia. Plataforma en construcción — lanzamiento Q3
+          2026.
         </p>
 
         {/* Action row */}
         <div className="mt-2 flex flex-wrap items-center gap-3">
           <a
-            href="mailto:contacto@alexendros.me?subject=Waitlist%20KitOS&body=Hola%2C%20me%20interesa%20KitOS.%20Mi%20email%20es%3A%20"
-            aria-label="Apuntarse a la waitlist de KitOS por email"
+            href="mailto:contacto@alexendros.me?subject=Waitlist%20alexendros.pro&body=Hola%2C%20me%20interesa%20la%20plataforma.%20Mi%20email%20es%3A%20"
+            aria-label="Apuntarse a la waitlist de alexendros.pro por email"
             className="group inline-flex items-center gap-2 rounded-[var(--radius-md)] border border-[var(--color-brand-primary-hc)] bg-[var(--color-brand-primary)] px-5 py-3 text-sm font-medium text-[var(--color-brand-primary-fg)] transition-[background-color,box-shadow] hover:bg-[var(--color-brand-primary-hc)] hover:shadow-[var(--shadow-glow-brand)]"
             style={{
               transitionDuration: "var(--dur-base)",

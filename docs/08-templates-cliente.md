@@ -1,6 +1,6 @@
 # 08 — Templates de Cliente
 
-> Templates de entregables, emails transaccionales, contratos y servicios de valor añadido para clientes KitOS.
+> Templates de entregables, emails transaccionales, contratos y servicios de valor añadido para clientes alexendros.pro.
 
 ## Estructura de un template Kit Profile (EPK)
 
@@ -93,7 +93,7 @@ export interface EPKContent {
 
 ## Dossier de Presencia y Desarrollo Profesional Digital
 
-> Entregable incluido en todos los Kits de KitOS. Documento profesional con diseño cuidado que guía al cliente en su ecosistema digital completo.
+> Entregable incluido en todos los Kits de alexendros.pro. Documento profesional con diseño cuidado que guía al cliente en su ecosistema digital completo.
 
 ### Contenido del dossier
 
@@ -133,7 +133,7 @@ export interface EPKContent {
 
 #### 4. Suite de comunicación y privacidad — Proton.me
 
-> **Recomendación oficial KitOS:** [Proton.me](https://pr.tn/ref/Z83EMXB0V8V0) (enlace referido Alexendros)
+> **Recomendación oficial alexendros.pro:** [Proton.me](https://pr.tn/ref/Z83EMXB0V8V0) (enlace referido Alexendros)
 
 | Servicio Proton | Uso profesional | Por qué |
 |----------------|-----------------|---------|
@@ -147,7 +147,7 @@ export interface EPKContent {
 - **Profesional individual:** Proton Mail Plus (dominio custom + 15 GB) — desde 3,99 €/mes
 - **Despacho/agencia:** Proton Business (multi-usuario + dominio + Drive 500 GB) — desde 6,99 €/usuario/mes
 
-**Integración con KitOS:**
+**Integración con alexendros.pro:**
 - Email de contacto del Kit Profile → configurar con Proton Mail + dominio del cliente
 - Almacenamiento de assets de marca → Proton Drive como backup cifrado
 - Compartir documentos con promotores/clientes → enlaces seguros Proton Drive
@@ -173,12 +173,12 @@ export interface EPKContent {
 - Brand Manuals entregados a clientes
 - Contratos ejecutados (hash del documento, no contenido)
 - Plantillas originales de diseño
-- Cualquier producto digital entregable de KitOS
+- Cualquier producto digital entregable de alexendros.pro
 
 ### Flujo de tokenización
 
 ```
-1. Cliente solicita tokenización → Dashboard KitOS o bajo demanda
+1. Cliente solicita tokenización → Dashboard alexendros.pro o bajo demanda
 2. Generar hash SHA-256 del archivo/producto digital
 3. Registrar en plataforma de registro:
    → SafeCreative (registro de propiedad intelectual, certificado con sello temporal)
@@ -204,7 +204,7 @@ export interface EPKContent {
 ### Automatización con n8n
 
 ```
-Trigger: webhook KitOS "tokenization_requested"
+Trigger: webhook alexendros.pro "tokenization_requested"
   → Paso 1: Descargar asset y calcular SHA-256
   → Paso 2: POST a API SafeCreative (registro)
   → Paso 3: Recibir certificado + ID de registro
@@ -253,7 +253,7 @@ model DigitalRegistration {
 
 ## Plantillas de contratos — Afiladocs
 
-> Contratos generados automáticamente desde [afiladocs.com](https://afiladocs.com), la plataforma legaltech de Alexendros. Integración nativa con KitOS para servicios que requieren formalización contractual.
+> Contratos generados automáticamente desde [afiladocs.com](https://afiladocs.com), la plataforma legaltech de Alexendros. Integración nativa con alexendros.pro para servicios que requieren formalización contractual.
 
 ### Contratos disponibles por Kit
 
@@ -283,7 +283,7 @@ model DigitalRegistration {
 #### Transversales (todos los Kits)
 | Contrato | Uso |
 |---------|-----|
-| **Contrato de afiliación KitOS** | Al registrarse como afiliado |
+| **Contrato de afiliación alexendros.pro** | Al registrarse como afiliado |
 | **DPA (Data Processing Agreement)** | Cumplimiento RGPD Art. 28 con procesadores |
 | **Términos y Condiciones de uso** | Aceptación al registrarse en la plataforma |
 
@@ -291,7 +291,7 @@ model DigitalRegistration {
 
 ```
 Flujo de generación:
-1. Evento en KitOS (checkout, booking aceptado, alta afiliado...)
+1. Evento en alexendros.pro (checkout, booking aceptado, alta afiliado...)
 2. Webhook a n8n → llamada a API Afiladocs
 3. Afiladocs genera contrato con datos del cliente (merge fields)
 4. PDF firmable devuelto → almacenar en Supabase Storage
@@ -300,7 +300,7 @@ Flujo de generación:
 7. Hash del contrato → opción de tokenización (ver sección anterior)
 ```
 
-### Campos de merge (variables inyectadas desde KitOS)
+### Campos de merge (variables inyectadas desde alexendros.pro)
 
 ```json
 {

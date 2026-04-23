@@ -3,7 +3,7 @@
 > **Estado:** ACTIVO — Abril 2026
 > 
 
-> **Objetivo:** Consolidar `alexendros.me` como hub de credibilidad enterprise con biografía real, experiencia verificable, formación documentada, proyectos con impacto y KitOS ya lanzado en `alexendros.pro`.
+> **Objetivo:** Consolidar `alexendros.me` como hub de credibilidad enterprise con biografía real, experiencia verificable, formación documentada, proyectos con impacto y plataforma `alexendros.pro` en construcción (producto paraguas pendiente de reformular).
 > 
 
 > **Herramienta:** Claude Code + MCPs · Fuente de verdad para el agente `brand-auditor`
@@ -19,7 +19,7 @@
 | PF-1 | 💼 Experiencia Profesional | Timeline verificable, impacto cuantificado |
 | PF-2 | 🎓 Formación: Certificada & Autodidacta | Títulos, certificaciones, stack autodidacta |
 | PF-3 | 🗂️ Repositorios & Proyectos | GitHub, demos, impact metrics |
-| PF-4 | 🚀 KitOS — Producto SaaS Lanzado | [alexendros.pro](http://alexendros.pro), Kits, modelo, roadmap |
+| PF-4 | 🗄️ Producto paraguas (archivado) | Contenido en `.archive/kitos-pre-reformulacion-2026-04-23/`; pendiente reformular |
 | PF-5 | 🎨 Sistema de Identidad Visual | Tokens, logos, paletas, activos |
 | PF-6 | ⚡ CWV + GEO + JSON-LD | Técnico: rendimiento y citabilidad AI |
 | PF-7 | ✅ Checklist de Cierre & KPIs | Criterios de éxito medibles |
@@ -55,4 +55,4 @@ Si la respuesta es NO → reescribir antes de desplegar.
 
 [PF-3 — Repositorios & Proyectos](PF-3%20%E2%80%94%20Repositorios%20&%20Proyectos%203397ded224cb81db9eb0d7b6966824aa.md)
 
-[PF-4 — KitOS — Producto SaaS Lanzado](PF-4%20%E2%80%94%20KitOS%20%E2%80%94%20Producto%20SaaS%20Lanzado%203397ded224cb8161ba1bca43d3480229.md)
+*(PF-4 — definición de producto paraguas — archivado 2026-04-23 en `.archive/kitos-pre-reformulacion-2026-04-23/`; pendiente reformular.)*

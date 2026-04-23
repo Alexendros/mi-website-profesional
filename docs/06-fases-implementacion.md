@@ -9,12 +9,12 @@
 | Semanas | Fase maestro | Entregable clave | Verificación |
 |---------|-------------|------------------|--------------|
 | **S0** | FASE 0 — Scaffolding | Turborepo funcional, CLAUDE.md, agents/skills, tooling | `pnpm turbo build` exitoso |
-| **S1** | FASE 1 — Brand + Config | Tokens oklch, paleta por Kit, Tailwind preset, fuentes | Tokens cargando en `packages/brand` |
+| **S1** | FASE 1 — Brand + Config | Tokens oklch, paleta por app, Tailwind preset, fuentes | Tokens cargando en `packages/brand` |
 | **S2** | FASE 2 — UI Components | shadcn/ui inicializado, 15+ componentes, dark-first | `@repo/ui` exportable |
 | **S3-S4** | FASE 3 — alexendros.me | Landing estática desplegada, SEO, legal, CWV | Lighthouse > 90, JSON-LD validado |
 | **S5** | FASE 4 — DB | Prisma schema completo (11 modelos), RLS, seed | `prisma migrate dev` + RLS test |
 | **S6** | FASE 5 — Stripe + Email | Planes, checkout, webhooks (5 eventos), React Email | Checkout test 4242 + webhook OK |
-| **S7-S9** | FASE 6 — alexendros.pro | Hub KitOS: auth, dashboard, waitlist, billing, legal | Auth + checkout funcionales |
+| **S7-S9** | FASE 6 — alexendros.pro | Hub: auth, dashboard, waitlist, billing, legal | Auth + checkout funcionales |
 | **S10-S12** | FASE 7 — StageKit MVP | Onboarding, EPK builder, booking, Stripe, landing | E2E: registro → perfil → booking |
 | **S12-S13** | FASE 7.5 — n8n Workflows | 28 automatizaciones: onboarding, dunning, churn, ops | W-01 welcome + W-11 dunning OK |
 | **S13** | FASE 8 — Hardening | Checklist pre-producción completo (Bloques B-I) | GREEN LIGHT en todos los bloques |
@@ -33,7 +33,7 @@
 - `.gitignore`, `.env.example`
 
 ### S1 — Brand + Config (FASE 1)
-- `packages/brand/tokens.ts`: paleta oklch (dark-acid, legal-navy, gestoria-slate)
+- `packages/brand/tokens.ts`: paleta oklch (dark-acid y temas futuros)
 - `packages/brand/fonts.ts`: Geist + Geist Mono (next/font)
 - `packages/brand/globals.css`: CSS variables
 - `packages/config/tailwind.preset.ts`: preset Tailwind v4
@@ -54,13 +54,13 @@
 - **Resultado:** Branding validado en producción
 
 ### S5 — DB (FASE 4)
-- Prisma schema: 11 modelos (Kit, User, Plan, Subscription, ClientProfile, KitProfile, InboundRequest, Affiliate, AffiliatePayout, AuditLog, DigitalRegistration)
+- Prisma schema: 11 modelos (App, User, Plan, Subscription, ClientProfile, AppProfile, InboundRequest, Affiliate, AffiliatePayout, AuditLog, DigitalRegistration)
 - RLS completo en 11 tablas
 - Supabase client factory (SSR)
 - Seed data + env.ts validación Zod
 
 ### S6 — Stripe + Email (FASE 5)
-- `packages/stripe/`: kit-plans, checkout, affiliate, webhook-handler
+- `packages/stripe/`: app-plans, checkout, affiliate, webhook-handler
 - 5 eventos Stripe obligatorios
 - Comisión afiliado: 15% mensual durante 12 meses (no setup fee)
 - Trial: 14 días sin tarjeta, auto-Free si no convierte
@@ -68,9 +68,9 @@
 
 ### S7-S9 — alexendros.pro (FASE 6)
 - Next.js 15 con server-side, conectado a todos los packages
-- Landing pública: KitOS UVP, catálogo, pricing, waitlist
+- Landing pública: UVP del hub, catálogo, pricing, waitlist
 - Auth: Supabase SSR (email + Google OAuth)
-- Dashboard: Kit, suscripción, billing portal, ARCO
+- Dashboard: app activa, suscripción, billing portal, ARCO
 - Legal completo + cookie banner granular
 - API tRPC v11 + webhooks + rate limiting
 

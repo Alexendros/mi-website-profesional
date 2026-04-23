@@ -2,10 +2,10 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "KitOS by Alexendros",
-    short_name: "KitOS",
+    name: "alexendros.pro",
+    short_name: "Alexendros",
     description:
-      "KitOS — Plataforma de kits digitales profesionales por Alexendros.",
+      "Plataforma de Alexendros en construcción.",
     start_url: "/",
     display: "standalone",
     background_color: "#080c14",

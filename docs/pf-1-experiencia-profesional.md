@@ -13,18 +13,18 @@
 
 ## Timeline profesional
 
-### 🚀 2024 — Presente · Fundador & Fullstack Developer · KitOS
+### 🚀 2024 — Presente · Fullstack Developer & Operador de Plataforma Digital
 
-**Empresa/Proyecto:** Alexendros / KitOS
+**Empresa/Proyecto:** Alexendros (alexendros.pro)
 
 **Web:** [https://alexendros.pro](https://alexendros.pro)
 
-**Tipo:** Fundador + técnico en solitario (indie hacker)
+**Tipo:** Founder + técnico en solitario (indie hacker)
 
 **Responsabilidades y logros:**
 
-- Diseño y desarrollo completo de la plataforma multi-Kit desde arquitectura hasta deploy
-- Monorepo Turborepo con 5 apps independientes + 6 packages compartidos
+- Diseño y desarrollo completo de la plataforma multi-app desde arquitectura hasta deploy
+- Monorepo Turborepo con varias apps independientes + packages compartidos
 - Implementación de pagos con Stripe Subscriptions + setup fees + Connect para afiliados
 - Compliance RGPD/LOPDGDD integrado en arquitectura desde el primer commit
 - Deploy multi-proyecto en Vercel región mad1 + n8n en Hostinger VPS
@@ -97,14 +97,14 @@ Founder que construye productos que cumplen contratos, leyes y deadlines
 | --- | --- | --- |
 | Consultoría técnica | ✅ Disponible | Proyectos selectivos |
 | Consultoría legal-tech | ✅ Disponible | Intersección tech+derecho |
-| Empleado a tiempo completo | ❌ No disponible | Foco en KitOS |
+| Empleado a tiempo completo | ❌ No disponible | Foco en alexendros.pro |
 | Freelance puntual | Caso a caso | Contacto previo |
 
 ---
 
 ## Copy para LinkedIn Experience (bullets enterprise)
 
-### KitOS — Fundador & Fullstack Developer
+### alexendros.pro — Fullstack Developer & Operador
 
 ```
 • Diseñé y construí desde cero una plataforma SaaS multi-producto

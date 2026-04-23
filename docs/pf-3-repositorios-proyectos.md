@@ -13,29 +13,29 @@
 
 ---
 
-## 1. Proyecto principal: KitOS
+## 1. Proyecto principal: alexendros.pro
 
 | Campo | Valor |
 | --- | --- |
-| Estado | 🟢 En producción |
+| Estado | 🟡 En construcción |
 | URL | [https://alexendros.pro](https://alexendros.pro) |
-| Repo | [github.com/alexendros/alexendros-monorepo](http://github.com/alexendros/alexendros-monorepo) (privado) |
-| Tipo | SaaS multi-producto (monorepo) |
+| Repo | [github.com/Alexendros/ProfesionalWeb](https://github.com/Alexendros/ProfesionalWeb) (privado) |
+| Tipo | Plataforma multi-vertical (monorepo) |
 | Stack | Next.js 15 · Supabase · Prisma · Stripe · Turborepo · Vercel |
 | Inicio | 2024 |
 
 **Descripción pública (para GitHub README y portfolio):**
 
-> KitOS es una plataforma SaaS de kits digitales verticalizados.
+> alexendros.pro es una plataforma de productos digitales verticalizados.
 > 
 
-> Cada Kit es un producto independiente dirigido a un sector específico,
+> Cada app es un producto independiente dirigido a un sector específico,
 > 
 
 > construido sobre infraestructura compartida: auth, pagos, email, analytics.
 > 
 
-> Primer Kit en producción: [ver](https://alexendros.pro) [alexendros.pro](http://alexendros.pro).
+> Estado actual: hub en construcción; StageKit en MVP activo.
 > 
 
 **Impact metrics a publicar:**
@@ -54,7 +54,7 @@
 | --- | --- |
 | Estado | 🟡 Pre-fase activa (rebuild en curso) |
 | URL | [https://alexendros.me](https://alexendros.me) |
-| Tipo | Portfolio + marca personal + waitlist KitOS |
+| Tipo | Portfolio + marca personal + waitlist de la plataforma |
 | Stack | Next.js 15 · Tailwind v4 · Vercel · Supabase (waitlist) |
 
 **Objetivo tras Pre-Fase:**
@@ -62,7 +62,7 @@
 - Lighthouse Performance > 90
 - LCP < 2.0s desktop
 - JSON-LD Person validado
-- Waitlist segmentada por Kit activa
+- Waitlist segmentada por app activa
 - Sección /uses y /now publicada
 
 ---
@@ -96,7 +96,7 @@
 ```markdown
 # Alejandro Agustí (Alexendros)
 
-Fullstack developer & fundador de [KitOS](https://alexendros.pro).
+Fullstack developer con plataforma propia en [alexendros.pro](https://alexendros.pro).
 Construyo SaaS verticales con Next.js 15 + Supabase + Stripe.
 Background en derecho: RGPD-first desde el primer commit.
 
@@ -104,7 +104,7 @@ Background en derecho: RGPD-first desde el primer commit.
 Next.js · TypeScript · Supabase · Prisma · Stripe · Tailwind · Turborepo · Vercel
 
 ## Actualmente
-- 🚀 Lanzando KitOS → [alexendros.pro](https://alexendros.pro)
+- 🚀 Plataforma propia → [alexendros.pro](https://alexendros.pro)
 - 🛠️ Rebuild alexendros.me (Pre-Fase activa)
 - 📝 Build in public → [@alexendros](https://twitter.com/alexendros)
 
@@ -113,7 +113,7 @@ Next.js · TypeScript · Supabase · Prisma · Stripe · Tailwind · Turborepo �
 
 ### Repos a pinear (máx. 6)
 
-1. `alexendros-monorepo` — KitOS platform (privado con descripción pública)
+1. `ProfesionalWeb` — plataforma alexendros.pro (privado con descripción pública)
 2. `alexendros-me` — Web personal (público)
 3. [añadir proyectos relevantes]
 
