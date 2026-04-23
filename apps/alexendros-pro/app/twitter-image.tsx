@@ -1,7 +1,8 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "KitOS — Plataforma de kits digitales profesionales. En construcción.";
+export const alt =
+  "KitOS — Plataforma de kits digitales profesionales. En construcción.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -17,19 +18,19 @@ export default function TwitterImage() {
           justifyContent: "center",
           alignItems: "flex-start",
           padding: "96px",
-          backgroundColor: "#0a0b0d",
+          backgroundColor: "#080c14",
           backgroundImage:
-            "radial-gradient(ellipse 65% 55% at 20% 0%, rgba(232,133,71,0.18), transparent 60%), radial-gradient(ellipse 55% 45% at 85% 100%, rgba(90,201,79,0.10), transparent 60%)",
+            "radial-gradient(ellipse 70% 60% at 15% 10%, rgba(58,125,198,0.22), transparent 62%), radial-gradient(ellipse 55% 50% at 90% 95%, rgba(122,169,212,0.12), transparent 62%)",
           fontFamily: '"Geist", system-ui, sans-serif',
-          color: "#f0f0f1",
+          color: "#eff3f7",
         }}
       >
         <div
           style={{
             fontSize: 22,
-            letterSpacing: "0.12em",
+            letterSpacing: "0.14em",
             textTransform: "uppercase",
-            color: "#e88547",
+            color: "#7aa9d4",
             marginBottom: 32,
             fontFamily: "monospace",
           }}
@@ -41,7 +42,7 @@ export default function TwitterImage() {
             fontSize: 120,
             fontWeight: 700,
             lineHeight: 1.02,
-            letterSpacing: "-0.03em",
+            letterSpacing: "-0.035em",
             marginBottom: 24,
           }}
         >
@@ -51,7 +52,7 @@ export default function TwitterImage() {
           style={{
             fontSize: 40,
             lineHeight: 1.3,
-            color: "#a0a2a6",
+            color: "#b7bcc4",
             maxWidth: 900,
           }}
         >
@@ -64,9 +65,9 @@ export default function TwitterImage() {
             alignItems: "center",
             gap: 14,
             fontSize: 24,
-            color: "#f0f0f1",
+            color: "#eff3f7",
             fontFamily: "monospace",
-            letterSpacing: "0.04em",
+            letterSpacing: "0.06em",
           }}
         >
           <div
@@ -74,8 +75,8 @@ export default function TwitterImage() {
               width: 12,
               height: 12,
               borderRadius: 9999,
-              backgroundColor: "#e88547",
-              boxShadow: "0 0 20px #e88547",
+              backgroundColor: "#4c8bd1",
+              boxShadow: "0 0 24px #3a7dc6",
             }}
           />
           Próximamente · alexendros.pro

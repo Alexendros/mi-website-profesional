@@ -3,6 +3,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 import type { Metadata, Viewport } from "next";
+import { ParticleBg } from "../components/particle-bg";
 
 const geistSans = localFont({
   src: "../public/fonts/GeistVF.woff2",
@@ -35,7 +36,15 @@ export const metadata: Metadata = {
   creator: "Alexendros",
   publisher: "Alexendros",
   category: "technology",
-  keywords: ["KitOS", "Alexendros", "SaaS", "kits digitales", "StageKit", "LexKit", "GestKit"],
+  keywords: [
+    "KitOS",
+    "Alexendros",
+    "SaaS",
+    "kits digitales",
+    "StageKit",
+    "LexKit",
+    "GestKit",
+  ],
   formatDetection: { telephone: false, email: false, address: false },
   alternates: { canonical: "/" },
   openGraph: {
@@ -71,8 +80,8 @@ export const viewport: Viewport = {
   initialScale: 1,
   viewportFit: "cover",
   themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" },
-    { media: "(prefers-color-scheme: light)", color: "#0a0a0a" },
+    { media: "(prefers-color-scheme: dark)", color: "#080c14" },
+    { media: "(prefers-color-scheme: light)", color: "#080c14" },
   ],
   colorScheme: "dark",
 };
@@ -100,14 +109,17 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`dark ${geistSans.variable} ${geistMono.variable}`}
-      data-kit="stagekit"
+      data-theme="abisal"
+      className={`${geistSans.variable} ${geistMono.variable}`}
     >
-      <body className="flex min-h-screen flex-col">
+      <body>
+        <ParticleBg />
         {children}
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationSchema),
+          }}
         />
         <SpeedInsights />
         <Analytics />
