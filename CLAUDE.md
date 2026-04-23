@@ -3,8 +3,8 @@
 > Punto de entrada obligatorio para Claude Code. Léelo íntegro antes de ejecutar cualquier tarea.
 >
 > **Historia**: este repositorio se conocía como `alexendros-monorepo` y contenía `apps/alexendros-me`.
-> El 11 de abril de 2026 se extrajo `alexendros-me` a un repo standalone (`~/Apps/alexendrosme-website/`)
-> y el monorepo pasó a llamarse **`alexendrospro-website`** (directorio y remote GitHub).
+> El 11 de abril de 2026 se extrajo `alexendros-me` a un repo standalone (`~/Apps/alexendrosme/`)
+> y el monorepo pasó a llamarse **`alexendrospro`** (directorio y remote GitHub).
 
 ---
 
@@ -505,7 +505,7 @@ Do not make direct repo edits outside a GSD workflow unless the user explicitly 
 
 - **alexendros-me** 🟢 **HERMANA** — landing standalone en `~/Apps/alexendros-me/` (extraida de este monorepo el 2026-04-11). Redirige a alexendros.pro para productos. No comparte codigo; tiene su propio shadcn inline. Cualquier cambio de branding validado primero alli antes de aplicarse aqui.
 - **ai-act-ready** 🟡 **inferida** — misma arquitectura Next.js 15 + Supabase. Candidato a reutilizar `@repo/ui` y `@repo/config` si se publican desde este monorepo.
-- **afiladocs-website** 🟡 **inferida** — misma familia de stack (Next.js + Prisma + Stripe + Supabase). Potencial consumidor de los packages `@repo/stripe` y `@repo/email` en el futuro.
+- **afiladocs** 🟡 **inferida** — misma familia de stack (Next.js + Prisma + Stripe + Supabase). Potencial consumidor de los packages `@repo/stripe` y `@repo/email` en el futuro.
 - **techno-website** ⚫ — independiente, no forma parte del monorepo aunque comparte patrones de Stripe.
 - **n8n-automations** 🟠 **potencial** — podria orquestar los workflows de dunning (W-11..W-17) mencionados en `.planning/research/`.
 
