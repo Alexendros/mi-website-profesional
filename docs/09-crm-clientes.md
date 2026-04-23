@@ -1,6 +1,6 @@
 # 09 — CRM Clientes
 
-> Gestión comercial y pipeline de ventas para KitOS. Integrado con n8n para automatización.
+> Gestión comercial y pipeline de ventas para alexendros.pro. Integrado con n8n para automatización.
 
 ## Pipeline de ventas
 
@@ -12,7 +12,7 @@
 | 4 | **Negociación** | Ajustes de scope o precio | Cerrar o ajustar propuesta |
 | 5 | **Cerrado Ganado** | Contrato firmado (Afiladocs) + pago recibido | Activar onboarding (W-01) |
 | 6 | **Cerrado Perdido** | Documentar razón (precio/competidor/timing/otro) | Win-back a 90 días |
-| 7 | **Cliente Activo** | Suscripción activa en KitOS | Engagement continuo (W-04..W-07) |
+| 7 | **Cliente Activo** | Suscripción activa en alexendros.pro | Engagement continuo (W-04..W-07) |
 
 ## Modelo de datos CRM
 
@@ -54,7 +54,7 @@ interface CRMlead {
 
 | Workflow | Trigger | Acciones |
 |---------|---------|----------|
-| **Nuevo lead** | Webhook KitOS `waitlist_signup` o `booking_request_created` | 1. Crear entrada en CRM → 2. Email notificación a Alejandro → 3. Crear tarea follow-up (3 días) |
+| **Nuevo lead** | Webhook de la plataforma `waitlist_signup` o `booking_request_created` | 1. Crear entrada en CRM → 2. Email notificación a Alejandro → 3. Crear tarea follow-up (3 días) |
 | **Follow-up inactivo** | Cron: diario 9:00 | Consultar leads sin actividad > 7 días → Email recordatorio interno → Escalar si > 14 días |
 | **Lead → Cliente** | Webhook Stripe `checkout.session.completed` | Actualizar stage a "won" → Registrar valor del contrato → Trigger onboarding W-01 |
 | **Churn tracking** | Webhook Stripe `customer.subscription.deleted` | Actualizar stage a "lost" con motivo → Trigger win-back W-21 |

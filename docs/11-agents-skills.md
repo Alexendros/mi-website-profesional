@@ -457,7 +457,7 @@ stripe-engineer (orquestador)
 ```markdown
 ---
 name: seo-geo-specialist
-description: Especialista en SEO técnico y GEO (Generative Engine Optimization) para el monorepo Alexendros/KitOS. Actívame para metadata Next.js 15, JSON-LD schema.org, Core Web Vitals, sitemap, robots.txt y optimización de citabilidad en motores AI (Perplexity, ChatGPT, Claude).
+description: Especialista en SEO técnico y GEO (Generative Engine Optimization) para el monorepo Alexendros. Actívame para metadata Next.js 15, JSON-LD schema.org, Core Web Vitals, sitemap, robots.txt y optimización de citabilidad en motores AI (Perplexity, ChatGPT, Claude).
 tools: [web_search, fetch, bash, mcp__github]
 ---
 
@@ -472,7 +472,7 @@ sean encontrados por humanos y citados correctamente por AI engines.
 export const metadata: Metadata = {
 	metadataBase: new URL('https://alexendros.me'),
 	title: { default: 'Alejandro Agustí — Fullstack Developer', template: '%s | Alexendros' },
-	description: 'Fullstack developer especializado en Next.js y Supabase. Fundador de KitOS.',
+	description: 'Fullstack developer especializado en Next.js y Supabase. Plataforma propia en alexendros.pro.',
 	openGraph: {
 		type: 'website',
 		locale: 'es_ES',
@@ -524,7 +524,7 @@ const kitSchema = {
 | Entity clarity | `@id` con URL canónica en JSON-LD | ALTA |
 | sameAs network | Mín. 3 perfiles verificados en sameAs | ALTA |
 | Freshness signal | `dateModified` en artículos | ALTA |
-| Named methodology | Nombrar "KitOS Framework" consistentemente | MEDIA |
+| Named methodology | Nombrar el framework propio consistentemente (pendiente reformular) | MEDIA |
 | FAQ schema | `FAQPage` en landing pages | MEDIA |
 | HowTo schema | En artículos técnicos de /blog | BAJA |
 
@@ -580,7 +580,7 @@ seo-geo-specialist (orquestador)
   │   → Buscar marca en Perplexity, ChatGPT, Claude
   │   → Verificar entity clarity (@id, sameAs network)
   │   → Comprobar freshness signals (dateModified)
-  │   → Evaluar named methodology ("KitOS Framework")
+  │   → Evaluar named methodology (pendiente reformular el framework propio)
   │   → Output: score GEO + recomendaciones de citabilidad
   │
   └── [SECUENCIAL] seo-geo-specialist consolida
@@ -605,7 +605,7 @@ seo-geo-specialist (orquestador)
 ```markdown
 ---
 name: gdpr-compliance
-description: Agente de compliance RGPD/LOPDGDD para el monorepo Alexendros/KitOS. Actívame ante cualquier feature que procese datos personales, antes de activar analytics, antes de deploys con formularios y para verificar textos legales. Conocimiento de RGPD EU 2016/679, LOPDGDD LO 3/2018 y AEPD Guía Cookies 2023.
+description: Agente de compliance RGPD/LOPDGDD para el monorepo Alexendros. Actívame ante cualquier feature que procese datos personales, antes de activar analytics, antes de deploys con formularios y para verificar textos legales. Conocimiento de RGPD EU 2016/679, LOPDGDD LO 3/2018 y AEPD Guía Cookies 2023.
 tools: [mcp__supabase, mcp__github, mcp__notion]
 ---
 
@@ -615,7 +615,7 @@ No soy un sustituto de asesoramiento jurídico, pero garantizo implementación t
 
 ## Bases legales aplicables (Art. 6 RGPD EU 2016/679)
 
-| Base legal | Cuándo usar | Ejemplos en KitOS |
+| Base legal | Cuándo usar | Ejemplos en la plataforma |
 |-----------|-------------|------------------|
 | 6.1.a Consentimiento | El usuario lo otorga libremente | Waitlist, newsletter, cookies analíticas |
 | 6.1.b Contrato | Necesario para ejecutar contrato | Datos de facturación, account management |
@@ -1171,10 +1171,10 @@ El resultado debe ser un documento entregable a clientes con calidad de agencia.
 ### 7. Tono y voz
 - **Principios de comunicación:** 3-4 adjetivos (ej: directo, técnico, cercano, sin jerga innecesaria)
 - **Ejemplos do/don't** por canal (web, email, redes sociales)
-- **Vocabulario de marca:** Términos propios (KitOS, StageKit, etc.)
+- **Vocabulario de marca:** Términos propios (StageKit y otras apps)
 
 ### 8. Arquitectura de marca
-- **Marca madre vs. submarcas:** Relación Alexendros ↔ KitOS ↔ Kits individuales
+- **Marca madre vs. submarcas:** Relación Alexendros ↔ apps verticales (paraguas pendiente reformular)
 - **Reglas de co-branding:** Cómo aplicar junto a marcas de clientes/partners
 - **Nomenclatura:** Convención de nombres para productos futuros
 
