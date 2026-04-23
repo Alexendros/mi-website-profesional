@@ -1,6 +1,6 @@
 # 05 — Marketing / UVP / MVP
 
-## UVP por Kit
+## UVP por app
 
 ### 🎵 StageKit (activo)
 
@@ -119,7 +119,7 @@
 
 ---
 
-## Servicios transversales KitOS (todos los Kits)
+## Servicios transversales (todas las apps)
 
 | Servicio | Tipo | Incluido en plan | Descripción |
 |---------|------|-----------------|-------------|
@@ -157,7 +157,7 @@ Retención
 
 ---
 
-## North Star Metrics por Kit
+## North Star Metrics por app
 
 | Kit | North Star | Razón |
 | --- | --- | --- |
@@ -165,7 +165,7 @@ Retención
 | **LexKit** | Consultas cualificadas recibidas / mes | Si llegan clientes potenciales, el abogado renueva |
 | **GestKit** | Leads con servicio identificado / mes | Si el lead llega informado, convierte mejor |
 
-**MRR es consecuencia, no causa.** Optimizar la North Star de cada Kit es la estrategia de retención.
+**MRR es consecuencia, no causa.** Optimizar la North Star de cada app es la estrategia de retención.
 
 ## Modelo de afiliación por nicho
 

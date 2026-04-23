@@ -21,7 +21,7 @@
 | Idiomas | Español (nativo) · Inglés (profesional) |
 | Email profesional | [hola@alexendros.me](mailto:hola@alexendros.me) |
 | Web personal | [https://alexendros.me](https://alexendros.me) |
-| Producto SaaS | [https://alexendros.pro](https://alexendros.pro) |
+| Plataforma digital | [https://alexendros.pro](https://alexendros.pro) |
 
 ---
 
@@ -30,11 +30,11 @@
 > *(Versión para copiar en [alexendros.me/about](http://alexendros.me/about) y LinkedIn Summary)*
 > 
 
-Desarrollador fullstack y fundador de **KitOS**, plataforma SaaS de kits digitales verticalizados para sectores específicos. Construyo con Next.js 15, Supabase y Stripe, con foco en rendimiento real (LCP < 2s), conversión y cumplimiento legal (RGPD/LOPDGDD).
+Desarrollador fullstack que construye productos digitales verticalizados para sectores específicos. Trabajo con Next.js 15, Supabase y Stripe, con foco en rendimiento real (LCP < 2s), conversión y cumplimiento legal (RGPD/LOPDGDD).
 
 Antes de dedicarme al software a tiempo completo combiné durante años la práctica jurídica —asesoramiento legal y consultoría— con el desarrollo de productos digitales. Esa intersección entre derecho y tecnología define la forma en que construyo: con precisión contractual en los detalles técnicos y con criterio de negocio desde el primer commit.
 
-Actualmente: **KitOS** en producción en [alexendros.pro](http://alexendros.pro), con StageKit (música electrónica), LexKit (despachos) y GestKit (gestorías) en roadmap.
+Actualmente: plataforma en [alexendros.pro](http://alexendros.pro) y StageKit (música electrónica) en producción; más verticales en roadmap.
 
 ---
 
@@ -43,7 +43,7 @@ Actualmente: **KitOS** en producción en [alexendros.pro](http://alexendros.pro)
 ### Bio Twitter/X (160 car.)
 
 ```
-Fullstack dev & fundador de KitOS · Next.js · Supabase · Stripe
+Fullstack developer · Next.js · Supabase · Stripe
 Abogado reconvertido a builder · Madrid 🇪🇸
 alexendros.pro
 ```
@@ -51,8 +51,7 @@ alexendros.pro
 ### Bio GitHub (250 car.)
 
 ```
-Fullstack developer · Fundador de KitOS (alexendros.pro)
-Construyo SaaS verticales con Next.js 15 + Supabase + Stripe.
+Fullstack developer (alexendros.pro) · SaaS verticales con Next.js 15 + Supabase + Stripe.
 Background en derecho: aporto rigor legal al código.
 Madrid 🇪🇸 · Disponible para consultoría técnica.
 ```
@@ -60,16 +59,16 @@ Madrid 🇪🇸 · Disponible para consultoría técnica.
 ### Bio LinkedIn (300 car.)
 
 ```
-Desarrollador Fullstack & Fundador | Next.js · Supabase · Stripe
-Fundador de KitOS — plataforma SaaS de kits digitales para sectores legales,
-musicales y de gestoría. Background jurídico: asesoramiento legal + desarrollo
+Desarrollador Fullstack | Next.js · Supabase · Stripe
+Construyo productos digitales verticalizados para sectores profesionales.
+Background jurídico: asesoramiento legal + desarrollo
 de productos. LCP < 2s. RGPD-first. Build in public desde Madrid.
 ```
 
 ### Headline LinkedIn (120 car.)
 
 ```
-Fullstack Dev & Fundador de KitOS · Next.js · Supabase · Stripe · Madrid
+Fullstack Dev · Next.js · Supabase · Stripe · Madrid
 ```
 
 ---
@@ -82,7 +81,7 @@ Fullstack Dev & Fundador de KitOS · Next.js · Supabase · Stripe · Madrid
 | --- | --- | --- | --- |
 | Código | ✅ Fullstack enterprise | ✅ Variable | ❌ No |
 | Legal/RGPD | ✅ Background real | ⚠️ Superficial | ✅ Sí |
-| Producto SaaS propio | ✅ KitOS activo | ❌ Raro | ❌ No |
+| Producto SaaS propio | ✅ Plataforma activa | ❌ Raro | ❌ No |
 | Sector tech+derecho | ✅ Intersección única | ❌ Separado | ❌ Separado |
 | Build in public | ✅ Documentado | Variable | ❌ No |
 
@@ -98,7 +97,7 @@ Fullstack Dev & Fundador de KitOS · Next.js · Supabase · Stripe · Madrid
 
 **Subtítulo hero:**
 
-> *Fullstack developer. Fundador de [KitOS](https://alexendros.pro). Background en derecho. Madrid.*
+> *Fullstack developer con plataforma propia en [alexendros.pro](https://alexendros.pro). Background en derecho. Madrid.*
 > 
 
 ---
@@ -128,7 +127,7 @@ El software empezó a ocupar más espacio que el derecho. Formación autodidacta
 
 ### Acto III — Actualidad
 
-Fundador en activo de KitOS ([alexendros.pro](http://alexendros.pro)). Plataforma multi-Kit en producción. Build in public documentado. Disponible para consultoría técnica en proyectos donde la intersección tech + legal aporta valor real.
+Plataforma propia en activo ([alexendros.pro](http://alexendros.pro)). Monorepo multi-app en producción. Build in public documentado. Disponible para consultoría técnica en proyectos donde la intersección tech + legal aporta valor real.
 
 ---
 
@@ -140,7 +139,7 @@ Fundador en activo de KitOS ([alexendros.pro](http://alexendros.pro)). Plataform
 > Un visitante nuevo debe poder responder estas 3 preguntas en ≤ 5 segundos:
 > 
 - [ ]  ¿Quién es? → Alejandro, fullstack developer
-- [ ]  ¿Qué construye? → KitOS, SaaS vertical
+- [ ]  ¿Qué construye? → SaaS verticales en alexendros.pro
 - [ ]  ¿Para quién? → Sectores legales, musicales, gestorías
 
 Si alguna respuesta requiere scroll o lectura → reescribir el hero.

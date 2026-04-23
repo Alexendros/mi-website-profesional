@@ -1,4 +1,4 @@
-# Plan Maestro: ALEXENDROS x KitOS — Monorepo
+# Plan Maestro: ALEXENDROS — Monorepo
 
 ## Contexto
 
@@ -6,8 +6,8 @@ Implementar desde cero el monorepo `alexendros-monorepo` documentado en Notion (
 
 **Arquitectura de dominios (CAMBIO CLAVE):**
 - **alexendros.me** = Landing page profesional de marca personal. SIN backend. Estatica. Sirve como campo de pruebas de branding/UI antes de aplicarlo a .pro. Redirige a alexendros.pro para productos y servicios.
-- **alexendros.pro** = Hub KitOS completo. CON backend (auth, DB, pagos, dashboard). Aqui vive toda la logica de negocio: venta de kits, suscripciones, afiliados, CRM. La arquitectura y diseno del sitio deben estar preparados para multiples productos y servicios.
-- **stagekit.app** (y futuros kits) = Apps individuales por Kit, desplegadas desde el monorepo.
+- **alexendros.pro** = Hub completo. CON backend (auth, DB, pagos, dashboard). Aqui vive toda la logica de negocio: venta de apps verticales, suscripciones, afiliados, CRM. La arquitectura y diseno del sitio deben estar preparados para multiples productos y servicios. *(Nota 2026-04-23: la marca paraguas anterior fue retirada; pendiente reformular.)*
+- **stagekit.app** (y futuras apps verticales) = Apps individuales desplegadas desde el monorepo.
 
 **Flujo de branding:** Disenar y validar identidad visual en alexendros.me (rapido, sin backend) → una vez consolidado, aplicar el sistema de diseno a alexendros.pro y los kits.
 
@@ -167,11 +167,11 @@ Implementar desde cero el monorepo `alexendros-monorepo` documentado en Notion (
 ### 3.3 — Pagina principal (Hero)
 Contenido desde PF-0 (Biografia & Posicionamiento):
 - **Hero:** "Construyo productos digitales que funcionan y cumplen la ley."
-  - Subtitulo: "Fullstack developer. Fundador de KitOS. Background en derecho. Madrid."
-  - CTA primario: "Explorar KitOS" → enlace a alexendros.pro
+  - Subtitulo: "Fullstack developer con plataforma propia. Background en derecho. Madrid."
+  - CTA primario: "Explorar la plataforma" → enlace a alexendros.pro
   - CTA secundario: "Contactar" → seccion contacto o mailto
 - **About breve:** Bio 150 palabras (PF-0)
-- **Proyectos destacados:** KitOS card con link a alexendros.pro (PF-3)
+- **Proyectos destacados:** card de la plataforma con link a alexendros.pro (PF-3)
 - **Stack visual:** Grid del stack autodidacta (PF-2)
 - **Timeline:** Narrativa 3 actos condensada (PF-0)
 
@@ -253,15 +253,15 @@ Contenido desde PF-0 (Biografia & Posicionamiento):
    - Templates React Email: bienvenida, booking, upgrade, trial, payment failed, certificado tokenización
    - Resend client factory
 
-3. **Servicios transversales KitOS** (integración en fases posteriores)
+3. **Servicios transversales de la plataforma** (integración en fases posteriores)
    - **Dossier de presencia digital:** Entregable incluido en Pro/Agency — plataformas, publicaciones, almacenamiento, suite Proton.me
    - **Tokenización digital:** Servicio bajo demanda — registro SafeCreative/blockchain con hash SHA-256, workflow n8n automatizado, modelo `DigitalRegistration` en DB
    - **Contratos Afiladocs:** Integración con afiladocs.com — generación automática de contratos por evento (checkout, booking, alta afiliado), firma electrónica eIDAS, almacenamiento en Supabase Storage
 
 ---
 
-## FASE 6 — apps/alexendros-pro (Hub KitOS — App Completa)
-> **Objetivo:** alexendros.pro como hub completo: catalogo de Kits, auth, dashboard, pagos, waitlist. Arquitectura preparada para multiples productos y servicios.
+## FASE 6 — apps/alexendros-pro (Hub — App Completa)
+> **Objetivo:** alexendros.pro como hub completo: catalogo de apps verticales, auth, dashboard, pagos, waitlist. Arquitectura preparada para multiples productos y servicios.
 > **Prerequisito:** FASES 3 (branding validado en .me) + FASES 4-5 (db, stripe, email)
 > **REGLA UI:** Ejecutar `/ui-ux-pro-max` antes de generar interfaz. Aplicar tokens de brand validados en .me.
 
@@ -272,8 +272,8 @@ Contenido desde PF-0 (Biografia & Posicionamiento):
 - next.config.ts con headers seguridad
 
 ### 6.2 — Landing publica (marketing)
-- Hero: que es KitOS, UVP
-- Catalogo de Kits disponibles (StageKit activo, LexKit/GestKit waitlist)
+- Hero: que es la plataforma, UVP
+- Catalogo de apps disponibles (StageKit activo, otras verticales en waitlist)
 - Pricing comparativo
 - JSON-LD SoftwareApplication
 - Waitlist segmentada por Kit (con consentimiento RGPD)
@@ -332,8 +332,8 @@ Contenido desde PF-0 (Biografia & Posicionamiento):
 
 ---
 
-## FASE 7.5 — Automatizaciones n8n (Plantillas de workflows KitOS)
-> **Objetivo:** Implementar todos los flujos automatizados de ciclo de vida del cliente: onboarding, engagement, cobro, impago, recuperación y baja. Desplegados en n8n (Hostinger VPS) con webhooks desde KitOS.
+## FASE 7.5 — Automatizaciones n8n (Plantillas de workflows de la plataforma)
+> **Objetivo:** Implementar todos los flujos automatizados de ciclo de vida del cliente: onboarding, engagement, cobro, impago, recuperación y baja. Desplegados en n8n (Hostinger VPS) con webhooks desde las apps.
 > **Prerequisito:** FASES 5 (stripe/email) + FASE 6 o 7 (app con webhooks operativos)
 > **Infraestructura:** n8n self-hosted en Hostinger VPS (`n8n.alexendros.me`), Resend para email, Stripe para eventos de pago.
 
@@ -344,7 +344,7 @@ Contenido desde PF-0 (Biografia & Posicionamiento):
 | # | Workflow | Trigger | Acciones |
 |---|---------|---------|----------|
 | W-01 | **Welcome sequence** | `checkout.session.completed` (webhook Stripe) | 1. Email bienvenida (inmediato) → 2. Email "completa tu perfil" (24h) → 3. Email "publica tu primer Kit Profile" (72h) → 4. Si no ha publicado en 7d: email con tutorial paso a paso |
-| W-02 | **Onboarding checklist tracker** | Webhook KitOS `profile_updated` | Marcar pasos completados → si completa 100%: email felicitación + badge → si < 50% a los 5d: email recordatorio |
+| W-02 | **Onboarding checklist tracker** | Webhook de la plataforma `profile_updated` | Marcar pasos completados → si completa 100%: email felicitación + badge → si < 50% a los 5d: email recordatorio |
 | W-03 | **Setup fee confirmation** | `checkout.session.completed` con setup fee | Email confirmación de pago único + factura PDF + contrato Afiladocs generado |
 
 #### B. Engagement y retención activa
@@ -352,8 +352,8 @@ Contenido desde PF-0 (Biografia & Posicionamiento):
 | # | Workflow | Trigger | Acciones |
 |---|---------|---------|----------|
 | W-04 | **Weekly digest** | Cron: lunes 9:00 CET | Agregar métricas semanales del cliente (views, bookings, requests) → Email resumen personalizado con comparativa semana anterior |
-| W-05 | **Booking notification** | Webhook KitOS `booking_request_created` | Email inmediato al artista/profesional → Notificación push (si PWA) → Actualizar dashboard |
-| W-06 | **Milestone celebration** | Webhook KitOS `milestone_reached` | Detectar hitos (10 bookings, 100 views, 1 año activo) → Email personalizado + badge → Post en redes (opcional, con consentimiento) |
+| W-05 | **Booking notification** | Webhook de la plataforma `booking_request_created` | Email inmediato al artista/profesional → Notificación push (si PWA) → Actualizar dashboard |
+| W-06 | **Milestone celebration** | Webhook de la plataforma `milestone_reached` | Detectar hitos (10 bookings, 100 views, 1 año activo) → Email personalizado + badge → Post en redes (opcional, con consentimiento) |
 | W-07 | **Inactivity re-engagement** | Cron: diario 10:00 CET | Consultar usuarios sin login en >14d → Día 14: email "te echamos de menos" + novedades → Día 30: email con oferta especial (descuento 20% próximo mes) → Día 60: email final "tu perfil sigue activo" |
 
 #### C. Trial y conversión
@@ -424,10 +424,10 @@ Stripe Dashboard → Settings → Subscriptions → Smart Retries:
 
 | # | Workflow | Trigger | Acciones |
 |---|---------|---------|----------|
-| W-23 | **Nuevo booking → notificación + CRM** | Webhook KitOS `booking_request_created` | 1. Email al profesional con datos del booking → 2. Crear/actualizar lead en CRM (docs/09) → 3. Si Pro/Agency: crear evento en Proton Calendar (si integrado) |
-| W-24 | **Kit Profile publicado → SEO check** | Webhook KitOS `kit_profile_published` | 1. Invocar agente seo-geo-specialist (verificar JSON-LD, OG) → 2. Ping Google Search Console (indexación) → 3. Email al cliente: "Tu perfil está live" + URL |
-| W-25 | **Generación de contrato** | Webhook KitOS `contract_requested` | 1. POST API Afiladocs con merge fields → 2. PDF generado → Supabase Storage → 3. Email al cliente con enlace de firma → 4. Si tokenización activa: registrar hash |
-| W-26 | **Tokenización de producto** | Webhook KitOS `tokenization_requested` | Flujo completo de 7 pasos documentado en docs/08 (SHA-256 → SafeCreative → certificado → email) |
+| W-23 | **Nuevo booking → notificación + CRM** | Webhook de la plataforma `booking_request_created` | 1. Email al profesional con datos del booking → 2. Crear/actualizar lead en CRM (docs/09) → 3. Si Pro/Agency: crear evento en Proton Calendar (si integrado) |
+| W-24 | **Kit Profile publicado → SEO check** | Webhook de la plataforma `kit_profile_published` | 1. Invocar agente seo-geo-specialist (verificar JSON-LD, OG) → 2. Ping Google Search Console (indexación) → 3. Email al cliente: "Tu perfil está live" + URL |
+| W-25 | **Generación de contrato** | Webhook de la plataforma `contract_requested` | 1. POST API Afiladocs con merge fields → 2. PDF generado → Supabase Storage → 3. Email al cliente con enlace de firma → 4. Si tokenización activa: registrar hash |
+| W-26 | **Tokenización de producto** | Webhook de la plataforma `tokenization_requested` | Flujo completo de 7 pasos documentado en docs/08 (SHA-256 → SafeCreative → certificado → email) |
 | W-27 | **Renovación mensual → factura** | `invoice.paid` | 1. Generar factura PDF (Stripe Invoice + datos fiscales) → 2. Email con factura adjunta → 3. Actualizar contabilidad (si integración Holded/Quaderno) |
 | W-28 | **Affiliate payout** | `transfer.created` | 1. Registrar payout en tabla AffiliatePayout → 2. Email al afiliado: "Comisión recibida" + detalle → 3. Generar recibo |
 
@@ -435,7 +435,7 @@ Stripe Dashboard → Settings → Subscriptions → Smart Retries:
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                    KitOS Apps                            │
+│              Apps de la plataforma                       │
 │  (alexendros.pro / stagekit.app / lexkit.pro)           │
 │                                                         │
 │  Eventos → POST /api/n8n/trigger                        │
@@ -466,7 +466,7 @@ Stripe Dashboard → Settings → Subscriptions → Smart Retries:
 
 ```bash
 # En n8n (Hostinger VPS) — Environment Variables
-N8N_WEBHOOK_SECRET=           # Compartido con KitOS apps para autenticar webhooks
+N8N_WEBHOOK_SECRET=           # Compartido con las apps para autenticar webhooks
 RESEND_API_KEY=               # Envío de emails
 STRIPE_SECRET_KEY=            # Consultar estado de suscripciones
 SUPABASE_URL=                 # Consultar datos de usuario
@@ -530,11 +530,11 @@ const workflow = new WorkflowBuilder('W-XX — [Nombre del workflow]')
 | ID | Nombre | Categoría | Trigger | Emails | Prioridad |
 |----|--------|-----------|---------|--------|-----------|
 | W-01 | Welcome sequence | Onboarding | Stripe webhook | 4 | MVP |
-| W-02 | Onboarding tracker | Onboarding | KitOS webhook | 2 | MVP |
+| W-02 | Onboarding tracker | Onboarding | webhook de la plataforma | 2 | MVP |
 | W-03 | Setup fee confirmation | Onboarding | Stripe webhook | 1 | MVP |
 | W-04 | Weekly digest | Engagement | Cron semanal | 1 | MVP |
-| W-05 | Booking notification | Engagement | KitOS webhook | 1 | MVP |
-| W-06 | Milestone celebration | Engagement | KitOS webhook | 1 | Post-MVP |
+| W-05 | Booking notification | Engagement | webhook de la plataforma | 1 | MVP |
+| W-06 | Milestone celebration | Engagement | webhook de la plataforma | 1 | Post-MVP |
 | W-07 | Inactivity re-engagement | Engagement | Cron diario | 3 | Post-MVP |
 | W-08 | Trial progress | Conversión | Cron diario | 3 | MVP |
 | W-09 | Trial expired | Conversión | Stripe webhook | 1 | MVP |
@@ -551,10 +551,10 @@ const workflow = new WorkflowBuilder('W-XX — [Nombre del workflow]')
 | W-20 | Post-baja inmediata | Churn | Stripe webhook | 1 | MVP |
 | W-21 | Win-back 30d | Churn | Cron | 1 | Post-MVP |
 | W-22 | Win-back 90d | Churn | Cron | 1 | Post-MVP |
-| W-23 | Booking → CRM | Operativo | KitOS webhook | 1 | MVP |
-| W-24 | Profile → SEO check | Operativo | KitOS webhook | 1 | Post-MVP |
-| W-25 | Contrato Afiladocs | Operativo | KitOS webhook | 1 | Post-MVP |
-| W-26 | Tokenización | Operativo | KitOS webhook | 1 | Post-MVP |
+| W-23 | Booking → CRM | Operativo | webhook de la plataforma | 1 | MVP |
+| W-24 | Profile → SEO check | Operativo | webhook de la plataforma | 1 | Post-MVP |
+| W-25 | Contrato Afiladocs | Operativo | webhook de la plataforma | 1 | Post-MVP |
+| W-26 | Tokenización | Operativo | webhook de la plataforma | 1 | Post-MVP |
 | W-27 | Renovación → factura | Operativo | Stripe webhook | 1 | MVP |
 | W-28 | Affiliate payout | Operativo | Stripe webhook | 1 | MVP |
 

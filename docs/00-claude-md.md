@@ -62,7 +62,7 @@ Ejemplo: si lanzas `claude` desde `apps/alexendros-me/`:
 
 ```yaml
 name: alexendros-monorepo
-type: personal-brand + multi-kit SaaS platform
+type: personal-brand + multi-app SaaS platform
 owner: Alejandro Domingo Agustí
 package_manager: pnpm@9+
 repo: Turborepo monorepo
@@ -178,9 +178,9 @@ packages:
 
 | Skill | Activar cuando... |
 | --- | --- |
-| create-kit | Añadir un nuevo Kit al monorepo |
+| create-kit | Añadir una nueva app vertical al monorepo |
 | new-db-migration | Cualquier cambio en schema Prisma |
-| add-stripe-plan | Nuevo plan o precio en cualquier Kit |
+| add-stripe-plan | Nuevo plan o precio en cualquier app |
 | deploy-vercel | Configurar deploy o dominio nuevo |
 | gdpr-audit | Pre-deploy de feature con datos personales |
 | brand-manual | Crear manual de identidad de marca profesional (logo, paleta, tipografía, aplicaciones) |
@@ -335,7 +335,7 @@ export type Env = z.infer<typeof envSchema>;
 
 ## 8. FASE ACTUAL: PRE-FASE (Abril 2026)
 
-Antes de cualquier trabajo en [alexendros.pro](http://alexendros.pro) (KitOS), completar:
+Antes de cualquier trabajo en [alexendros.pro](http://alexendros.pro), completar:
 
 - PF-0: Brand Audit de [alexendros.me](http://alexendros.me)
 - PF-1: Brand Positioning Statement
@@ -353,7 +353,7 @@ Ver checklist: Notion → PRE-FASE — Brand Audit & Reposicionamiento [Alexendr
 | Archivo | Contexto específico que añade |
 | --- | --- |
 | apps/alexendros-me/[CLAUDE.md](http://CLAUDE.md) | Reglas web personal, copywriting, waitlist, GDPR |
-| apps/alexendros-pro/[CLAUDE.md](http://CLAUDE.md) | Reglas SaaS KitOS, arquitectura multi-kit |
+| apps/alexendros-pro/[CLAUDE.md](http://CLAUDE.md) | Reglas SaaS hub Alexendros, arquitectura multi-app |
 | packages/brand/[CLAUDE.md](http://CLAUDE.md) | Tokens, logos, paletas, reglas visuales |
 | packages/db/[CLAUDE.md](http://CLAUDE.md) | Schema, RLS, convenciones Prisma/Supabase |
 | packages/ui/[CLAUDE.md](http://CLAUDE.md) | Componentes shadcn, CVA, accesibilidad |
@@ -396,7 +396,7 @@ y verifica textos legales (aviso legal, privacidad, cookies).
 
 ### [create-kit.md](http://create-kit.md)
 
-Pasos numerados para añadir un nuevo Kit al monorepo: scaffold app, tokens,
+Pasos numerados para añadir una nueva app vertical al monorepo: scaffold app, tokens,
 
 planes Stripe, registro en DB, proyecto Vercel y [CLAUDE.md](http://CLAUDE.md) propio.
 

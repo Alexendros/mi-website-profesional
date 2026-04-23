@@ -43,9 +43,9 @@
 
 | Tecnología | Nivel | Evidencia | Desde |
 | --- | --- | --- | --- |
-| Next.js 15 (App Router) | ⭐⭐⭐⭐⭐ Principal | KitOS, [alexendros.me](http://alexendros.me) | 2023 |
+| Next.js 15 (App Router) | ⭐⭐⭐⭐⭐ Principal | alexendros.pro, [alexendros.me](http://alexendros.me) | 2023 |
 | TypeScript strict | ⭐⭐⭐⭐⭐ Principal | Todos los proyectos | 2023 |
-| Tailwind CSS v4 | ⭐⭐⭐⭐ Avanzado | KitOS apps | 2023 |
+| Tailwind CSS v4 | ⭐⭐⭐⭐ Avanzado | alexendros.pro apps | 2023 |
 | shadcn/ui + Radix UI | ⭐⭐⭐⭐ Avanzado | packages/ui monorepo | 2024 |
 | React 19 (Server Components) | ⭐⭐⭐⭐ Avanzado | alexendros-pro | 2024 |
 
@@ -53,10 +53,10 @@
 
 | Tecnología | Nivel | Evidencia | Desde |
 | --- | --- | --- | --- |
-| Supabase (Auth, DB, Edge Functions) | ⭐⭐⭐⭐⭐ Principal | KitOS backend | 2023 |
+| Supabase (Auth, DB, Edge Functions) | ⭐⭐⭐⭐⭐ Principal | alexendros.pro backend | 2023 |
 | Prisma 5 | ⭐⭐⭐⭐ Avanzado | packages/db | 2023 |
-| PostgreSQL + RLS | ⭐⭐⭐⭐ Avanzado | Políticas RLS KitOS | 2023 |
-| Edge Runtime (Vercel/Cloudflare) | ⭐⭐⭐ Intermedio | API routes KitOS | 2024 |
+| PostgreSQL + RLS | ⭐⭐⭐⭐ Avanzado | Políticas RLS alexendros.pro | 2023 |
+| Edge Runtime (Vercel/Cloudflare) | ⭐⭐⭐ Intermedio | API routes alexendros.pro | 2024 |
 
 ### Infraestructura & DevOps
 
@@ -73,15 +73,15 @@
 
 | Tecnología | Nivel | Evidencia | Desde |
 | --- | --- | --- | --- |
-| Stripe Subscriptions + Billing | ⭐⭐⭐⭐ Avanzado | KitOS pagos | 2024 |
-| Stripe Connect Express | ⭐⭐⭐ Intermedio | Afiliados KitOS | 2024 |
-| Stripe Webhooks (firma, 3DS) | ⭐⭐⭐⭐ Avanzado | KitOS webhooks | 2024 |
+| Stripe Subscriptions + Billing | ⭐⭐⭐⭐ Avanzado | alexendros.pro pagos | 2024 |
+| Stripe Connect Express | ⭐⭐⭐ Intermedio | Afiliados alexendros.pro | 2024 |
+| Stripe Webhooks (firma, 3DS) | ⭐⭐⭐⭐ Avanzado | alexendros.pro webhooks | 2024 |
 
 ### Email & Automatización
 
 | Tecnología | Nivel | Evidencia | Desde |
 | --- | --- | --- | --- |
-| Resend + React Email | ⭐⭐⭐⭐ Avanzado | Templates KitOS | 2024 |
+| Resend + React Email | ⭐⭐⭐⭐ Avanzado | Templates alexendros.pro | 2024 |
 | n8n (workflows, CRM) | ⭐⭐⭐⭐ Avanzado | Hostinger VPS | 2023 |
 | Zapier / Make | ⭐⭐⭐ Intermedio | Proyectos anteriores | 2022 |
 
@@ -101,8 +101,8 @@
 | RGPD (EU 2016/679) | ⭐⭐⭐⭐⭐ Experto | Formación jurídica + aplicación técnica |
 | LOPDGDD (LO 3/2018) | ⭐⭐⭐⭐⭐ Experto | Formación jurídica + aplicación técnica |
 | LSSI-CE (Ley 34/2002) | ⭐⭐⭐⭐ Avanzado | Aplicación en productos web |
-| PCI DSS v4.0 | ⭐⭐⭐⭐ Avanzado | Implementación Stripe KitOS |
-| PSD2 / 3DS2 (Directiva 2015/2366) | ⭐⭐⭐⭐ Avanzado | Pagos UE en KitOS |
+| PCI DSS v4.0 | ⭐⭐⭐⭐ Avanzado | Implementación Stripe alexendros.pro |
+| PSD2 / 3DS2 (Directiva 2015/2366) | ⭐⭐⭐⭐ Avanzado | Pagos UE en alexendros.pro |
 
 ---
 

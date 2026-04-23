@@ -1,34 +1,27 @@
-# ALEXENDROS × KitOS — Hub
+# Alexendros — Hub de documentación
 
-> **Plataforma multi-producto de kits digitales temáticos** — marca personal enterprise (alexendros.me)
+> **Monorepo de aplicaciones verticales** — marca personal Alexendros (alexendros.me)
 >
 > Stack: Next.js 15 · Supabase · Stripe · Vercel · shadcn/ui
 >
-> Última actualización: 2026-04-05
+> Última actualización: 2026-04-23
 
-## Concepto de plataforma: KitOS
+> **Nota 2026-04-23**: el concepto paraguas anterior quedó retirado; contenido archivado en `.archive/kitos-pre-reformulacion-2026-04-23/`. Pendiente reformular el relato de producto.
 
-**KitOS** es la plataforma de venta, afiliación y suscripción de Alexendros.
+## Aplicaciones del monorepo
 
-Cada **Kit** es un producto digital temático con presentación y contenidos propios pero arquitectura idéntica.
-
-El cliente contrata: **producto + mantenimiento + incidencias + actualizaciones** — modelo SaaS con soporte incluido.
-
-### Kits activos y en roadmap
-
-| Kit | Ámbito | Dominio | Estado |
+| App | Ámbito | Dominio | Estado |
 | --- | --- | --- | --- |
+| **alexendros-pro** | Sitio de marca personal y hub | alexendros.pro | 🟡 En construcción |
 | **StageKit** | Artistas música electrónica (techno, tech-house) | stagekit.app | 🟢 MVP activo |
-| **LexKit** | Abogados y sociedades profesionales | lexkit.pro | 🔵 Roadmap Q3 2026 |
-| **GestKit** | Gestores, asesorías, consultoras | gestkit.pro | 🔵 Roadmap Q4 2026 |
-| *(+ futuro)* | Cualquier nicho profesional | [nicho].kit | 🔲 Plantilla base |
+| *(otras apps)* | Verticales futuros | TBD | 🔲 Por definir |
 
-### Modelo de ingresos KitOS
+### Modelo de ingresos (pendiente reformular)
 
 ```
-Kit = Producto digital (setup único, pago inicial)
-    + Suscripción mensual (mantenimiento + updates + soporte de incidencias)
-    + Afiliación (comisión 15% mensual por referido, 12 meses)
+Producto digital (setup único, pago inicial)
+  + Suscripción mensual (mantenimiento + updates + soporte)
+  + Afiliación (comisión por referido)
 ```
 
 ---
@@ -61,8 +54,9 @@ Kit = Producto digital (setup único, pago inicial)
 | [PF-1 — Experiencia Profesional](pf-1-experiencia-profesional.md) | Trayectoria y credenciales |
 | [PF-2 — Formación](pf-2-formacion.md) | Formación académica y certificaciones |
 | [PF-3 — Repositorios y Proyectos](pf-3-repositorios-proyectos.md) | Portfolio técnico |
-| [PF-4 — KitOS Producto](pf-4-kitos-producto.md) | Definición de producto KitOS |
 | [PF — Plan Maestro de Marca](pf-plan-maestro-marca.md) | Estrategia de marca personal Alexendros |
+
+*(PF-4 — definición de producto paraguas — archivado el 2026-04-23 en `.archive/kitos-pre-reformulacion-2026-04-23/`; pendiente reformular.)*
 
 ---
 
@@ -81,8 +75,8 @@ Kit = Producto digital (setup único, pago inicial)
 
 ```
 Antes de cualquier tarea → leer CLAUDE.md
-Antes de generar UI → identificar Kit activo → aplicar theme del Kit
+Antes de generar UI → identificar app activa → aplicar theme de la app
 Antes de modificar DB → verificar RLS + tenant_id
-Antes de tocar pagos → verificar compliance Stripe + plan del Kit
-Al crear un Kit nuevo → copiar KitTemplate, NO tocar core
+Antes de tocar pagos → verificar compliance Stripe + plan de la app
+Al crear una app nueva → copiar plantilla base, NO tocar core
 ```

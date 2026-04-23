@@ -1,12 +1,14 @@
 # CLAUDE.md — apps/alexendros-pro
 
-Hub KitOS completo en alexendros.pro.
+Hub Alexendros en alexendros.pro.
+
+> **Nota 2026-04-23**: la marca paraguas anterior fue retirada (ver `.archive/kitos-pre-reformulacion-2026-04-23/`). Pendiente reformular el concepto de producto.
 
 ## Contexto
 - **Dominio:** alexendros.pro
 - **Tipo:** App completa con backend (auth, DB, pagos, dashboard)
-- **Proposito:** Hub de productos KitOS. Venta de kits, suscripciones, afiliados, CRM
-- **Arquitectura:** Multi-producto, preparada para multiples kits
+- **Proposito:** Sitio Alexendros con auth, pagos y suscripciones. Venta de productos verticales por reformular
+- **Arquitectura:** Multi-producto, preparada para multiples aplicaciones verticales
 
 ## Stack backend
 - Supabase Auth SSR (login, register, Google OAuth)
@@ -25,7 +27,7 @@ Hub KitOS completo en alexendros.pro.
 - Rate limiting con @upstash/ratelimit en endpoints publicos
 
 ## Secciones
-- Landing publica: catalogo kits, pricing, waitlist
+- Landing publica: catalogo de productos, pricing, waitlist
 - Auth: login, register, reset-password, callback
 - Dashboard: overview, billing, perfil, settings
 - Legal: aviso-legal, privacidad, cookies, terminos
