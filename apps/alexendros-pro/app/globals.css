@@ -1,228 +1,147 @@
 @import "tailwindcss";
-@import "tw-animate-css";
 
-/* Shadcn/ui tailwind extensions — inlined from shadcn/dist/tailwind.css */
-@theme inline {
-  @keyframes accordion-down {
-    from {
-      height: 0;
-    }
-    to {
-      height: var(
-        --radix-accordion-content-height,
-        var(--accordion-panel-height, auto)
-      );
-    }
-  }
-
-  @keyframes accordion-up {
-    from {
-      height: var(
-        --radix-accordion-content-height,
-        var(--accordion-panel-height, auto)
-      );
-    }
-    to {
-      height: 0;
-    }
-  }
-}
-
-@custom-variant data-open {
-  &:where([data-state="open"]),
-  &:where([data-open]:not([data-open="false"])) {
-    @slot;
-  }
-}
-
-@custom-variant data-closed {
-  &:where([data-state="closed"]),
-  &:where([data-closed]:not([data-closed="false"])) {
-    @slot;
-  }
-}
-
-@custom-variant data-checked {
-  &:where([data-state="checked"]),
-  &:where([data-checked]:not([data-checked="false"])) {
-    @slot;
-  }
-}
-
-@custom-variant data-unchecked {
-  &:where([data-state="unchecked"]),
-  &:where([data-unchecked]:not([data-unchecked="false"])) {
-    @slot;
-  }
-}
-
-@custom-variant data-selected {
-  &:where([data-selected="true"]) {
-    @slot;
-  }
-}
-
-@custom-variant data-disabled {
-  &:where([data-disabled="true"]),
-  &:where([data-disabled]:not([data-disabled="false"])) {
-    @slot;
-  }
-}
-
-@custom-variant data-active {
-  &:where([data-state="active"]),
-  &:where([data-active]:not([data-active="false"])) {
-    @slot;
-  }
-}
-
-@custom-variant data-horizontal {
-  &:where([data-orientation="horizontal"]) {
-    @slot;
-  }
-}
-
-@custom-variant data-vertical {
-  &:where([data-orientation="vertical"]) {
-    @slot;
-  }
-}
-
-@utility no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-}
-
-/* Alexendros Design System — dark mode tokens oklch */
-@custom-variant dark (&:where(.dark, .dark *));
+/*
+ * Patrón VAP · tema Abisal
+ * Fuente: https://github.com/Alexendros/PatronVAP
+ * Dark-first. Light mode fuera de alcance.
+ */
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
 
-:root {
-  --radius: 0.5rem;
-  --background: oklch(0.09 0.005 240);
-  --foreground: oklch(0.95 0.005 240);
-  --card: oklch(0.13 0.008 240);
-  --card-foreground: oklch(0.95 0.005 240);
-  --popover: oklch(0.13 0.008 240);
-  --popover-foreground: oklch(0.95 0.005 240);
-  --primary: oklch(0.72 0.22 142);
-  --primary-foreground: oklch(0.09 0.005 240);
-  --secondary: oklch(0.17 0.008 240);
-  --secondary-foreground: oklch(0.95 0.005 240);
-  --muted: oklch(0.17 0.008 240);
-  --muted-foreground: oklch(0.65 0.01 240);
-  --accent: oklch(0.65 0.18 55);
-  --accent-foreground: oklch(0.09 0.005 240);
-  --destructive: oklch(0.60 0.22 25);
-  --destructive-foreground: oklch(0.95 0.005 240);
-  --border: oklch(0.22 0.01 240);
-  --input: oklch(0.22 0.01 240);
-  --ring: oklch(0.72 0.22 142);
-  --chart-1: oklch(0.72 0.22 142);
-  --chart-2: oklch(0.65 0.18 55);
-  --chart-3: oklch(0.65 0.16 240);
-  --chart-4: oklch(0.75 0.15 70);
-  --chart-5: oklch(0.60 0.22 25);
-  --sidebar: oklch(0.11 0.006 240);
-  --sidebar-foreground: oklch(0.95 0.005 240);
-  --sidebar-primary: oklch(0.72 0.22 142);
-  --sidebar-primary-foreground: oklch(0.09 0.005 240);
-  --sidebar-accent: oklch(0.17 0.008 240);
-  --sidebar-accent-foreground: oklch(0.95 0.005 240);
-  --sidebar-border: oklch(0.22 0.01 240);
-  --sidebar-ring: oklch(0.72 0.22 142);
-}
+  --color-surface-0: var(--color-surface-0);
+  --color-surface-50: var(--color-surface-50);
+  --color-surface-100: var(--color-surface-100);
+  --color-surface-200: var(--color-surface-200);
+  --color-surface-300: var(--color-surface-300);
+  --color-surface-400: var(--color-surface-400);
+  --color-surface-500: var(--color-surface-500);
+  --color-surface-600: var(--color-surface-600);
+  --color-surface-700: var(--color-surface-700);
+  --color-surface-800: var(--color-surface-800);
+  --color-surface-900: var(--color-surface-900);
 
-[data-kit="lexkit"] {
-  --primary: oklch(0.45 0.12 250);
-  --primary-foreground: oklch(0.95 0.005 250);
-  --accent: oklch(0.70 0.10 80);
-  --accent-foreground: oklch(0.12 0.01 250);
-  --ring: oklch(0.45 0.12 250);
-  --chart-1: oklch(0.45 0.12 250);
-  --chart-2: oklch(0.70 0.10 80);
-  --sidebar-primary: oklch(0.45 0.12 250);
-  --sidebar-ring: oklch(0.45 0.12 250);
-}
+  --color-brand-primary: var(--color-brand-primary);
+  --color-brand-primary-hc: var(--color-brand-primary-hc);
+  --color-brand-primary-fg: var(--color-brand-primary-fg);
+  --color-brand-accent: var(--color-brand-accent);
+  --color-brand-accent-fg: var(--color-brand-accent-fg);
 
-[data-kit="gestkit"] {
-  --primary: oklch(0.55 0.08 220);
-  --primary-foreground: oklch(0.95 0.005 220);
-  --accent: oklch(0.65 0.15 160);
-  --accent-foreground: oklch(0.13 0.005 220);
-  --ring: oklch(0.55 0.08 220);
-  --chart-1: oklch(0.55 0.08 220);
-  --chart-2: oklch(0.65 0.15 160);
-  --sidebar-primary: oklch(0.55 0.08 220);
-  --sidebar-ring: oklch(0.55 0.08 220);
-}
+  --color-text-primary: var(--color-text-primary);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-text-tertiary: var(--color-text-tertiary);
+  --color-text-disabled: var(--color-text-disabled);
 
-/* ── Fluid type scale (alineado con alexendros.me) ───────── */
-@theme {
-  --text-display: clamp(2rem, 4vw + 1rem, 3.5rem);
-  --text-headline: clamp(1.5rem, 2.5vw + 0.75rem, 2.25rem);
-  --text-body: clamp(1rem, 0.25vw + 0.95rem, 1.125rem);
+  --color-border-subtle: var(--color-border-subtle);
+  --color-border-default: var(--color-border-default);
+  --color-border-strong: var(--color-border-strong);
+
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  --text-display: clamp(2.5rem, 6vw + 1rem, 5.25rem);
+  --text-h1: clamp(2rem, 4vw + 1rem, 3.5rem);
+  --text-body: 1rem;
   --text-small: 0.875rem;
 }
 
-/* Tokens derivados — glows/rings/easings/layout */
 :root {
-  --shadow-glow-primary: 0 0 40px color-mix(in oklch, var(--primary) 25%, transparent);
-  --shadow-glow-accent: 0 0 48px color-mix(in oklch, var(--accent) 32%, transparent);
-  --ring-focus: 0 0 0 3px color-mix(in oklch, var(--ring) 60%, transparent);
-  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
-  --duration-fast: 150ms;
-  --measure-prose: 65ch;
-  --safe-inset-x: max(1rem, env(safe-area-inset-left));
+  /* Tokens base VAP — spacing, radii, motion, tipografía */
+  --space-0: 0;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+
+  --tracking-display: -0.035em;
+  --tracking-heading: -0.022em;
+  --tracking-body: -0.005em;
+  --tracking-mono: 0;
+
+  --leading-tight: 1.15;
+  --leading-snug: 1.3;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.65;
+
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-quart: cubic-bezier(0.76, 0, 0.24, 1);
+
+  --dur-instant: 80ms;
+  --dur-fast: 120ms;
+  --dur-base: 180ms;
+  --dur-slow: 240ms;
+  --dur-slower: 400ms;
+
+  --z-base: 0;
+  --z-sticky: 100;
+  --z-overlay: 400;
+  --z-modal: 800;
+  --z-toast: 1200;
+  --z-tooltip: 1600;
+
+  --measure-prose: 58ch;
+}
+
+/* Tema Abisal — superficie técnica midnight oceanic */
+[data-theme="abisal"] {
+  --color-brand-primary: oklch(0.52 0.14 245);
+  --color-brand-primary-hc: oklch(0.58 0.14 240);
+  --color-brand-primary-fg: oklch(0.97 0.005 240);
+  --color-brand-accent: oklch(0.68 0.09 230);
+  --color-brand-accent-fg: oklch(0.08 0.014 250);
+
+  --color-surface-0: oklch(0.08 0.015 250);
+  --color-surface-50: oklch(0.10 0.017 250);
+  --color-surface-100: oklch(0.12 0.019 250);
+  --color-surface-200: oklch(0.15 0.021 250);
+  --color-surface-300: oklch(0.18 0.023 250);
+  --color-surface-400: oklch(0.21 0.025 250);
+  --color-surface-500: oklch(0.24 0.027 250);
+  --color-surface-600: oklch(0.27 0.029 250);
+  --color-surface-700: oklch(0.30 0.030 250);
+  --color-surface-800: oklch(0.33 0.031 250);
+  --color-surface-900: oklch(0.37 0.032 250);
+
+  --color-text-primary: oklch(0.96 0.008 245);
+  --color-text-secondary: oklch(0.78 0.012 245);
+  --color-text-tertiary: oklch(0.62 0.016 245);
+  --color-text-disabled: oklch(0.44 0.018 245);
+  --color-text-inverse: oklch(0.08 0.015 250);
+
+  --color-border-subtle: oklch(0.15 0.021 250);
+  --color-border-default: oklch(0.21 0.025 250);
+  --color-border-strong: oklch(0.29 0.029 250);
+  --color-border-focus: var(--color-brand-primary);
+
+  --shadow-glow-brand: 0 0 40px
+    color-mix(in oklch, var(--color-brand-primary) 22%, transparent);
+  --shadow-overlay: 0 16px 40px -8px oklch(0 0 0 / 0.55);
+
+  color-scheme: dark;
 }
 
 @layer base {
-  * {
-    @apply border-border;
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
   }
 
   html {
@@ -236,208 +155,52 @@
   }
 
   body {
-    @apply bg-background text-foreground relative;
-    overflow-x: hidden;
+    position: relative;
+    min-height: 100svh;
+    margin: 0;
+    background-color: var(--color-surface-0);
+    color: var(--color-text-primary);
     font-family: var(--font-sans);
-    line-height: 1.6;
+    font-size: var(--text-body);
+    line-height: var(--leading-relaxed);
+    letter-spacing: var(--tracking-body);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-    min-height: 100svh;
+    overflow-x: hidden;
   }
 
-  /* Tabular numerals utility — for metrics/prices/times */
+  ::selection {
+    background: color-mix(in oklch, var(--color-brand-primary) 38%, transparent);
+    color: var(--color-text-primary);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-border-focus);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
   .tabular {
     font-variant-numeric: tabular-nums lining-nums;
     font-feature-settings: "tnum", "lnum";
   }
 
-  @media (prefers-contrast: more) {
-    :root {
-      --border: oklch(0.38 0.01 240);
-      --muted-foreground: oklch(0.78 0.01 240);
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0ms !important;
+      animation-delay: 0ms !important;
+      transition-duration: 0ms !important;
+    }
+    html {
+      scroll-behavior: auto;
     }
   }
-
-  /* Ambient halo — matiz pro: acento naranja dominante (en .me manda el verde) */
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: -20;
-    pointer-events: none;
-    background:
-      radial-gradient(
-        ellipse 65% 55% at 20% 0%,
-        color-mix(in oklch, var(--accent) 14%, transparent),
-        transparent 60%
-      ),
-      radial-gradient(
-        ellipse 55% 45% at 85% 100%,
-        color-mix(in oklch, var(--primary) 9%, transparent),
-        transparent 60%
-      );
-  }
-
-  ::selection {
-    background: color-mix(in oklch, var(--accent) 35%, transparent);
-    color: var(--foreground);
-  }
-
-  :focus-visible {
-    outline: none;
-    box-shadow: var(--ring-focus);
-    border-radius: var(--radius-sm);
-  }
 }
-
-@layer components {
-  .site-shell {
-    margin-inline: auto;
-    width: 100%;
-    max-width: 72rem;
-    padding-inline: var(--safe-inset-x);
-  }
-
-  /* Matiz de formato: pro centra el hero; .me lo alinea a la izquierda */
-  .hero-section {
-    min-height: calc(100svh - 2rem);
-    padding-block: clamp(4rem, 12vw, 8rem);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    gap: clamp(1rem, 2vw, 1.75rem);
-    max-width: 52rem;
-  }
-
-  .hero-signature {
-    font-family: var(--font-sans);
-    font-weight: 700;
-    font-size: var(--text-display);
-    line-height: 1.05;
-    letter-spacing: -0.02em;
-    /* Matiz de color: glow en acento naranja (en .me es primary verde) */
-    text-shadow: var(--shadow-glow-accent);
-    text-wrap: balance;
-    font-feature-settings: "ss01", "cv11";
-  }
-
-  .hero-eyebrow {
-    font-family: var(--font-mono);
-    font-size: var(--text-small);
-    color: var(--accent);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  .prose-lead {
-    font-family: var(--font-sans);
-    font-weight: 400;
-    line-height: 1.65;
-    color: var(--muted-foreground);
-    max-width: var(--measure-prose);
-    margin-inline: auto;
-    text-wrap: pretty;
-    hyphens: auto;
-    -webkit-hyphens: auto;
-  }
-
-  /* Skip-link accesible — oculto hasta enfoque con teclado */
-  .skip-link {
-    position: absolute;
-    top: 0.75rem;
-    left: 0.75rem;
-    z-index: 50;
-    padding: 0.5rem 0.875rem;
-    background: var(--card);
-    color: var(--foreground);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    font-family: var(--font-mono);
-    font-size: var(--text-small);
-    transform: translateY(-150%);
-    transition: transform var(--duration-fast) var(--ease-smooth);
-  }
-  .skip-link:focus-visible {
-    transform: translateY(0);
-  }
-
-  /* CTA inline con icon animado */
-  .link-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
-    color: var(--accent);
-    text-decoration: underline;
-    text-underline-offset: 0.25em;
-    text-decoration-color: color-mix(in oklch, var(--accent) 60%, transparent);
-    transition: text-decoration-color var(--duration-fast) var(--ease-smooth);
-  }
-  .link-cta:hover {
-    text-decoration-color: var(--accent);
-  }
-  .link-cta__icon {
-    transition: transform var(--duration-fast) var(--ease-smooth);
-  }
-  .link-cta:hover .link-cta__icon,
-  .link-cta:focus-visible .link-cta__icon {
-    transform: translate(2px, -2px);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .link-cta__icon { transition: none; }
-    .link-cta:hover .link-cta__icon,
-    .link-cta:focus-visible .link-cta__icon { transform: none; }
-  }
-
-  .link-inline {
-    color: var(--accent);
-    text-decoration: underline;
-    text-underline-offset: 0.25em;
-    text-decoration-color: color-mix(in oklch, var(--accent) 60%, transparent);
-    transition: text-decoration-color var(--duration-fast) var(--ease-smooth);
-  }
-  .link-inline:hover {
-    text-decoration-color: var(--accent);
-  }
-
-  /* Píldora de estado "próximamente" — sello propio de pro */
-  .pro-status {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.625rem;
-    padding: 0.5rem 0.875rem;
-    border: 1px solid color-mix(in oklch, var(--accent) 35%, var(--border));
-    border-radius: 9999px;
-    background: color-mix(in oklch, var(--card) 92%, var(--accent));
-    font-family: var(--font-mono);
-    font-size: var(--text-small);
-    color: var(--foreground);
-    margin-top: 0.5rem;
-  }
-  .pro-status__dot {
-    width: 0.5rem;
-    height: 0.5rem;
-    border-radius: 9999px;
-    background: var(--accent);
-    box-shadow: 0 0 12px var(--accent);
-    animation: pro-pulse 2.4s var(--ease-smooth) infinite;
-  }
-  .pro-status__label {
-    letter-spacing: 0.04em;
-  }
-
-  @keyframes pro-pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.55; transform: scale(0.85); }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .pro-status__dot { animation: none; }
-    html { scroll-behavior: auto; }
-  }
-}
-
-@source "../../packages/ui/src";

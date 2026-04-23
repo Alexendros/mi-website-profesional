@@ -14,14 +14,14 @@ export default function AppleIcon() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "#0a0b0d",
-          color: "#e88547",
+          background: "#080c14",
+          color: "#4c8bd1",
           fontFamily: '"Geist", system-ui, sans-serif',
           fontSize: 120,
           fontWeight: 700,
           letterSpacing: "-0.04em",
           borderRadius: 32,
-          boxShadow: "inset 0 0 80px rgba(232,133,71,0.15)",
+          boxShadow: "inset 0 0 80px rgba(58,125,198,0.18)",
         }}
       >
         A
