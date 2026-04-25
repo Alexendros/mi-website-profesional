@@ -304,15 +304,25 @@ Plataforma SaaS multi-producto de kits digitales temáticos para profesionales, 
 ## Technology Stack
 
 ## Recommended Stack (2025/2026)
-### Framework — Next.js 16.x
-- **Turbopack es ahora el bundler por defecto** — reemplaza Webpack. 2–5x builds más rápidos, hasta 10x Fast Refresh. Sin configuración requerida.
-- **`proxy.ts` reemplaza `middleware.ts`** — renombrar el archivo y la función exportada. La lógica es idéntica. `middleware.ts` sigue funcionando para Edge runtime pero está descatalogado.
-- **Params y cookies async son obligatorios** — `await params`, `await cookies()`, `await headers()`. En v15 eran warnings; en v16 son errores en build.
-- **Node.js 20.9+ requerido** — Node 18 ya no está soportado. Actualizar VPS y Vercel runtime.
-- **`cacheComponents: true`** — nuevo modelo de caché explícito con directiva `"use cache"`. PPR evoluciona hacia este modelo. No activo por defecto, opt-in.
-- **React 19.2** incluido — View Transitions, `useEffectEvent`, `Activity` component.
-- **`revalidateTag()` requiere segundo argumento** — `revalidateTag('tag', 'max')`. El form de un argumento está descatalogado.
-- **`after()` estable** — útil para logs y analytics post-respuesta sin bloquear al usuario.
+### Framework — Next.js 15.x (con Turbopack opt-in)
+
+> **Decisión 2026-04-25** (golden-set autoresearch code-reviewer 2026-W17, finding `pr-alexendrospro-1.yaml#f5`): mantener **Next 15** y diferir migración a v16 hasta cumplirse dos condiciones:
+> 1. Test scaffold E2E real (Vitest + Playwright) ejecutándose en CI con ≥1 ronda verde — tracked en finding `pr-alexendrospro-1.yaml#f6`.
+> 2. Next.js 16 con ≥6 meses en estable (objetivo: octubre 2026; v16.0 GA fue marzo 2026).
+>
+> Razón: single-developer sin red de tests E2E robusta no compensa el riesgo de regresiones silenciosas en el ecosistema (`@supabase/ssr`, `@sentry/nextjs`, `@stripe/stripe-js`, `tRPC v11`, Tailwind v4.1, shadcn). Los beneficios reales de v16 (Turbopack-by-default y `cacheComponents`) ya están disponibles vía opt-in en v15: `next dev --turbopack` + `experimental.cacheComponents`.
+
+**Convenciones a aplicar desde ya** (preparan migración futura mecánica):
+- `params`/`cookies`/`headers` async obligatorios: escribir `await params`, `await cookies()`, `await headers()` siempre. Aunque en v15 son warnings, en v16 son errores en build.
+- `revalidateTag('tag', 'max')` con segundo argumento desde el inicio.
+- Node.js 22 LTS (cumple v15 y v16; ya en `engines.node` de cada `package.json`).
+- Turbopack en dev: `next dev --turbopack` ya es estable en v15.
+
+**Decisiones diferidas hasta migración** (tareas mecánicas cuando se reabra):
+- `middleware.ts` → renombrar a `proxy.ts` (rename + función exportada; lógica idéntica).
+- `cacheComponents: true` opt-in si se prefiere el modelo `"use cache"` sobre PPR clásico.
+- React 19.2 (incluido con v16; en v15 estamos en React 19.0/19.1).
+- `after()` estable (en v15 está como `unstable_after`).
 ### Auth — Supabase Auth SSR via `@supabase/ssr`
 - `createServerClient()` → Server Components, Route Handlers, Server Actions
 - `createBrowserClient()` → Client Components
@@ -382,12 +392,11 @@ Plataforma SaaS multi-producto de kits digitales temáticos para profesionales, 
 | Para 1 dev | Excelente | Overhead innecesario |
 | Para equipos | Adecuado | Superior |
 ## Validation of Current Choices
-### Next.js 15 → Actualizar a Next.js 16
-- El proyecto aún no tiene código, por lo que no hay deuda de migración. Iniciar directamente en Next.js 16.
-- `middleware.ts` → renombrar a `proxy.ts` desde el inicio para evitar avisos de descatalogado.
-- Node.js 20.9+ requerido — verificar que la configuración de Vercel y el VPS usen Node 20 LTS.
-- `params` y `cookies()` async obligatorio — escribir código async desde el inicio.
-- `revalidateTag()` con segundo argumento obligatorio.
+### Next.js 15 — mantener (revaluar Next 16 ~oct 2026)
+- Decisión 2026-04-25: ver bloque "Framework — Next.js 15.x" arriba.
+- Triggers de re-evaluación: (a) Vitest + Playwright en CI verde, (b) Next 16 con ≥6 meses GA.
+- Acción immediata: seguir convenciones v16-ready (`await params/cookies/headers`, `revalidateTag(tag, mode)`, Node 22).
+- `middleware.ts` se mantiene en v15; rename a `proxy.ts` será mecánico cuando se migre.
 ### Supabase Auth SSR
 ### Prisma 5
 ### tRPC v11
@@ -403,7 +412,7 @@ Plataforma SaaS multi-producto de kits digitales temáticos para profesionales, 
 ### Pages Router de Next.js
 ### GraphQL / Apollo (en lugar de tRPC)
 ### Nx (en lugar de Turborepo)
-### Webpack (desde Next.js 16)
+### Webpack (Turbopack opt-in en v15, default en v16 cuando se migre)
 ### Neon Database (en lugar de Supabase)
 ### PlanetScale (en lugar de Supabase)
 ### Clerk (en lugar de Supabase Auth)
@@ -412,9 +421,9 @@ Plataforma SaaS multi-producto de kits digitales temáticos para profesionales, 
 ## Version Matrix
 | Librería | Versión en CLAUDE.md | Latest Stable | Notas |
 |---------|---------------------|---------------|-------|
-| Next.js | 15.x | **16.2** (mar 2026) | ACTUALIZAR — usar 16 desde inicio |
-| React | 19 | 19.2 | Incluido con Next.js 16 |
-| TypeScript | 5.x | 5.x | Mínimo 5.1 requerido por Next.js 16 |
+| Next.js | 15.x | 16.2 (mar 2026) | **MANTENER 15** hasta ~oct 2026 (decisión 2026-04-25). Triggers v16: Vitest+Playwright CI verde + ≥6 meses GA |
+| React | 19.0/19.1 | 19.2 (con Next 16) | Mantener compatible con Next 15. React 19.2 cuando se migre |
+| TypeScript | 5.8.x | 5.x | Mínimo 5.1 requerido por Next 15. TS 6.x bloqueado (ver `~/Apps/alexendrosme/docs/typescript-6-compat-plan.md`) |
 | Tailwind CSS | 4.x | **4.1** (abr 2025) | Usar 4.1 — tiene text-shadow y mask utils |
 | shadcn/ui | latest | latest (CLI) | No tiene versión semántica propia |
 | Radix UI | latest | latest | Instalado via shadcn CLI |
@@ -428,7 +437,7 @@ Plataforma SaaS multi-producto de kits digitales temáticos para profesionales, 
 | Resend | latest | latest | |
 | Turborepo | latest | 2.x | |
 | pnpm | 9.x | 9.x | Compatible con Turborepo 2 |
-| Node.js | 22.x | 22 LTS | OK — Next.js 16 requiere 20.9+ |
+| Node.js | 22.x | 22 LTS | OK — Next 15 acepta 20.9+; Next 16 (futuro) también |
 | Zustand | 4.x | 5.x | Verificar compatibilidad React 19 |
 | Framer Motion | 12 | 12 | Renombrado a `motion` — `import { motion } from 'motion/react'` |
 | React Hook Form | latest | 7.x | Compatible con React 19 |
@@ -436,7 +445,7 @@ Plataforma SaaS multi-producto de kits digitales temáticos para profesionales, 
 | Vitest | latest | 2.x | |
 | Playwright | latest | 1.4x | |
 | Upstash Ratelimit | latest | latest | |
-| Sentry Next.js | latest | `@sentry/nextjs` | Usar `instrumentation.ts` hook estable de Next.js 16 |
+| Sentry Next.js | latest | `@sentry/nextjs` | Usar `instrumentation.ts` (estable también en Next 15) |
 | PostHog | latest | latest | Mantener EU endpoint |
 ## Critical Actions Before Starting FASE 0
 <!-- GSD:stack-end -->
