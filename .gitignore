@@ -19,9 +19,6 @@ build/
 .env.local
 .env.*.local
 
-# Prisma
-packages/db/prisma/migrations/
-
 # Vercel
 .vercel/
 
