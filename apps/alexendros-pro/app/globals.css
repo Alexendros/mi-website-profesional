@@ -1,9 +1,17 @@
 @import "tailwindcss";
 
 /*
- * Patrón VAP · tema Abisal
- * Fuente: https://github.com/Alexendros/PatronVAP
- * Dark-first. Light mode fuera de alcance.
+ * Vergina Imperial · acento Titanio
+ * Fuente: https://github.com/Alexendros/design-system_vergina-imperial
+ *
+ * Sucesor de "Patrón VAP · tema Abisal" (v0.2.0). El sistema unificado se
+ * activa con `data-mode="dark"` (default) + `data-accent="titanium"` sobre
+ * la atmósfera púrpura pretoriana (hue 315). El acento se aplica a nivel
+ * de superficie, no de componente — alexendros.pro vive entera en titanio.
+ *
+ * Tokens espejados en local desde colors_and_type.css + color_modes.css
+ * del repo Vergina Imperial. Mantener nombres compatibles con el código
+ * consumidor de alexendros-pro.
  */
 
 @theme inline {
@@ -50,7 +58,7 @@
 }
 
 :root {
-  /* Tokens base VAP — spacing, radii, motion, tipografía */
+  /* Tokens base universales — spacing, radii, motion, type */
   --space-0: 0;
   --space-1: 4px;
   --space-2: 8px;
@@ -99,42 +107,80 @@
   --measure-prose: 58ch;
 }
 
-/* Tema Abisal — superficie técnica midnight oceanic */
-[data-theme="abisal"] {
-  --color-brand-primary: oklch(0.52 0.14 245);
-  --color-brand-primary-hc: oklch(0.58 0.14 240);
-  --color-brand-primary-fg: oklch(0.97 0.005 240);
-  --color-brand-accent: oklch(0.68 0.09 230);
-  --color-brand-accent-fg: oklch(0.08 0.014 250);
+/* ── DARK · base · atmósfera púrpura pretoriana ─────────────────────────
+   Default. La superficie nunca se ve plana: el púrpura habita el fondo
+   en once pasos de luminosidad sobre hue 315. */
 
-  --color-surface-0: oklch(0.08 0.015 250);
-  --color-surface-50: oklch(0.10 0.017 250);
-  --color-surface-100: oklch(0.12 0.019 250);
-  --color-surface-200: oklch(0.15 0.021 250);
-  --color-surface-300: oklch(0.18 0.023 250);
-  --color-surface-400: oklch(0.21 0.025 250);
-  --color-surface-500: oklch(0.24 0.027 250);
-  --color-surface-600: oklch(0.27 0.029 250);
-  --color-surface-700: oklch(0.30 0.030 250);
-  --color-surface-800: oklch(0.33 0.031 250);
-  --color-surface-900: oklch(0.37 0.032 250);
+:root,
+[data-mode="deep"],
+[data-mode="dark"] {
+  --color-surface-0: oklch(0.10 0.014 315);
+  --color-surface-50: oklch(0.12 0.016 315);
+  --color-surface-100: oklch(0.14 0.018 315);
+  --color-surface-200: oklch(0.17 0.020 315);
+  --color-surface-300: oklch(0.20 0.022 315);
+  --color-surface-400: oklch(0.23 0.024 315);
+  --color-surface-500: oklch(0.26 0.026 315);
+  --color-surface-600: oklch(0.29 0.028 315);
+  --color-surface-700: oklch(0.33 0.030 315);
+  --color-surface-800: oklch(0.37 0.032 315);
+  --color-surface-900: oklch(0.42 0.034 315);
 
-  --color-text-primary: oklch(0.96 0.008 245);
-  --color-text-secondary: oklch(0.78 0.012 245);
-  --color-text-tertiary: oklch(0.62 0.016 245);
-  --color-text-disabled: oklch(0.44 0.018 245);
-  --color-text-inverse: oklch(0.08 0.015 250);
+  --color-text-primary: oklch(0.97 0.008 310);
+  --color-text-secondary: oklch(0.80 0.010 310);
+  --color-text-tertiary: oklch(0.62 0.012 310);
+  --color-text-disabled: oklch(0.46 0.014 310);
+  --color-text-inverse: oklch(0.07 0.012 315);
 
-  --color-border-subtle: oklch(0.15 0.021 250);
-  --color-border-default: oklch(0.21 0.025 250);
-  --color-border-strong: oklch(0.29 0.029 250);
-  --color-border-focus: var(--color-brand-primary);
+  --color-border-subtle: var(--color-surface-300);
+  --color-border-default: var(--color-surface-500);
+  --color-border-strong: var(--color-surface-700);
+  --color-border-focus: var(--accent);
 
-  --shadow-glow-brand: 0 0 40px
-    color-mix(in oklch, var(--color-brand-primary) 22%, transparent);
   --shadow-overlay: 0 16px 40px -8px oklch(0 0 0 / 0.55);
 
   color-scheme: dark;
+}
+
+/* ── ACENTO · TITANIO ───────────────────────────────────────────────────
+   alexendros.pro es superficie técnica → titanio (gris perla, hue 270,
+   chroma ≤ 0.012). Una vista vive en un solo metal — no se mezcla con
+   oro Vergina dentro del mismo viewport. */
+
+:root,
+[data-accent="titanium"] {
+  --accent: oklch(0.86 0.012 270);
+  --accent-dim: oklch(0.68 0.014 260);
+  --accent-bright: oklch(0.95 0.005 270);
+  --accent-fg: oklch(0.10 0.008 270);
+
+  --shadow-glow-brand: 0 0 48px
+    color-mix(in oklch, var(--accent) 26%, transparent);
+
+  --color-brand-primary: var(--accent);
+  --color-brand-primary-hc: var(--accent); /* AA sobre surface-0: ~10:1 */
+  --color-brand-primary-fg: var(--accent-fg);
+  --color-brand-accent: var(--accent-dim);
+  --color-brand-accent-fg: var(--accent-fg);
+}
+
+/* H1 hero · Vergina Imperial v0.2.1 · degradado vertical color→transparente */
+h1.display, .hero h1 {
+  font-family: var(--font-display, "Outfit"), var(--font-sans), sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 0.98;
+  text-wrap: balance;
+  background: linear-gradient(180deg,
+    var(--color-text-primary) 0%,
+    var(--color-text-primary) 35%,
+    color-mix(in oklch, var(--color-text-primary) 60%, transparent) 70%,
+    transparent 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 36px color-mix(in oklch, var(--accent) 18%, transparent));
 }
 
 @layer base {

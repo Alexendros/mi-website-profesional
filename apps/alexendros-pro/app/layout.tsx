@@ -1,4 +1,5 @@
 import localFont from "next/font/local";
+import { Outfit } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
@@ -19,6 +20,14 @@ const geistMono = localFont({
   display: "swap",
   adjustFontFallback: "Arial",
   preload: false,
+});
+
+// Vergina Imperial v0.2.1 · Outfit weight 700/800 para hero h1.display.
+const outfitDisplay = Outfit({
+  subsets: ["latin"],
+  variable: "--font-display",
+  weight: ["700", "800"],
+  display: "swap",
 });
 
 const SITE_URL = "https://alexendros.pro";
@@ -100,8 +109,9 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      data-theme="abisal"
-      className={`${geistSans.variable} ${geistMono.variable}`}
+      data-mode="dark"
+      data-accent="titanium"
+      className={`${geistSans.variable} ${geistMono.variable} ${outfitDisplay.variable}`}
     >
       <body>
         <ParticleBg />
