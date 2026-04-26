@@ -164,18 +164,19 @@
   --color-brand-accent-fg: var(--accent-fg);
 }
 
-/* H1 hero · Vergina Imperial v0.2.1 · degradado vertical color→transparente */
+/* H1 hero · Vergina Imperial v0.2.2 · fade vertical color→semi-transparente.
+   Sólido hasta 55%, transición al 80%, baseline 35% al 100% — NUNCA fade total. */
 h1.display, .hero h1 {
-  font-family: var(--font-display, "Outfit"), var(--font-sans), sans-serif;
+  font-family: var(--font-display, "Inter"), var(--font-sans), sans-serif;
   font-weight: 700;
   letter-spacing: -0.025em;
   line-height: 0.98;
   text-wrap: balance;
   background: linear-gradient(180deg,
     var(--color-text-primary) 0%,
-    var(--color-text-primary) 35%,
-    color-mix(in oklch, var(--color-text-primary) 60%, transparent) 70%,
-    transparent 100%);
+    var(--color-text-primary) 55%,
+    color-mix(in oklch, var(--color-text-primary) 78%, transparent) 80%,
+    color-mix(in oklch, var(--color-text-primary) 35%, transparent) 100%);
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
