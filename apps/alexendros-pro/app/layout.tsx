@@ -1,4 +1,5 @@
 import localFont from "next/font/local";
+import { Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
@@ -19,6 +20,15 @@ const geistMono = localFont({
   display: "swap",
   adjustFontFallback: "Arial",
   preload: false,
+});
+
+// Vergina Imperial v0.2.2 · Inter weight 700/800/900 para hero h1.display.
+// Outfit/Bricolage descatalogados (Inter aprobada como reemplazo definitivo).
+const interDisplay = Inter({
+  subsets: ["latin"],
+  variable: "--font-display",
+  weight: ["700", "800", "900"],
+  display: "swap",
 });
 
 const SITE_URL = "https://alexendros.pro";
@@ -100,8 +110,9 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      data-theme="abisal"
-      className={`${geistSans.variable} ${geistMono.variable}`}
+      data-mode="dark"
+      data-accent="titanium"
+      className={`${geistSans.variable} ${geistMono.variable} ${interDisplay.variable}`}
     >
       <body>
         <ParticleBg />
