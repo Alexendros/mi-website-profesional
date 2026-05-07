@@ -14,7 +14,7 @@
     "lint": "eslint ."
   },
   "devDependencies": {
-    "@eslint/js": "^9.27.0",
+    "@eslint/js": "^10.0.1",
     "@repo/config": "workspace:*",
     "eslint": "^9.27.0",
     "geist": "^1.7.0",

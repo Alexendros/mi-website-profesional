@@ -24,7 +24,7 @@
     "react-dom": "^19.1.0"
   },
   "devDependencies": {
-    "@eslint/js": "^9.27.0",
+    "@eslint/js": "^10.0.1",
     "@repo/config": "workspace:*",
     "@tailwindcss/postcss": "^4.2.2",
     "@types/node": "^22.0.0",
