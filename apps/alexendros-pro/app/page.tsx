@@ -123,7 +123,7 @@ export default function Home() {
         {/* Signature footer */}
         <footer className="mt-auto pt-16 font-mono text-xs uppercase tracking-[0.14em] text-[var(--color-text-tertiary)]">
           <span aria-hidden="true">◈</span>
-          <span className="mx-2">Patrón VAP · Abisal</span>
+          <span className="mx-2">Vergina Imperial</span>
           <span>/</span>
           <span className="mx-2">alexendros.pro</span>
         </footer>
