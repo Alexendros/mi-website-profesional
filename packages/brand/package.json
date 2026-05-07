@@ -18,7 +18,7 @@
     "@repo/config": "workspace:*",
     "eslint": "^9.27.0",
     "geist": "^1.7.0",
-    "typescript": "^5.8.0",
+    "typescript": "^6.0.3",
     "typescript-eslint": "^8.33.0"
   }
 }
