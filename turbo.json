@@ -25,6 +25,11 @@
     },
     "test": {
       "dependsOn": ["^build"]
+    },
+    "test:e2e": {
+      "dependsOn": ["^build"],
+      "cache": false,
+      "env": ["PLAYWRIGHT_BASE_URL", "CI"]
     }
   }
 }
