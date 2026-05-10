@@ -10,10 +10,10 @@
 
 ## 0. REFERENCIA AL HUB CENTRAL (SIMBIOSIS)
 
-> **Contexto global**: antes de operar, consulta `~/.claude/PROYECTOS.md` para
+> **Contexto global**: antes de operar, consulta `~/.claude/CARTERA.md` para
 > conocer el estado, prioridad y urgencia del resto de apps de Alexendros.
-> Este indice se actualiza via la cadena: `mem-sintetizar → dev-arquitectura →
-> prod-actualizar-stakeholders → mem-actualizar` (nodo N13 de `omni-maestria`).
+> Este indice se actualiza via la cadena: `/memoria → /DEV_arquitectura →
+> /PRODUCTO_roadmap → /memoria` (orquestada por `/enrutador`).
 >
 > **Alertas cruzadas**: `~/.claude/projects/-var-home-soyalexendros/memory/cross-app-alerts.md`
 > — consulta obligatoria antes de deploys, rotaciones de secretos u operaciones destructivas.
@@ -27,7 +27,7 @@
 > Para operar sobre el contenido de `.planning/` usa la cadena de skills aprobada:
 >
 > ```
-> prod-brainstorming → prod-especificacion → app-maestria → dev-revision
+> /PRODUCTO_brainstorming → /PRODUCTO_especificacion → /APP_maestria → /APP_calidad (+ agente code-reviewer)
 > ```
 >
 > - **NO invocar** `gsd-quick`, `gsd-debug`, `gsd-execute-phase`, ni cualquier otro comando `gsd-*`.
@@ -36,7 +36,7 @@
 > - Los bloques `<!-- GSD:project-start -->`, `<!-- GSD:stack-start -->`, `<!-- GSD:conventions-start -->`, `<!-- GSD:architecture-start -->`, `<!-- GSD:skills-start -->`, `<!-- GSD:profile-start -->` son contenido heredado; no regenerar.
 > - **El bloque `<!-- GSD:workflow-start -->` mas abajo esta obsoleto y no debe seguirse** — usar la cadena de skills indicada arriba.
 >
-> Ver tabla completa de equivalencias en `~/.claude/Deportacion_GSD.md`.
+> Ver tabla completa de equivalencias en `~/.claude/projects/-var-home-soyalexendros/memory/feedback_gsd_descatalogado.md`.
 
 ---
 
@@ -468,10 +468,10 @@ No project skills found. Add skills to any of: `.claude/skills/`, `.agents/skill
 > **Cadena de skills equivalente** (operar sobre `.planning/` de este repo):
 >
 > ```
-> prod-brainstorming → prod-especificacion → app-maestria → dev-revision
+> /PRODUCTO_brainstorming → /PRODUCTO_especificacion → /APP_maestria → /APP_calidad (+ agente code-reviewer)
 > ```
 >
-> Ver `~/.claude/Deportacion_GSD.md` para la tabla completa de equivalencias
+> Ver `~/.claude/projects/-var-home-soyalexendros/memory/feedback_gsd_descatalogado.md` para la tabla completa de equivalencias
 > (nuevo proyecto, scan, debug, review, deploy, etc.).
 >
 > El bloque original se ha conservado como comentario historico abajo.
@@ -511,6 +511,14 @@ Do not make direct repo edits outside a GSD workflow unless the user explicitly 
 
 ## 11. SKILLS RECOMENDADAS
 
-`app-maestria` · `app-monorepo` · `app-arquitectura` · `app-migracion-bd` · `app-seguridad` · `app-despliegue` · `infra-stripe` · `dev-revision` · `dev-arquitectura` · `ux-sistema` · `shadcn` · `legal-cumplimiento`
+`/APP_maestria` · `/APP_monorepo` · `/DEV_arquitectura` · `/APP_migracion-bd` · `/APP_seguridad` · `/APP_despliegue` · `/CREA_integracion` (Stripe MCP) · `/APP_calidad` + agente `code-reviewer` · `/DEV_arquitectura` · `/UX_sistema` · `/vergina-imperial` · `/LEGAL_cumplimiento`
 
 ---
+
+
+---
+
+<!-- AUDIT 2026-04-27 EVO_claudemd -->
+## Auditoría 2026-04-27 · drift skills/agents post-reforma maestrías 2026-04-12
+
+`/EVO_claudemd` aplicó las equivalencias de cluster antiguos → nuevos prefijos MAYÚSCULA. Backup pre-cambios: `CLAUDE.md.bak-2026-04-27`. Ver memoria `~/.claude/projects/-var-home-soyalexendros/memory/project_maestrias_reforma_2026_04_12.md` para detalle.
