@@ -46,6 +46,15 @@ Producto digital (setup único, pago inicial)
 | 11 | [Agents & Skills](11-agents-skills.md) | 5 agentes + 6 skills con flujos de subagentes paralelos | ✅ Referencia de agentes |
 | 12 | [Correo & Email](12-correo-email.md) | Configuración Proton Mail Bridge, Resend, templates transaccionales | ✅ Antes de tocar email |
 
+### Governance y seguridad
+
+| Documento | Descripción |
+| --- | --- |
+| [docs/adr/](adr/) | 6 ADRs reales — stack, DB, pagos, tRPC, design system, cookie consent (0001–0006) |
+| [docs/threat-model.md](threat-model.md) | Modelo de amenazas STRIDE + LINDDUN — adversarios A1-A8, controles transversales |
+| [docs/runbooks/](runbooks/) | 7 runbooks operacionales — incident-response, postmortem, rotate-*, db-restore, secret-revoke, deploy-rollback |
+| [docs/research/benchmark-2026-05-portales.md](research/benchmark-2026-05-portales.md) | Benchmark UX/SEO/seguridad — Vercel, Stripe, Linear, next-forge |
+
 ### Plan maestro y pre-fase
 
 | Documento | Descripción |

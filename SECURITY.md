@@ -1,4 +1,4 @@
-# Política de seguridad de mi-website-profesional
+# Política de seguridad de alexendros-pro
 
 ## Versiones soportadas
 
@@ -11,9 +11,9 @@
 ## Reportar una vulnerabilidad
 
 **No abras un issue público** para reportar vulnerabilidades. Hazlo por
-canal privado a security@alexendros.me. Cifra el mensaje con la clave PGP
+canal privado a security@alexendros.pro. Cifra el mensaje con la clave PGP
 publicada en el directorio Web Key Directory (PENDIENTE_PUBLICAR_WKD, accesible
-vía `gpg --auto-key-locate wkd --locate-key security@alexendros.me`).
+vía `gpg --auto-key-locate wkd --locate-key security@alexendros.pro`).
 
 Incluye en el reporte:
 
@@ -49,4 +49,4 @@ y 34) y en la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad
 de la Información y de Comercio Electrónico (LSSI-CE) cuando aplique.
 
 Para consultas no urgentes y solicitudes de información sobre seguridad
-del proyecto: security@alexendros.me.
+del proyecto: security@alexendros.pro.

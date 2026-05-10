@@ -1,4 +1,4 @@
-# Guía de estilo de mi-website-profesional
+# Guía de estilo de alexendros-pro
 
 Convenciones para el código y la documentación.
 
@@ -22,7 +22,8 @@ Convenciones para el código y la documentación.
 
 - Tailwind v4. Evitar CSS suelto salvo en `globals.css` o tokens.
 - Variantes y átomos antes que `@apply`.
-- Tokens vienen del design system (`--vi-*`).
+- Tokens vienen del design system (`--color-*`) — definidos en `packages/brand/tokens.ts`.
+- Prohibido hardcodear colores fuera de `packages/brand/tokens.ts`.
 
 ## Naming
 

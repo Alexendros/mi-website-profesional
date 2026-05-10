@@ -1,4 +1,4 @@
-# Procedimiento de release de mi-website-profesional
+# Procedimiento de release de alexendros-pro
 
 Las releases siguen [SemVer 2.0.0](https://semver.org/lang/es/) y se
 publican a través de tags firmados.

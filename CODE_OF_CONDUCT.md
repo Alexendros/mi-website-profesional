@@ -3,7 +3,7 @@
 ## Nuestro compromiso
 
 Como participantes, contribuyentes y mantenedores nos comprometemos a hacer
-de la participación en mi-website-profesional y en su comunidad una experiencia
+de la participación en alexendros-pro y en su comunidad una experiencia
 libre de acoso para todas las personas, con independencia de la edad, la
 complexión, la discapacidad visible o invisible, el origen étnico, las
 características sexuales, la identidad y expresión de género, el nivel
@@ -61,7 +61,7 @@ representante designada en un evento online u offline.
 ## Aplicación
 
 Las conductas abusivas, acosadoras o inaceptables se pueden notificar a las
-personas responsables del proyecto a través de contacto@alexendros.me. Todas las
+personas responsables del proyecto a través de contacto@alexendros.pro. Todas las
 quejas se revisarán e investigarán de manera rápida y justa.
 
 Las personas responsables están obligadas a respetar la privacidad y la
