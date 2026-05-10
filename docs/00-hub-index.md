@@ -76,10 +76,10 @@ Producto digital (setup único, pago inicial)
 - **MVP target:** Semana 14 desde inicio de Fase 0
 - **Deploy:** Vercel (producción, región mad1) · Supabase (eu-west-1)
 - **Dominio principal:** alexendros.pro
-- **Hermana standalone:** alexendros.me (extraída 2026-04-11 a `~/Apps/alexendrosme/`)
+- **Hermana standalone:** alexendros.me (extraída 2026-04-11 a repo independiente)
 - **Producto MVP:** stagekit.app (Fase 7, roadmap Q3 2026)
 - **Automatización:** n8n self-hosted (Hostinger VPS)
-- **Cuaderno activo:** `~/.claude/cuadernos/meta__alexendrospro_Monorepo-hub-y-kitos/`
+- **Gestión interna del operador:** documentación privada (consultar operador)
 
 ---
 

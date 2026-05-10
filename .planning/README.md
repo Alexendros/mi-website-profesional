@@ -5,16 +5,12 @@
 > **NO usar** comandos `gsd-*`. La cadena de skills activa es:
 > `/PRODUCTO_brainstorming → /PRODUCTO_especificacion → /APP_maestria → /APP_calidad`
 >
-> Ver `~/.claude/projects/-var-home-soyalexendros/memory/feedback_gsd_descatalogado.md`
-> para la tabla completa de equivalencias.
+> Ver documentación privada del operador para la tabla completa de equivalencias.
 
-## Cuaderno activo
+## Gestión interna
 
-`~/.claude/cuadernos/meta__alexendrospro_Monorepo-hub-y-kitos/`
-
-## Plan activo
-
-`~/.claude/plans/analiza-el-estado-actual-zesty-tide.md`
+El operador mantiene el cuaderno activo y el plan vigente en su sistema privado de
+seguimiento; consultar con él para detalle operativo.
 
 ## Fases ejecutadas
 

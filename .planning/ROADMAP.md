@@ -193,7 +193,7 @@ Plans:
 **UI hint:** no
 
 ### Success Criteria
-1. n8n configurado con `DB_TYPE=postgresdb` y `EXECUTIONS_DATA_PRUNE=true`; `n8n.alexendros.me/healthz` responde 200 (monitoreado por Better Uptime).
+1. n8n configurado con `DB_TYPE=postgresdb` y `EXECUTIONS_DATA_PRUNE=true`; `n8n.example.com/healthz` responde 200 (monitoreado por Better Uptime).
 2. Welcome sequence W-01 (4 emails) se dispara al crear cuenta; W-02 tracker actualiza estado en DB; W-03 setup fee se cobra correctamente via Stripe.
 3. Dunning completo W-11..W-17: 3 reintentos de cobro con delay correcto → suspensión → retención 90 días → eliminación RGPD con cascade — verificado en staging con Stripe test mode.
 4. Churn flow W-18..W-20 se dispara al cancelar suscripción; encuesta de salida registra respuesta en DB; email post-baja no se envía si usuario reactiva dentro de 24h.
@@ -215,7 +215,7 @@ Plans:
 ### Success Criteria
 1. `pnpm turbo test` pasa con coverage ≥ 60% en `lib/` y `api/`; al menos 1 test Playwright E2E por flujo crítico (signup, booking submission, checkout Pro).
 2. `gitleaks` scan limpio (0 secrets detectados); `npm audit` sin vulnerabilidades High/Critical; headers HTTP (CSP, HSTS, X-Frame-Options) validados con `securityheaders.com`.
-3. Sentry captura errores en las 3 apps con emails/IDs anonimizados; Better Uptime monitorea alexendros.me, alexendros.pro, stagekit.app y n8n.alexendros.me/healthz con alertas configuradas.
+3. Sentry captura errores en las 3 apps con emails/IDs anonimizados; Better Uptime monitorea alexendros.me, alexendros.pro, stagekit.app y n8n.example.com/healthz con alertas configuradas.
 4. GitHub Actions ejecuta lint + typecheck + test en cada PR y bloquea merge si falla; Vercel despliega solo las apps afectadas por cambio (turbo-ignore activo).
 5. Stripe en modo Live con webhooks registrados; 3 dominios con SSL activo; PostHog EU activo solo tras consentimiento en producción.
 

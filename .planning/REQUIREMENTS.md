@@ -103,7 +103,7 @@
 ### Hardening
 
 - [ ] **HARD-01**: Sentry configurado ANTES del primer deploy producción
-- [ ] **HARD-02**: Better Uptime: 3 dominios + n8n.alexendros.me/healthz
+- [ ] **HARD-02**: Better Uptime: 3 dominios + n8n.example.com/healthz
 - [ ] **HARD-03**: Security: headers HTTP, CSRF, secrets scan (gitleaks), npm audit clean
 - [ ] **HARD-04**: Tests: Vitest unit + Playwright E2E, coverage 60%+ en lib/ y api/
 - [ ] **HARD-05**: Lighthouse Performance ≥ 90, Accessibility ≥ 90

@@ -248,7 +248,7 @@ NOTION_TOKEN=secret_xxx
 
 # n8n (Hostinger VPS)
 N8N_WEBHOOK_SECRET=
-N8N_BASE_URL=https://n8n.alexendros.me
+N8N_BASE_URL=https://n8n.example.com
 ```
 
 ---

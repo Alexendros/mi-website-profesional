@@ -19,4 +19,4 @@ Razón: KitOS dejó de ser el relato prioritario. Alejandro reformulará el prod
 1. Decidir el nuevo relato paraguas (o prescindir del paraguas).
 2. Reactivar contenido aquí archivado reescribiéndolo al nuevo concepto.
 3. Actualizar `docs/00-hub-index.md`, `.planning/PROJECT.md`, `CLAUDE.md` y app SEO copy.
-4. Registrar evento en `~/.claude/EVENTOS.md` al reformular.
+4. Registrar evento en el sistema interno de seguimiento al reformular.

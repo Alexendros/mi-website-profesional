@@ -62,7 +62,7 @@ stripe listen --forward-to https://alexendros.pro/api/webhooks/stripe
 ## Paso 6: Documentar
 
 - Registrar fecha de rotación en el postmortem si fue por incidente
-- Actualizar `~/.claude/projects/-var-home-soyalexendros/memory/` con fecha de próxima rotación
+- Registrar fecha de próxima rotación en el sistema interno de seguimiento
 
 ---
 

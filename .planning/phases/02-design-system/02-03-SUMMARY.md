@@ -140,7 +140,7 @@ Calculo: ratio = (L_text + 0.05) / (L_bg + 0.05).
 
 **1. [Rule 3 - Blocking] next/font/local falla en worktree — font path relativa cruza workspace root**
 - **Found during:** Task 1 (primer intento de build)
-- **Issue:** Next.js detecta `/var/home/soyalexendros/Apps/alexendros-monorepo/pnpm-lock.yaml` como workspace root. La ruta `../../packages/brand/fonts/GeistVF.woff2` desde `apps/alexendros-me/app/layout.tsx` queda fuera del workspace root detectado.
+- **Issue:** Next.js detecta `<repo-root>/pnpm-lock.yaml` como workspace root. La ruta `../../packages/brand/fonts/GeistVF.woff2` desde `apps/alexendros-me/app/layout.tsx` queda fuera del workspace root detectado.
 - **Fix:** Fuentes copiadas a `apps/alexendros-me/public/fonts/`. layout.tsx actualizado a `../public/fonts/GeistVF.woff2`.
 - **Files modified:** `apps/alexendros-me/app/layout.tsx`, `apps/alexendros-me/public/fonts/` (creado)
 - **Commit:** incluido en 218e7c8

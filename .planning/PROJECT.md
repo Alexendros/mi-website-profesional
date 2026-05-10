@@ -109,7 +109,7 @@ Los profesionales reciben una presencia digital profesional inmediata (Kit Profi
 - **Repo**: alexendros-monorepo en GitHub — commit inicial + documentación (20 docs en docs/), sin código
 - **Estado actual**: PRE-FASE (Abril 2026) — documentación completa y validada, 0% código
 - **Flujo de branding**: validar identidad visual en alexendros.me (estático) → replicar a .pro y kits
-- **n8n**: self-hosted en Hostinger VPS (n8n.alexendros.me)
+- **n8n**: self-hosted en Hostinger VPS (n8n.example.com)
 - **Compliance**: RGPD EU 2016/679 + LOPDGDD LO 3/2018 + PCI DSS SAQ-A + PSD2/SCA + LSSI-CE
 - **Stack decidido**: Next.js 15, TypeScript strict, Tailwind v4, shadcn/ui, Supabase, Prisma 5, Stripe, Resend, Turborepo, pnpm 9.x, Node 22.x, Vercel (mad1)
 - **Documentación existente**: 20 docs técnicos/negocio en docs/ — schema DB, pagos, compliance, marketing, CRM, templates, agents/skills, plan maestro, checklist pre-producción

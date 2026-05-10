@@ -37,7 +37,7 @@ y este proyecto se adhiere a [SemVer 2.0.0](https://semver.org/lang/es/).
 - 15 componentes shadcn/ui en `packages/ui/`
 - Validación de variables de entorno con Zod (`lib/env.ts`)
 - Canon de documentación: README, ARCHITECTURE, SECURITY, CONTRIBUTING, STYLEGUIDE, CHANGELOG, RELEASE, SUPPORT
-- Protocolo canon `~/.claude/` (cuaderno, skills, agents, hooks)
+- Protocolo canon de gestión interna (cuaderno, skills, agents, hooks)
 
 [Sin publicar]: https://github.com/Alexendros/alexendros-pro/compare/v0.1.0...HEAD
 [0.1.0]: https://github.com/Alexendros/alexendros-pro/releases/tag/v0.1.0

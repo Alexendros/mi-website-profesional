@@ -194,7 +194,7 @@ uptime:
     - url: https://stagekit.app
       interval: 60s
       alerta: email + Slack
-    - url: https://n8n.alexendros.me/healthz
+    - url: https://n8n.example.com/healthz
       interval: 300s
       alerta: email
   status_page: status.alexendros.me (público)

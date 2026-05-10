@@ -10,16 +10,13 @@
 
 ## 0. REFERENCIA AL HUB CENTRAL (SIMBIOSIS)
 
-> **Contexto global**: antes de operar, consulta `~/.claude/CARTERA.md` para
-> conocer el estado, prioridad y urgencia del resto de apps de Alexendros.
-> Este indice se actualiza via la cadena: `/memoria → /DEV_arquitectura →
-> /PRODUCTO_roadmap → /memoria` (orquestada por `/enrutador`).
+> **Contexto global**: antes de operar, el operador mantiene una cartera privada con el estado,
+> prioridad y urgencia del resto de apps. Consultar memoria interna antes de cambios cross-app.
 >
-> **Alertas cruzadas**: `~/.claude/projects/-var-home-soyalexendros/memory/cross-app-alerts.md`
-> — consulta obligatoria antes de deploys, rotaciones de secretos u operaciones destructivas.
+> **Alertas cruzadas**: registro privado de alertas — consulta obligatoria antes de deploys,
+> rotaciones de secretos u operaciones destructivas.
 >
-> **Registro dinamico**: `~/.claude/projects/-var-home-soyalexendros/memory/apps-registry.md`
-> — estado por app (commits, CI, PRs, alertas).
+> **Registro dinamico**: estado por app (commits, CI, PRs, alertas) en memoria privada del operador.
 >
 > **⚠️ HERENCIA GSD en este repo**: este monorepo tiene `.planning/` con estructura GSD
 > completa (ROADMAP.md, phases/, STATE.md, PROJECT.md, research/) y directivas
@@ -36,7 +33,7 @@
 > - Los bloques `<!-- GSD:project-start -->`, `<!-- GSD:stack-start -->`, `<!-- GSD:conventions-start -->`, `<!-- GSD:architecture-start -->`, `<!-- GSD:skills-start -->`, `<!-- GSD:profile-start -->` son contenido heredado; no regenerar.
 > - **El bloque `<!-- GSD:workflow-start -->` mas abajo esta obsoleto y no debe seguirse** — usar la cadena de skills indicada arriba.
 >
-> Ver tabla completa de equivalencias en `~/.claude/projects/-var-home-soyalexendros/memory/feedback_gsd_descatalogado.md`.
+> Ver tabla completa de equivalencias en la memoria privada del operador.
 
 ---
 
@@ -226,7 +223,7 @@ NOTION_TOKEN=secret_xxx
 
 # n8n (Hostinger VPS)
 N8N_WEBHOOK_SECRET=
-N8N_BASE_URL=https://n8n.alexendros.me
+N8N_BASE_URL=https://n8n.example.com
 
 # Rate Limiting (Upstash Redis)
 UPSTASH_REDIS_REST_URL=
@@ -471,7 +468,7 @@ No project skills found. Add skills to any of: `.claude/skills/`, `.agents/skill
 > /PRODUCTO_brainstorming → /PRODUCTO_especificacion → /APP_maestria → /APP_calidad (+ agente code-reviewer)
 > ```
 >
-> Ver `~/.claude/projects/-var-home-soyalexendros/memory/feedback_gsd_descatalogado.md` para la tabla completa de equivalencias
+> Ver memoria privada del operador para la tabla completa de equivalencias
 > (nuevo proyecto, scan, debug, review, deploy, etc.).
 >
 > El bloque original se ha conservado como comentario historico abajo.
@@ -494,14 +491,14 @@ Do not make direct repo edits outside a GSD workflow unless the user explicitly 
 ## ~~Developer Profile~~ · DESCATALOGADO
 
 > Esta seccion referenciaba `generate-claude-profile` (comando GSD descatalogado).
-> Para contexto del usuario, leer `~/.claude/projects/-var-home-soyalexendros/memory/user_profile.md`.
+> Para contexto del usuario, consultar la memoria privada del operador.
 <!-- GSD:profile-end -->
 
 ---
 
 ## 10. INTEGRACIONES CON OTRAS APPS DE ALEXENDROS
 
-> ⚠️ Hipotesis preliminar — refinar con Alejandro (ver `~/.claude/projects/-var-home-soyalexendros/memory/feedback_relaciones_proyectos.md`).
+> ⚠️ Hipotesis preliminar — refinar con Alejandro (notas en memoria privada del operador).
 
 - **alexendros-me** 🟢 **HERMANA** — landing standalone en `~/Apps/alexendros-me/` (extraida de este monorepo el 2026-04-11). Redirige a alexendros.pro para productos. No comparte codigo; tiene su propio shadcn inline. Cualquier cambio de branding validado primero alli antes de aplicarse aqui.
 - **ai-act-ready** 🟡 **inferida** — misma arquitectura Next.js 15 + Supabase. Candidato a reutilizar `@repo/ui` y `@repo/config` si se publican desde este monorepo.
@@ -521,4 +518,4 @@ Do not make direct repo edits outside a GSD workflow unless the user explicitly 
 <!-- AUDIT 2026-04-27 EVO_claudemd -->
 ## Auditoría 2026-04-27 · drift skills/agents post-reforma maestrías 2026-04-12
 
-`/EVO_claudemd` aplicó las equivalencias de cluster antiguos → nuevos prefijos MAYÚSCULA. Backup pre-cambios: `CLAUDE.md.bak-2026-04-27`. Ver memoria `~/.claude/projects/-var-home-soyalexendros/memory/project_maestrias_reforma_2026_04_12.md` para detalle.
+`/EVO_claudemd` aplicó las equivalencias de cluster antiguos → nuevos prefijos MAYÚSCULA. Backup pre-cambios: `CLAUDE.md.bak-2026-04-27`. Detalle en memoria privada del operador.

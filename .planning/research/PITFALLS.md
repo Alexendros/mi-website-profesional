@@ -140,7 +140,7 @@ headers.set('Cache-Control', 'no-store')
   N8N_METRICS=true                   # para monitorear
   ```
 - Queue mode con Redis para workflows críticos (dunning, pagos).
-- Monitor de uptime (Better Uptime) apuntando a `n8n.alexendros.me/healthz`.
+- Monitor de uptime (Better Uptime) apuntando a `n8n.example.com/healthz`.
 
 **Fase:** FASE 7.5 (N8N-01..N8N-06). Configurar PostgreSQL para n8n ANTES de crear el primer workflow de producción.
 
@@ -361,7 +361,7 @@ export async function updateKitProfile(data: unknown) {
 
 **Estrategia:**
 - Sentry configurado ANTES del primer deploy de producción — no como mejora posterior.
-- Better Uptime monitoreando los 3 dominios Y `n8n.alexendros.me/healthz` desde semana 1.
+- Better Uptime monitoreando los 3 dominios Y `n8n.example.com/healthz` desde semana 1.
 - Structured logging en todos los Route Handlers: `{ userId, action, status, durationMs }`.
 - AuditLog en DB para eventos críticos: suscripción cambiada, pago procesado, cuenta eliminada.
 
@@ -456,7 +456,7 @@ async function deleteUserAccount(userId: string) {
 - Opción 1: Darse de alta en el RETA como autónomo y usar domicilio fiscal (puede ser gestoría).
 - Opción 2: Usar dirección de un coworking como domicilio fiscal.
 - Opción 3 (no recomendada): Constituir SL para proteger domicilio personal — solo si la actividad lo justifica económicamente.
-- El NIF (21002968N) debe aparecer en el Aviso Legal — esto es obligatorio y no negociable.
+- El NIF del responsable debe aparecer en el Aviso Legal — obligatorio por ley.
 
 ---
 
