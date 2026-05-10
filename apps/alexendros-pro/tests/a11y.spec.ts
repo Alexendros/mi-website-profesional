@@ -3,9 +3,7 @@ import AxeBuilder from "@axe-core/playwright";
 
 const pages = [
   { name: "home", path: "/" },
-  { name: "aviso-legal", path: "/legal/aviso-legal" },
-  { name: "privacidad", path: "/legal/privacidad" },
-  { name: "cookies", path: "/legal/cookies" },
+  // Legal pages added when routes exist (Fase 6: app/(marketing)/legal/*)
 ];
 
 for (const { name, path } of pages) {

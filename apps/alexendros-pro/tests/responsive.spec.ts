@@ -38,5 +38,10 @@ test.describe("Responsividad · no-overflow + tap targets ≥44px", () => {
     if (smallTargets.length > 0) {
       console.warn("Tap targets <44px:", JSON.stringify(smallTargets, null, 2));
     }
+
+    expect(
+      smallTargets,
+      `${smallTargets.length} elemento(s) con tap target < 44px`
+    ).toHaveLength(0);
   });
 });
