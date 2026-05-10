@@ -1,0 +1,17 @@
+# Falsos positivos verificados manualmente · gitleaks
+#
+# Formato: <commit_sha>:<file>:<rule_id>:<line>
+# Generar con: gitleaks detect --report-format=json --report-path=.gitleaks-report.json
+
+# docs/12-correo-email.md:76 — prosa "...LinkedIn, comunicaciones..."
+# detectada como linkedin-client-id por proximidad de la palabra "LinkedIn"
+# y coma. No es un client ID real.
+0fcca071f5791d7beee8f4d9add321321690d15d:docs/12-correo-email.md:linkedin-client-id:76
+c64d9915904320b861ae9c045270bf0d7a4993f1:docs/12-correo-email.md:linkedin-client-id:76
+
+# docs/audit-secdevops-2026-05-11.md:25 — JWT de Vercel OIDC incluido como
+# evidencia en el propio informe de auditoría. Caducó 2026-04-14 13:12 UTC
+# (validado decodificando el campo `exp`). HEAD ya está redactado; el JWT
+# solo persiste en el contenido del commit 4103d1b del historial git.
+# El squash-merge eliminará el commit del trunk; la rama se borra tras merge.
+4103d1bf966eec6b67395ac244d3a81fb5b3c4ef:docs/audit-secdevops-2026-05-11.md:jwt:25

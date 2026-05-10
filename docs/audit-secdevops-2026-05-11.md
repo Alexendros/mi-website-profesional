@@ -20,9 +20,9 @@
 #### C-01 · `.env.local` versionado con OIDC token válido de Vercel
 - **Archivo**: `.env.local` (líneas 1-2)
 - **Patrón**: Existe archivo `.env.local` en el árbol versionado (detectado como fichero no ignorado)
-- **Contenido**: Token JWT de OIDC de Vercel completamente válido:
+- **Contenido**: Token JWT de OIDC de Vercel (redactado · verificado caducado 2026-04-14 13:12 UTC):
   ```
-  VERCEL_OIDC_TOKEN="eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im1yay00MzAyZWMxYjY3MGY0OGE5OGFkNjFkYWRlNGEyM2JlNyJ9.eyJpc3MiOiJodHRwczovL29pZGMudmVyY2VsLmNvbS9hbGV4ZW5kcm9zIiwic3ViIjoib3duZXI6YWxleGVuZHJvczpwcm9qZWN0OmFsZXhlbmRyb3Nwcm8td2Vic2l0ZTplbnZpcm9ubWVudDpkZXZlbG9wbWVudCIsInNjb3BlIjoib3duZXI6YWxleGVuZHJvczpwcm9qZWN0OmFsZXhlbmRyb3Nwcm8td2Vic2l0ZTplbnZpcm9ubWVudDpkZXZlbG9wbWVudCIsImF1ZCI6Imh0dHBzOi8vdmVyY2VsLmNvbS9hbGV4ZW5kcm9zIiwib3duZXIiOiJhbGV4ZW5kcm9zIiwib3duZXJfaWQiOiJ0ZWFtX1l6Y2pLRWlGcWJxeUlHWHNhRkVFc0FKRSIsInByb2plY3QiOiJhbGV4ZW5kcm9zcHJvLXdlYnNpdGUiLCJwcm9qZWN0X2lkIjoicHJqXzZhV0RQbjFtUFROcU9rMWk5ajh4SUZ0NG5Za20iLCJlbnZpcm9ubWVudCI6ImRldmVsb3BtZW50IiwicGxhbiI6ImhvYmJ5IiwidXNlcl9pZCI6IlJsZ2NNQVZENVEzdkZVazVORXdrcGo4ZSIsImNsaWVudF9pZCI6ImNsX0hZeU9QQk50Rk1mSGhhVW45TDRRUGZUWno2VFA0N2JwIiwibmJmIjoxNzc2MTIxOTc2LCJpYXQiOjE3NzYxMjE5NzYsImV4cCI6MTc3NjE2NTE3Nn0.PoFiM8QyXtbmaBfUsVnp-LQr3AnrkxElff2KAEe1dG4R59ODXtq0j4Ey2Ac3kLOkpIl3AOJ6IsQwCXPN13RyPQYHHhocim6X1M2Tbq3H0Ztd3U2KP7jx1a5MH7jNIF49L3yncSErW-VQWUoAgGIxwTHbsgp7FTH2V9XlwG-5r6_WToPACAx3SAeAylNbhJtzzmZPkKy6aQrsE7o37V5GFnUpAZi_9OCi2IBqLE1GTVqirD-pukfFmzXs7bXU6Ipf2bIoKNxvHiWmcPWA3jcCyD10x5kff-bs0zTpVJC2KOPf3i6zG5urtmihbLqA9a55748MESb2NeQoFNRqs38U9w"
+  VERCEL_OIDC_TOKEN="<REDACTED · JWT Vercel OIDC environment=development · expired>"
   ```
 - **Riesgo CRÍTICO**: Token de OIDC válido permite autenticar contra Vercel como propietario del proyecto `alexendros-pro-website`. Un atacante podría:
   - Acceder a variables de entorno configuradas en Vercel (Stripe keys, Supabase tokens, etc.)
