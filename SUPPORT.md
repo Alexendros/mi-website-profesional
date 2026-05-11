@@ -1,4 +1,4 @@
-# Soporte para mi-website-profesional
+# Soporte para alexendros-pro
 
 Antes de abrir un issue revisa estas vías:
 
@@ -11,7 +11,7 @@ Antes de abrir un issue revisa estas vías:
 ## 2. Discusiones
 
 Para preguntas y conversaciones de uso utiliza la sección
-[Discussions del repositorio](https://github.com/Alexendros/mi-website-profesional/discussions)
+[Discussions del repositorio](https://github.com/Alexendros/alexendros-pro/discussions)
 si está habilitada.
 
 ## 3. Issues
@@ -26,7 +26,7 @@ No abras issues públicos. Sigue [SECURITY.md](SECURITY.md).
 
 ## 5. Contacto comercial
 
-Para asuntos comerciales o de licencia escribe a contacto@alexendros.me.
+Para asuntos comerciales o de licencia escribe a contacto@alexendros.pro.
 
 ## Tiempos de respuesta esperados
 

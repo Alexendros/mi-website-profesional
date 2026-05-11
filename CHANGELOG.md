@@ -9,33 +9,35 @@ y este proyecto se adhiere a [SemVer 2.0.0](https://semver.org/lang/es/).
 
 ### Añadido
 
-- (pendiente)
+- `packages/seo`: nuevo paquete `@repo/seo` con factories Schema.org (JSON-LD)
+- `docs/adr/`: 6 ADRs reales (0001–0006) — stack, DB, pagos, tRPC, design system, cookie consent
+- `docs/threat-model.md`: modelo de amenazas STRIDE + LINDDUN con adversarios A1-A8
+- `docs/runbooks/`: 7 runbooks operacionales (incident-response, postmortem-template, rotate-stripe-keys, rotate-supabase-keys, db-restore, secret-revoke, deploy-rollback)
+- `docs/research/benchmark-2026-05-portales.md`: análisis de Vercel, Stripe, Linear y next-forge
+- `.github/workflows/ci.yml`: jobs E2E (Playwright) y Lighthouse CI, Node.js 24, `pnpm audit`
+- `apps/alexendros-pro/playwright.config.ts`: E2E con Chromium + mobile-chrome
+- `apps/alexendros-pro/tests/`: specs a11y (axe-core WCAG 2.1 AA), responsive y landing
 
 ### Cambiado
 
-- (pendiente)
+- `package.json` `engines.node`: `>=22` → `>=24`
+- `turbo.json`: tarea `test:e2e` añadida con env `PLAYWRIGHT_BASE_URL`
+- `packages/config/eslint.config.mjs`: añadidos `eslint-config-prettier` + `@next/eslint-plugin-next` core-web-vitals
+- `apps/alexendros-pro/vercel.json`: headers COOP/COEP/CORP/Origin-Agent-Cluster añadidos
+- `ARCHITECTURE.md`: reescrito para reflejar estructura real del monorepo Turborepo
+- `CONTRIBUTING.md`: gates obligatorios — RLS, webhook signature, rate-limit tests
+- Documentos canon: actualizado nombre `mi-website-profesional` → `alexendros-pro`, dominio `.me` → `.pro`
 
-### Obsoleto
-
-- (pendiente)
-
-### Eliminado
-
-- (pendiente)
-
-### Corregido
-
-- (pendiente)
-
-### Seguridad
-
-- (pendiente)
-
-## [0.1.0] — 2026-MM-DD
+## [0.1.0] — 2026-05-10
 
 ### Añadido
 
-- Versión inicial del repositorio con canon de documentación aplicado.
+- Scaffold inicial del monorepo Turborepo con pnpm workspaces
+- Design system Vergina Imperial v0.2.2 (`packages/brand/`) — dark-first, tokens OKLCH
+- 15 componentes shadcn/ui en `packages/ui/`
+- Validación de variables de entorno con Zod (`lib/env.ts`)
+- Canon de documentación: README, ARCHITECTURE, SECURITY, CONTRIBUTING, STYLEGUIDE, CHANGELOG, RELEASE, SUPPORT
+- Protocolo canon de gestión interna (cuaderno, skills, agents, hooks)
 
-[Sin publicar]: https://github.com/Alexendros/mi-website-profesional/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/Alexendros/mi-website-profesional/releases/tag/v0.1.0
+[Sin publicar]: https://github.com/Alexendros/alexendros-pro/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/Alexendros/alexendros-pro/releases/tag/v0.1.0

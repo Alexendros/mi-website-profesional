@@ -335,7 +335,7 @@ Contenido desde PF-0 (Biografia & Posicionamiento):
 ## FASE 7.5 — Automatizaciones n8n (Plantillas de workflows de la plataforma)
 > **Objetivo:** Implementar todos los flujos automatizados de ciclo de vida del cliente: onboarding, engagement, cobro, impago, recuperación y baja. Desplegados en n8n (Hostinger VPS) con webhooks desde las apps.
 > **Prerequisito:** FASES 5 (stripe/email) + FASE 6 o 7 (app con webhooks operativos)
-> **Infraestructura:** n8n self-hosted en Hostinger VPS (`n8n.alexendros.me`), Resend para email, Stripe para eventos de pago.
+> **Infraestructura:** n8n self-hosted en Hostinger VPS (`n8n.example.com`), Resend para email, Stripe para eventos de pago.
 
 ### 7.5.1 — Workflows de ciclo de vida del cliente
 
@@ -445,7 +445,7 @@ Stripe Dashboard → Settings → Subscriptions → Smart Retries:
                        ▼
 ┌─────────────────────────────────────────────────────────┐
 │              n8n (Hostinger VPS)                         │
-│              n8n.alexendros.me                           │
+│              n8n.example.com                           │
 │                                                         │
 │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐    │
 │  │ Lifecycle   │  │ Dunning     │  │ Operations  │    │

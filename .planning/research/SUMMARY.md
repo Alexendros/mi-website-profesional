@@ -86,7 +86,7 @@
 
 **Fase 6/7 (Apps) — añadir:**
 - Sentry configurado ANTES del primer deploy de producción (no post-lanzamiento)
-- Better Uptime monitoreando los 3 dominios + `n8n.alexendros.me/healthz` desde semana 1
+- Better Uptime monitoreando los 3 dominios + `n8n.example.com/healthz` desde semana 1
 - Cookie banner con bloqueo real de PostHog (no decorativo) — prerequisito legal pre-deploy
 - Ejecutar `pnpm turbo lint typecheck` al final de cada sesión de Claude Code
 

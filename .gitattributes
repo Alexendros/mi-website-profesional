@@ -1,5 +1,36 @@
+# Atributos Git · merge drivers + conflict resolution + line endings
+#
+# ┌─────────────────────────────────────────────────────────────────────┐
+# │ REGLA DE RESOLUCIÓN DE CONFLICTOS (referencia operador)             │
+# │                                                                     │
+# │ Política: feature-branch wins (HEAD/theirs en rebase)               │
+# │                                                                     │
+# │ El operador NO resuelve conflictos manualmente. Cualquier rebase    │
+# │ usa `git rebase -X theirs origin/main` para que la rama feature     │
+# │ (sanitizada, refactorizada o actualizada) prevalezca sobre main.    │
+# │                                                                     │
+# │ Justificación: en repo de 1 developer las features siempre traen el │
+# │ estado más reciente; main solo avanza por merges previos. La rama   │
+# │ feature es por definición la que debe ganar conflictos textuales.   │
+# │                                                                     │
+# │ Implementación: workflow `.github/workflows/auto-rebase-prs.yml`    │
+# │ ejecuta este rebase automáticamente en cada push a main.            │
+# └─────────────────────────────────────────────────────────────────────┘
+
 # Atributos por defecto · final-of-line LF en todo el repositorio
 * text=auto eol=lf
+
+# Merge drivers para minimizar conflictos
+# - union: concatena ambos lados en lugar de marcar conflicto (apto para docs)
+# - binary: nunca fusionar; tras rebase regenerar manualmente (lockfiles)
+*.md merge=union
+CHANGELOG.md merge=union
+.gitignore merge=union
+.dockerignore merge=union
+.gitleaksignore merge=union
+pnpm-lock.yaml merge=binary
+package-lock.json merge=binary
+yarn.lock merge=binary
 
 # Binarios comunes
 *.png  binary

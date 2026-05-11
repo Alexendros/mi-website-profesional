@@ -1,10 +1,10 @@
 # Alexendros — Hub de documentación
 
-> **Monorepo de aplicaciones verticales** — marca personal Alexendros (alexendros.me)
+> **Monorepo de aplicaciones verticales** — plataforma SaaS Alexendros × KitOS
 >
-> Stack: Next.js 15 · Supabase · Stripe · Vercel · shadcn/ui
+> Stack: Next.js **16** · Node **24** · Supabase · Stripe · Vercel · shadcn/ui · Vergina Imperial v0.2.2
 >
-> Última actualización: 2026-04-23
+> Última actualización: 2026-05-10
 
 > **Nota 2026-04-23**: el concepto paraguas anterior quedó retirado; contenido archivado en `.archive/kitos-pre-reformulacion-2026-04-23/`. Pendiente reformular el relato de producto.
 
@@ -44,6 +44,16 @@ Producto digital (setup único, pago inicial)
 | 09 | [CRM Clientes](09-crm-clientes.md) | Pipeline comercial, modelo de datos, canales, automatizaciones n8n | 📖 Gestión comercial |
 | 10 | [Checklist Pre-Producción](10-checklist-pre-produccion.md) | Auditoría de 9 bloques (A-I) antes del deploy | ✅ Verificación pre-deploy |
 | 11 | [Agents & Skills](11-agents-skills.md) | 5 agentes + 6 skills con flujos de subagentes paralelos | ✅ Referencia de agentes |
+| 12 | [Correo & Email](12-correo-email.md) | Configuración Proton Mail Bridge, Resend, templates transaccionales | ✅ Antes de tocar email |
+
+### Governance y seguridad
+
+| Documento | Descripción |
+| --- | --- |
+| [docs/adr/](adr/) | 6 ADRs reales — stack, DB, pagos, tRPC, design system, cookie consent (0001–0006) |
+| [docs/threat-model.md](threat-model.md) | Modelo de amenazas STRIDE + LINDDUN — adversarios A1-A8, controles transversales |
+| [docs/runbooks/](runbooks/) | 7 runbooks operacionales — incident-response, postmortem, rotate-*, db-restore, secret-revoke, deploy-rollback |
+| [docs/research/benchmark-2026-05-portales.md](research/benchmark-2026-05-portales.md) | Benchmark UX/SEO/seguridad — Vercel, Stripe, Linear, next-forge |
 
 ### Plan maestro y pre-fase
 
@@ -62,12 +72,14 @@ Producto digital (setup único, pago inicial)
 
 ## Estado del proyecto
 
-- **Fase actual:** PRE-FASE (Abril 2026) — Brand Audit & Reposicionamiento
+- **Fase actual:** Fase 4 (Mayo 2026) — Base de Datos · pendiente credenciales Supabase EU
 - **MVP target:** Semana 14 desde inicio de Fase 0
 - **Deploy:** Vercel (producción, región mad1) · Supabase (eu-west-1)
-- **Dominio principal:** alexendros.me
-- **Producto MVP:** stagekit.app (pendiente registro)
+- **Dominio principal:** alexendros.pro
+- **Hermana standalone:** alexendros.me (extraída 2026-04-11 a repo independiente)
+- **Producto MVP:** stagekit.app (Fase 7, roadmap Q3 2026)
 - **Automatización:** n8n self-hosted (Hostinger VPS)
+- **Gestión interna del operador:** documentación privada (consultar operador)
 
 ---
 

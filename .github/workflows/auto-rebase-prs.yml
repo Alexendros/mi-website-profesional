@@ -1,0 +1,63 @@
+name: Auto-rebase PRs on main push
+
+# Cuando main avanza, todas las ramas con PR abierto se rebasen automáticamente
+# sobre main usando estrategia "theirs" (feature-branch gana). El operador no
+# resuelve conflictos manualmente.
+#
+# Regla de resolución: ver `.gitattributes` líneas 3-18.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  rebase:
+    name: Rebase open PRs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Rebase each open PR onto main
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          prs=$(gh pr list --state open --base main --json number,headRefName,headRepositoryOwner --jq '.[] | select(.headRepositoryOwner.login == "${{ github.repository_owner }}") | "\(.number) \(.headRefName)"')
+
+          if [ -z "$prs" ]; then
+            echo "No hay PRs abiertos hacia main."
+            exit 0
+          fi
+
+          echo "$prs" | while read -r pr_number head_ref; do
+            echo "::group::Rebasing PR #${pr_number} (${head_ref})"
+
+            git fetch origin "${head_ref}":"${head_ref}" --force
+            git checkout "${head_ref}"
+
+            if git rebase -X theirs origin/main; then
+              git push --force-with-lease origin "${head_ref}"
+              echo "✓ PR #${pr_number} rebased"
+            else
+              git rebase --abort || true
+              gh pr comment "${pr_number}" --body "⚠️ Auto-rebase falló (conflicto irresoluble incluso con \`-X theirs\`). Requiere revisión manual del operador."
+              echo "✗ PR #${pr_number} requires manual review"
+            fi
+
+            git checkout main
+            echo "::endgroup::"
+          done
