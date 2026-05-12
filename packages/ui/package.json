@@ -20,7 +20,7 @@
     "@types/react-dom": "^19.2.3",
     "eslint": "^9.27.0",
     "typescript": "^5.8.0",
-    "typescript-eslint": "^8.59.2"
+    "typescript-eslint": "^8.59.3"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
