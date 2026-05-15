@@ -8,13 +8,22 @@
   },
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev",
+    "db:studio": "prisma studio"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.22.0"
   },
   "devDependencies": {
-    "@repo/config": "workspace:*",
-    "typescript": "^5.8.0",
     "@eslint/js": "^9.27.0",
-    "typescript-eslint": "^8.59.3",
-    "eslint": "^9.27.0"
+    "@repo/config": "workspace:*",
+    "@types/node": "^22.19.19",
+    "eslint": "^9.27.0",
+    "prisma": "^5.22.0",
+    "typescript": "^5.8.0",
+    "typescript-eslint": "^8.59.3"
   }
 }
