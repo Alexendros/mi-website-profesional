@@ -11,6 +11,17 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
+      "inputs": [
+        "app/**",
+        "components/**",
+        "lib/**",
+        "public/**",
+        "package.json",
+        "tsconfig.json",
+        "next.config.*",
+        "tailwind.config.*",
+        "postcss.config.*"
+      ],
       "outputs": [".next/**", "!.next/cache/**", "dist/**", "out/**"]
     },
     "dev": {
@@ -18,13 +29,36 @@
       "persistent": true
     },
     "lint": {
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build"],
+      "inputs": [
+        "app/**",
+        "components/**",
+        "lib/**",
+        "*.config.*",
+        "package.json",
+        ".eslintrc.*",
+        "eslint.config.*"
+      ]
     },
     "typecheck": {
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build"],
+      "inputs": [
+        "app/**",
+        "components/**",
+        "lib/**",
+        "tsconfig.json",
+        "tsconfig.*.json",
+        "package.json"
+      ]
     },
     "test": {
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build"],
+      "inputs": [
+        "app/**",
+        "__tests__/**",
+        "vitest.config.*",
+        "package.json"
+      ]
     },
     "test:e2e": {
       "dependsOn": ["^build"],
