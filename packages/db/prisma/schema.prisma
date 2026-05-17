@@ -1,0 +1,28 @@
+// @repo/db — Prisma schema scaffold
+// Ampliar con los modelos reales de cada Kit antes de la primera migración.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ---------------------------------------------------------------------------
+// Scaffold: User
+// Replace / extend with real models before running prisma migrate dev.
+// ---------------------------------------------------------------------------
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique // RGPD Art.6.1.b
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+  @@index([createdAt(sort: Desc)])
+  @@map("users")
+}
