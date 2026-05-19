@@ -2,13 +2,15 @@
   "name": "@repo/config",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "exports": {
     "./tsconfig.base.json": "./tsconfig.base.json",
     "./tsconfig.nextjs.json": "./tsconfig.nextjs.json",
     "./tsconfig.library.json": "./tsconfig.library.json",
     "./eslint": "./eslint.config.mjs",
     "./env": "./src/env.ts",
-    "./ratelimit": "./src/ratelimit.ts"
+    "./ratelimit": "./src/ratelimit.ts",
+    "./vitest.base": "./vitest.base.ts"
   },
   "dependencies": {
     "@eslint/js": "^9.27.0",
@@ -21,6 +23,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.19.19",
-    "typescript": "^5.8.0"
+    "typescript": "^5.8.0",
+    "vitest": "^3.2.4"
   }
 }

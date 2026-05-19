@@ -75,14 +75,15 @@ jobs:
           NEXT_TELEMETRY_DISABLED: "1"
 
       - name: Install Playwright browsers
-        run: pnpm --filter=alexendros-pro exec playwright install chromium --with-deps
+        run: |
+          pnpm --filter=alexendros-pro exec playwright install chromium --with-deps
+          pnpm --filter=stagekit exec playwright install chromium --with-deps
 
       - name: Run E2E tests
         run: pnpm turbo test:e2e
         env:
           CI: "true"
           NEXT_TELEMETRY_DISABLED: "1"
-          PORT: "3000"
 
       - uses: actions/upload-artifact@v4
         if: failure()

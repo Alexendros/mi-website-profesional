@@ -9,6 +9,8 @@ y este proyecto se adhiere a [SemVer 2.0.0](https://semver.org/lang/es/).
 
 ### Añadido
 
+- `packages/config/vitest.base.ts`: configuración Vitest compartida (`@repo/config/vitest.base`)
+- Vitest smoke en `alexendros-pro` y `stagekit`; Playwright E2E smoke en StageKit (puerto 3001)
 - `packages/seo`: nuevo paquete `@repo/seo` con factories Schema.org (JSON-LD)
 - `docs/adr/`: 6 ADRs reales (0001–0006) — stack, DB, pagos, tRPC, design system, cookie consent
 - `docs/threat-model.md`: modelo de amenazas STRIDE + LINDDUN con adversarios A1-A8

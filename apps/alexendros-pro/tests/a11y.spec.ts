@@ -10,7 +10,7 @@ for (const { name, path } of pages) {
   test.describe(`a11y WCAG 2.1 AA · ${name}`, () => {
     test("sin violaciones axe-core", async ({ page }) => {
       await page.goto(path);
-      await page.waitForLoadState("networkidle");
+      await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
 
       const results = await new AxeBuilder({ page })
         .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])

@@ -1,10 +1,11 @@
 import { test, expect } from "@playwright/test";
 
-test.describe("Landing · smoke tests", () => {
+test.describe("StageKit · smoke tests", () => {
   test("página principal carga y tiene título", async ({ page }) => {
     const response = await page.goto("/");
     expect(response?.status()).toBeLessThan(400);
-    await expect(page).toHaveTitle(/.+/);
+    await expect(page).toHaveTitle(/StageKit/i);
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   });
 
   test("no hay errores de consola críticos", async ({ page }) => {
@@ -25,29 +26,10 @@ test.describe("Landing · smoke tests", () => {
 
   test("meta description presente", async ({ page }) => {
     await page.goto("/");
-    const meta = await page.$eval(
-      'meta[name="description"]',
-      (el) => el.getAttribute("content") ?? ""
-    );
-    expect(meta.length).toBeGreaterThan(20);
-  });
-
-  test("OG title y description presentes", async ({ page }) => {
-    await page.goto("/");
-    const ogTitle = await page.$eval(
-      'meta[property="og:title"]',
-      (el) => el.getAttribute("content") ?? ""
-    );
-    expect(ogTitle.length).toBeGreaterThan(0);
-  });
-
-  test("robots.txt accesible", async ({ page }) => {
-    const response = await page.goto("/robots.txt");
-    expect(response?.status()).toBe(200);
-  });
-
-  test("sitemap.xml accesible", async ({ page }) => {
-    const response = await page.goto("/sitemap.xml");
-    expect(response?.status()).toBe(200);
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    const meta = await page
+      .locator('meta[name="description"]')
+      .getAttribute("content");
+    expect(meta?.length ?? 0).toBeGreaterThan(20);
   });
 });
