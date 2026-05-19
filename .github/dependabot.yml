@@ -1,69 +1,58 @@
-# Configuración Dependabot — alexendrospro
-#
-# ╔═══════════════════════════════════════════════════════════════════════╗
-# ║  REGLA INVIOLABLE PARA DEPENDABOT — leer antes de modificar           ║
-# ║                                                                       ║
-# ║  Una agrupación única por ecosistema. UN SOLO PR DIARIO MÁXIMO.       ║
-# ║  El operador no tolera ruido: o agrupas o te apagamos.                ║
-# ║                                                                       ║
-# ║  - npm:            1 grupo "all" → 1 PR/día con TODO lo pendiente     ║
-# ║  - github-actions: 1 grupo "all" → 1 PR/día con TODO lo pendiente     ║
-# ║  - major updates:  ignorados (revisión manual obligatoria)            ║
-# ║                                                                       ║
-# ║  NO crear grupos separados por tipo de dependencia (prod/dev),        ║
-# ║  ni por severidad, ni por package manager interno. Todo junto.        ║
-# ╚═══════════════════════════════════════════════════════════════════════╝
-
 version: 2
 updates:
-  - package-ecosystem: npm
-    directory: /
-    schedule:
-      interval: daily
-      time: "04:00"
-      timezone: Europe/Madrid
-    open-pull-requests-limit: 1
-    labels:
-      - dependencies
-      - npm
-    groups:
-      all-npm:
-        applies-to: version-updates
-        patterns:
-          - "*"
-        update-types:
-          - minor
-          - patch
-    ignore:
-      - dependency-name: "*"
-        update-types:
-          - version-update:semver-major
-    commit-message:
-      prefix: "build(deps)"
-      include: scope
-
-  - package-ecosystem: github-actions
-    directory: /
-    schedule:
-      interval: daily
-      time: "04:00"
-      timezone: Europe/Madrid
-    open-pull-requests-limit: 1
-    labels:
-      - dependencies
-      - github-actions
-    groups:
-      all-actions:
-        applies-to: version-updates
-        patterns:
-          - "*"
-        update-types:
-          - minor
-          - patch
-    ignore:
-      - dependency-name: "*"
-        update-types:
-          - version-update:semver-major
-    commit-message:
-      prefix: "build(ci)"
-      include: scope
+- package-ecosystem: npm
+  directory: /
+  schedule:
+    interval: daily
+    time: 04:00
+    timezone: Europe/Madrid
+  open-pull-requests-limit: 1
+  labels:
+  - dependencies
+  - npm
+  groups:
+    all-npm:
+      applies-to: version-updates
+      patterns:
+      - '*'
+      update-types:
+      - minor
+      - patch
+    all-others:
+      patterns:
+      - '*'
+  ignore:
+  - dependency-name: '*'
+    update-types:
+    - version-update:semver-major
+  commit-message:
+    prefix: build(deps)
+    include: scope
+- package-ecosystem: github-actions
+  directory: /
+  schedule:
+    interval: daily
+    time: 04:00
+    timezone: Europe/Madrid
+  open-pull-requests-limit: 1
+  labels:
+  - dependencies
+  - github-actions
+  groups:
+    all-actions:
+      applies-to: version-updates
+      patterns:
+      - '*'
+      update-types:
+      - minor
+      - patch
+    all-others:
+      patterns:
+      - '*'
+  ignore:
+  - dependency-name: '*'
+    update-types:
+    - version-update:semver-major
+  commit-message:
+    prefix: build(ci)
+    include: scope
