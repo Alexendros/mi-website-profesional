@@ -75,9 +75,8 @@ jobs:
           NEXT_TELEMETRY_DISABLED: "1"
 
       - name: Install Playwright browsers
-        run: |
-          pnpm --filter=./apps/alexendros-pro exec playwright install chromium --with-deps
-          pnpm --filter=./apps/kitos/stagekit exec playwright install chromium --with-deps
+        working-directory: apps/alexendros-pro
+        run: npx playwright install chromium --with-deps
 
       - name: Run E2E tests
         run: pnpm turbo test:e2e
