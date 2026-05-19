@@ -1,7 +1,9 @@
 import { describe, it, expect } from "vitest";
+import { alexendrosTokens } from "@repo/brand";
 
 describe("alexendros-pro · smoke", () => {
-  it("vitest is configured and running", () => {
-    expect(true).toBe(true);
+  it("consume tokens de marca Alexendros (oklch)", () => {
+    expect(alexendrosTokens.colors.acidGreen).toMatch(/^oklch\(/);
+    expect(alexendrosTokens.surfaces.bg).toMatch(/^oklch\(/);
   });
 });

@@ -13,11 +13,11 @@ test.describe("Landing · smoke tests", () => {
       if (msg.type() === "error") errors.push(msg.text());
     });
     await page.goto("/");
-    await page.waitForLoadState("networkidle");
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
     const critical = errors.filter(
       (e) =>
         !e.includes("favicon") &&
-        !e.includes("404") &&
+        !/Failed to load resource.*\b404\b/i.test(e) &&
         !e.includes("DevTools")
     );
     expect(critical, `Console errors: ${critical.join("\n")}`).toHaveLength(0);

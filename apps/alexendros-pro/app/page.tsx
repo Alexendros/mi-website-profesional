@@ -70,7 +70,7 @@ export default function Home() {
         <div className="mt-2 flex flex-wrap items-center gap-3">
           <a
             href="mailto:contacto@alexendros.me?subject=Waitlist%20alexendros.pro&body=Hola%2C%20me%20interesa%20la%20plataforma.%20Mi%20email%20es%3A%20"
-            aria-label="Apuntarse a la waitlist de alexendros.pro por email"
+            aria-label="Avísame cuando esté listo — apuntarse a la waitlist por email"
             className="group inline-flex items-center gap-2 rounded-[var(--radius-md)] border border-[var(--color-brand-primary-hc)] bg-[var(--color-brand-primary)] px-5 py-3 text-sm font-medium text-[var(--color-brand-primary-fg)] transition-[background-color,box-shadow] hover:bg-[var(--color-brand-primary-hc)] hover:shadow-[var(--shadow-glow-brand)]"
             style={{
               transitionDuration: "var(--dur-base)",
@@ -112,7 +112,10 @@ export default function Home() {
           className="mt-8 inline-flex items-center gap-3 rounded-[var(--radius-full)] border border-[var(--color-border-subtle)] bg-[var(--color-surface-100)] px-4 py-2 font-mono text-xs text-[var(--color-text-secondary)]"
         >
           <span className="relative flex h-2 w-2" aria-hidden="true">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--color-brand-primary)] opacity-60" />
+            <span
+              className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--color-brand-primary)] opacity-60"
+              style={{ willChange: "transform, opacity" }}
+            />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--color-brand-primary-hc)]" />
           </span>
           <span className="tracking-[0.08em] uppercase">

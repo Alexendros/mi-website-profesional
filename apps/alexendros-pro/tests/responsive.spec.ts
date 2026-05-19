@@ -3,7 +3,7 @@ import { test, expect } from "@playwright/test";
 test.describe("Responsividad · no-overflow + tap targets ≥44px", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/");
-    await page.waitForLoadState("networkidle");
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   });
 
   test("no hay overflow horizontal", async ({ page }) => {
@@ -25,6 +25,16 @@ test.describe("Responsividad · no-overflow + tap targets ≥44px", () => {
         .filter((el) => {
           const rect = el.getBoundingClientRect();
           if (rect.width === 0 && rect.height === 0) return false;
+          // Skip links are visually hidden (1×1) but focusable — WCAG exception
+          const href = el.getAttribute("href") ?? "";
+          if (
+            el.tagName === "A" &&
+            href.startsWith("#") &&
+            rect.width <= 1 &&
+            rect.height <= 1
+          ) {
+            return false;
+          }
           return rect.width < 44 || rect.height < 44;
         })
         .map((el) => ({

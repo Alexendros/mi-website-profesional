@@ -37,6 +37,9 @@ jobs:
       - name: Typecheck
         run: pnpm turbo typecheck
 
+      - name: Clean stale .next caches from lint
+        run: find apps -name .next -type d -exec rm -rf {} + 2>/dev/null || true
+
       - name: Build
         run: pnpm turbo build
         env:
@@ -75,14 +78,14 @@ jobs:
           NEXT_TELEMETRY_DISABLED: "1"
 
       - name: Install Playwright browsers
-        run: pnpm --filter=alexendros-pro exec playwright install chromium --with-deps
+        working-directory: apps/alexendros-pro
+        run: npx playwright install chromium --with-deps
 
       - name: Run E2E tests
         run: pnpm turbo test:e2e
         env:
           CI: "true"
           NEXT_TELEMETRY_DISABLED: "1"
-          PORT: "3000"
 
       - uses: actions/upload-artifact@v4
         if: failure()
