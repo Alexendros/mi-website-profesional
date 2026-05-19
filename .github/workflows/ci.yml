@@ -37,6 +37,9 @@ jobs:
       - name: Typecheck
         run: pnpm turbo typecheck
 
+      - name: Clean stale .next caches from lint
+        run: find apps -name .next -type d -exec rm -rf {} + 2>/dev/null || true
+
       - name: Build
         run: pnpm turbo build
         env:
