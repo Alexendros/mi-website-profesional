@@ -4,12 +4,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 import type { Metadata, Viewport } from "next";
-import dynamic from "next/dynamic";
-
-const ParticleBg = dynamic(
-  () => import("../components/particle-bg").then((m) => m.ParticleBg),
-  { ssr: false },
-);
+import { ParticleBg } from "../components/particle-bg";
 
 const geistSans = localFont({
   src: "../public/fonts/GeistVF.woff2",
