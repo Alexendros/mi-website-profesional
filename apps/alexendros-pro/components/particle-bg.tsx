@@ -12,13 +12,17 @@ type Particle = {
   hue: 0 | 1;
 };
 
+const TARGET_FPS = 20;
+const FRAME_INTERVAL = 1000 / TARGET_FPS;
+
 export function ParticleBg() {
   const ref = useRef<HTMLCanvasElement | null>(null);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    setMounted(true);
+    const id = setTimeout(() => setMounted(true), 800);
+    return () => clearTimeout(id);
   }, []);
 
   useEffect(() => {
@@ -39,6 +43,7 @@ export function ParticleBg() {
 
     let particles: Particle[] = [];
     let raf = 0;
+    let lastFrame = 0;
 
     const resize = () => {
       const w = window.innerWidth;
@@ -49,9 +54,9 @@ export function ParticleBg() {
       canvas.style.height = `${h}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      const density = w < 640 ? 0.00004 : 0.00008;
-      const minCount = w < 640 ? 20 : 40;
-      const maxCount = w < 640 ? 60 : 120;
+      const density = w < 640 ? 0.000025 : 0.00005;
+      const minCount = w < 640 ? 12 : 24;
+      const maxCount = w < 640 ? 35 : 70;
       const count = Math.max(
         minCount,
         Math.min(maxCount, Math.floor(w * h * density)),
@@ -67,7 +72,11 @@ export function ParticleBg() {
       }));
     };
 
-    const draw = () => {
+    const draw = (now: number) => {
+      raf = requestAnimationFrame(draw);
+      if (now - lastFrame < FRAME_INTERVAL) return;
+      lastFrame = now;
+
       const w = window.innerWidth;
       const h = window.innerHeight;
       ctx.clearRect(0, 0, w, h);
@@ -92,11 +101,10 @@ export function ParticleBg() {
         ctx.fill();
         ctx.globalAlpha = 1;
       }
-      raf = requestAnimationFrame(draw);
     };
 
     resize();
-    draw();
+    raf = requestAnimationFrame(draw);
     window.addEventListener("resize", resize);
 
     return () => {
@@ -112,6 +120,7 @@ export function ParticleBg() {
       ref={ref}
       aria-hidden="true"
       className="pointer-events-none fixed inset-0 -z-10"
+      style={{ willChange: "transform" }}
     />
   );
 }
