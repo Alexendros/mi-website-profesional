@@ -1,23 +1,8 @@
 import localFont from "next/font/local";
 import { Inter } from "next/font/google";
-import dynamic from "next/dynamic";
 import "./globals.css";
 import type { Metadata, Viewport } from "next";
-
-const ParticleBg = dynamic(
-  () => import("../components/particle-bg").then((m) => m.ParticleBg),
-  { ssr: false },
-);
-
-const Analytics = dynamic(
-  () => import("@vercel/analytics/next").then((m) => m.Analytics),
-  { ssr: false },
-);
-
-const SpeedInsights = dynamic(
-  () => import("@vercel/speed-insights/next").then((m) => m.SpeedInsights),
-  { ssr: false },
-);
+import { ClientShell } from "../components/client-shell";
 
 const geistSans = localFont({
   src: "../public/fonts/GeistVF.woff2",
@@ -128,7 +113,6 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${interDisplay.variable}`}
     >
       <body>
-        <ParticleBg />
         {children}
         <script
           type="application/ld+json"
@@ -136,8 +120,7 @@ export default function RootLayout({
             __html: JSON.stringify(organizationSchema),
           }}
         />
-        <SpeedInsights />
-        <Analytics />
+        <ClientShell />
       </body>
     </html>
   );
