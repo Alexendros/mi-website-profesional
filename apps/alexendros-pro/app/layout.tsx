@@ -3,16 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import type { Metadata, Viewport } from "next";
 import { LazyParticleBg } from "../components/lazy-particle-bg";
-
-const Analytics = dynamic(
-  () => import("@vercel/analytics/next").then((m) => m.Analytics),
-  { ssr: false },
-);
-
-const SpeedInsights = dynamic(
-  () => import("@vercel/speed-insights/next").then((m) => m.SpeedInsights),
-  { ssr: false },
-);
+import { LazyAnalytics } from "../components/lazy-analytics";
 
 const geistSans = localFont({
   src: "../public/fonts/GeistVF.woff2",
@@ -131,8 +122,7 @@ export default function RootLayout({
             __html: JSON.stringify(organizationSchema),
           }}
         />
-        <SpeedInsights />
-        <Analytics />
+        <LazyAnalytics />
       </body>
     </html>
   );
