@@ -48,6 +48,26 @@ export async function getActiveCatalog(): Promise<Map<string, CatalogEntry>> {
 export async function getCatalogEntry(
   sku: string,
 ): Promise<CatalogEntry | null> {
-  const catalog = await getActiveCatalog();
-  return catalog.get(sku) ?? null;
+  const r = await prisma.product.findFirst({
+    where: { sku, isActive: true, stripePriceId: { not: null } },
+    select: {
+      sku: true,
+      slug: true,
+      title: true,
+      stripePriceId: true,
+      priceCents: true,
+      currency: true,
+      deliveryMode: true,
+    },
+  });
+  if (!r || !r.stripePriceId) return null;
+  return {
+    sku: r.sku,
+    slug: r.slug,
+    title: r.title,
+    stripePriceId: r.stripePriceId,
+    priceCents: r.priceCents,
+    currency: r.currency,
+    deliveryMode: r.deliveryMode,
+  };
 }

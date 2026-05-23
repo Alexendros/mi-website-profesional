@@ -2,16 +2,10 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { prisma } from "@repo/db";
 import { BuyButton } from "../../../../components/buy-button";
+import { formatPrice } from "../../../../lib/format";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
-
-function formatPrice(cents: number, currency: string): string {
-  return new Intl.NumberFormat("es-ES", {
-    style: "currency",
-    currency: currency.toUpperCase(),
-  }).format(cents / 100);
-}
 
 async function getProduct(slug: string) {
   return prisma.product.findFirst({

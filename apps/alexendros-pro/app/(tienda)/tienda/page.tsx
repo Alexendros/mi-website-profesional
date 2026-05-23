@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { prisma } from "@repo/db";
+import { formatPrice } from "../../../lib/format";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -10,13 +11,6 @@ export const metadata: Metadata = {
   description: "Productos digitales descargables de Alexendros.",
   alternates: { canonical: "/tienda" },
 };
-
-function formatPrice(cents: number, currency: string): string {
-  return new Intl.NumberFormat("es-ES", {
-    style: "currency",
-    currency: currency.toUpperCase(),
-  }).format(cents / 100);
-}
 
 export default async function TiendaPage() {
   const products = await prisma.product.findMany({

@@ -1,6 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { z } from "zod";
+
+const CheckoutOk = z.object({ url: z.string().url() });
+const CheckoutErr = z.object({ error: z.string() });
 
 export function BuyButton({ sku }: { sku: string }): React.ReactElement {
   const [email, setEmail] = useState("");
@@ -18,21 +22,13 @@ export function BuyButton({ sku }: { sku: string }): React.ReactElement {
         body: JSON.stringify({ sku, email, withdrawalConsent: consent }),
       });
       const data: unknown = await res.json();
-      if (
-        res.ok &&
-        typeof data === "object" &&
-        data !== null &&
-        "url" in data &&
-        typeof (data as { url: unknown }).url === "string"
-      ) {
-        window.location.href = (data as { url: string }).url;
+      const ok = CheckoutOk.safeParse(data);
+      if (res.ok && ok.success) {
+        window.location.href = ok.data.url;
         return;
       }
-      const msg =
-        typeof data === "object" && data !== null && "error" in data
-          ? String((data as { error: unknown }).error)
-          : "No se pudo iniciar el pago";
-      setError(msg);
+      const err = CheckoutErr.safeParse(data);
+      setError(err.success ? err.data.error : "No se pudo iniciar el pago");
     } catch {
       setError("Error de red");
     } finally {
@@ -76,7 +72,7 @@ export function BuyButton({ sku }: { sku: string }): React.ReactElement {
       </button>
 
       {error ? (
-        <p role="alert" className="text-sm text-[var(--color-brand-accent)]">
+        <p role="alert" className="text-sm text-[var(--color-feedback-error)]">
           {error}
         </p>
       ) : null}

@@ -88,8 +88,11 @@ export async function POST(req: Request): Promise<Response> {
   }
 
   // Otros eventos (o sesión sin sku/email): registrar para idempotencia.
-  await prisma.stripeEvent.create({
-    data: { id: event.id, type: event.type },
+  // upsert evita PK violation si dos entregas del mismo evento compiten.
+  await prisma.stripeEvent.upsert({
+    where: { id: event.id },
+    create: { id: event.id, type: event.type },
+    update: {},
   });
 
   return NextResponse.json({ received: true });
