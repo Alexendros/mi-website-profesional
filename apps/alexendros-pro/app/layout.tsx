@@ -1,10 +1,18 @@
 import localFont from "next/font/local";
 import { Inter } from "next/font/google";
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 import type { Metadata, Viewport } from "next";
 import { LazyParticleBg } from "../components/lazy-particle-bg";
+
+const Analytics = dynamic(
+  () => import("@vercel/analytics/next").then((m) => m.Analytics),
+  { ssr: false },
+);
+
+const SpeedInsights = dynamic(
+  () => import("@vercel/speed-insights/next").then((m) => m.SpeedInsights),
+  { ssr: false },
+);
 
 const geistSans = localFont({
   src: "../public/fonts/GeistVF.woff2",
@@ -22,12 +30,12 @@ const geistMono = localFont({
   preload: false,
 });
 
-// Vergina Imperial v0.2.2 · Inter weight 700/800/900 para hero h1.display.
+// Vergina Imperial v0.2.2 · Inter weight 700 para hero h1.display.
 // Outfit/Bricolage descatalogados (Inter aprobada como reemplazo definitivo).
 const interDisplay = Inter({
   subsets: ["latin"],
   variable: "--font-display",
-  weight: ["700", "800", "900"],
+  weight: ["700"],
   display: "swap",
 });
 

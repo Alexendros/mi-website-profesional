@@ -10,11 +10,20 @@ const nextConfig: NextConfig = {
     "@repo/stripe",
     "@repo/email",
   ],
+  serverExternalPackages: [
+    "stripe",
+    "@prisma/client",
+    "resend",
+    "@react-email/components",
+  ],
   compiler: {
     removeConsole: process.env.NODE_ENV === "production" ? { exclude: ["error", "warn"] } : false,
   },
   images: {
     formats: ["image/avif", "image/webp"],
+  },
+  experimental: {
+    optimizePackageImports: ["lucide-react"],
   },
   typedRoutes: true,
 };

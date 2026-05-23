@@ -5,9 +5,11 @@
       "startServerReadyPattern": "Ready in",
       "startServerReadyTimeout": 30000,
       "url": ["http://localhost:3000"],
-      "numberOfRuns": 1,
+      "numberOfRuns": 3,
       "settings": {
-        "onlyCategories": ["performance", "accessibility", "best-practices", "seo"]
+        "onlyCategories": ["performance", "accessibility", "best-practices", "seo"],
+        "preset": "desktop",
+        "chromeFlags": ["--no-sandbox", "--disable-gpu", "--disable-dev-shm-usage"]
       }
     },
     "assert": {
