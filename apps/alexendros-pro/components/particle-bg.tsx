@@ -26,7 +26,7 @@ export function ParticleBg() {
       const id = requestIdleCallback(() => setMounted(true), { timeout: 3000 });
       cleanup = () => cancelIdleCallback(id);
     } else {
-      const id = setTimeout(() => setMounted(true), 1500);
+      const id = window.setTimeout(() => setMounted(true), 1500);
       cleanup = () => clearTimeout(id);
     }
     return cleanup;
