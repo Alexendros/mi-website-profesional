@@ -21,8 +21,15 @@ export function ParticleBg() {
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const id = setTimeout(() => setMounted(true), 800);
-    return () => clearTimeout(id);
+    const schedule =
+      typeof requestIdleCallback === "function"
+        ? (cb: () => void) => requestIdleCallback(cb, { timeout: 3000 })
+        : (cb: () => void) => setTimeout(cb, 1500);
+    const id = schedule(() => setMounted(true));
+    return () => {
+      if (typeof cancelIdleCallback === "function") cancelIdleCallback(id);
+      else clearTimeout(id);
+    };
   }, []);
 
   useEffect(() => {
