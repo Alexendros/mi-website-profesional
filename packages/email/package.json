@@ -18,7 +18,9 @@
     "@eslint/js": "^9.27.0",
     "@repo/config": "workspace:*",
     "@types/node": "^22.19.19",
+    "@types/react": "^19.1.0",
     "eslint": "^9.27.0",
+    "react": "^19.2.6",
     "typescript": "^5.8.0",
     "typescript-eslint": "^8.59.3"
   }

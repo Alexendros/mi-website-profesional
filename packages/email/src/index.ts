@@ -1,16 +1,11 @@
-// @repo/email — Shared Resend client + React Email components
-// RESEND_API_KEY must be set in server-side env before importing this module.
+// @repo/email — Resend lazy + plantillas React Email + helpers de envío.
+// RESEND_API_KEY sólo en entorno server. Para v1 (Opción A) un único email
+// transaccional (DownloadReady) actúa también como justificante de compra.
 
-import { Resend } from "resend";
-
-const key = process.env["RESEND_API_KEY"];
-if (!key) {
-  throw new Error("Missing env variable: RESEND_API_KEY");
-}
-
-export const resend = new Resend(key);
+export { getResend } from "./client";
+export { safeSendEmail, sendDownloadReady } from "./send";
+export type { SendResult } from "./send";
+export { DownloadReady } from "./templates/DownloadReady";
+export type { DownloadReadyProps } from "./templates/DownloadReady";
 
 export type { CreateEmailOptions, CreateEmailResponse } from "resend";
-
-// Re-export React Email primitives for use in template files.
-export * from "@react-email/components";
