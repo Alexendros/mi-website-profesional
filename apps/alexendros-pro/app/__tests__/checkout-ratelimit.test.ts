@@ -15,6 +15,7 @@ vi.mock("../../lib/env", () => ({
     STRIPE_SECRET_KEY: "sk_test_fake",
     STRIPE_WEBHOOK_SECRET: "whsec_test_fake",
     DATABASE_URL: "postgresql://test",
+    RESEND_API_KEY: "re_test_fake",
   })),
 }));
 

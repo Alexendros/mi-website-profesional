@@ -31,9 +31,8 @@ export function BuyButton({ sku }: { sku: string }): React.ReactElement {
       setError(err.success ? err.data.error : "No se pudo iniciar el pago");
     } catch {
       setError("Error de red");
-    } finally {
-      setLoading(false);
     }
+    setLoading(false);
   }
 
   return (
