@@ -19,14 +19,20 @@ export async function POST(req: Request): Promise<Response> {
     return NextResponse.json({ error: "Falta firma" }, { status: 400 });
   }
 
+  let env: ReturnType<typeof serverEnv>;
+  try {
+    env = serverEnv();
+  } catch {
+    return NextResponse.json(
+      { error: "Servicio no configurado" },
+      { status: 503 },
+    );
+  }
+
   const rawBody = await req.text();
   let event: Stripe.Event;
   try {
-    event = await verifyWebhook(
-      rawBody,
-      signature,
-      serverEnv().STRIPE_WEBHOOK_SECRET,
-    );
+    event = await verifyWebhook(rawBody, signature, env.STRIPE_WEBHOOK_SECRET);
   } catch {
     return NextResponse.json({ error: "Firma inválida" }, { status: 400 });
   }
@@ -72,8 +78,10 @@ export async function POST(req: Request): Promise<Response> {
           },
           update: { status: "payment_completed" },
         }),
-        prisma.stripeEvent.create({
-          data: { id: event.id, type: event.type },
+        prisma.stripeEvent.upsert({
+          where: { id: event.id },
+          create: { id: event.id, type: event.type },
+          update: {},
         }),
       ]);
 

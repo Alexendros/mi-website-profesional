@@ -27,11 +27,6 @@ export async function GET(
     return NextResponse.json({ error: "Enlace caducado" }, { status: 410 });
   }
 
-  await prisma.order.update({
-    where: { id: order.id },
-    data: { downloadCount: { increment: 1 } },
-  });
-
   if (!order.product.storagePath) {
     // Storage aún no provisionado: el token es válido pero no hay objeto.
     return NextResponse.json(
@@ -43,6 +38,11 @@ export async function GET(
       { status: 200 },
     );
   }
+
+  await prisma.order.update({
+    where: { id: order.id },
+    data: { downloadCount: { increment: 1 } },
+  });
 
   // TODO(infra): firmar URL del objeto privado en Supabase Storage
   // (createSignedUrl, TTL corto) y redirigir aquí.

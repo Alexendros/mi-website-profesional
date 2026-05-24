@@ -60,9 +60,9 @@ export async function POST(req: Request): Promise<Response> {
       cancelUrl: `${origin}/tienda`,
     });
     return NextResponse.json({ url });
-  } catch (e) {
+  } catch {
     return NextResponse.json(
-      { error: e instanceof Error ? e.message : "Error de checkout" },
+      { error: "Error de checkout" },
       { status: 400 },
     );
   }
