@@ -71,10 +71,14 @@ export async function GET(
     );
   }
 
-  await prisma.order.update({
-    where: { id: order.id },
-    data: { downloadCount: { increment: 1 } },
-  });
+  await prisma.order
+    .update({
+      where: { id: order.id },
+      data: { downloadCount: { increment: 1 } },
+    })
+    .catch(() => {
+      /* non-critical: don't block download delivery */
+    });
 
   // TODO(infra): firmar URL del objeto privado en Supabase Storage
   // (createSignedUrl, TTL corto) y redirigir aquí.

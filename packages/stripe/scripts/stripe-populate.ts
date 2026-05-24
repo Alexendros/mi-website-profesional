@@ -6,7 +6,12 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { prisma } from "@repo/db";
+import { createServerEnvValidator, serverFields } from "@repo/config/env";
 import { getStripe } from "../src/client.ts";
+
+const scriptEnv = createServerEnvValidator({
+  STRIPE_SECRET_KEY: serverFields.STRIPE_SECRET_KEY,
+});
 
 type ManifestProduct = {
   sku: string;
@@ -27,9 +32,8 @@ type Manifest = {
 async function main(): Promise<void> {
   const manifestPath = resolve(process.cwd(), "../../catalog/manifest.json");
   const manifest = JSON.parse(readFileSync(manifestPath, "utf8")) as Manifest;
-  const key = process.env["STRIPE_SECRET_KEY"];
-  if (!key) throw new Error("STRIPE_SECRET_KEY required");
-  const stripe = getStripe(key);
+  const env = scriptEnv();
+  const stripe = getStripe(env.STRIPE_SECRET_KEY);
   let created = 0;
 
   for (const p of manifest.products) {
