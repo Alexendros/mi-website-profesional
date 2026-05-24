@@ -22,6 +22,10 @@ export async function fulfillOrder(
   if (!order || !order.downloadToken) return;
 
   if (order.product.deliveryMode === "service_manual") {
+    await prisma.order.update({
+      where: { id: order.id },
+      data: { status: "service_intake_pending" },
+    });
     return;
   }
 

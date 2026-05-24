@@ -32,10 +32,14 @@ export async function sendDownloadReady(
   to: string,
   props: DownloadReadyProps,
 ): Promise<SendResult> {
-  const html = await render(DownloadReady(props));
-  return safeSendEmail({
-    to,
-    subject: `Tu descarga: ${props.productTitle}`,
-    html,
-  });
+  try {
+    const html = await render(DownloadReady(props));
+    return safeSendEmail({
+      to,
+      subject: `Tu descarga: ${props.productTitle}`,
+      html,
+    });
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "render error" };
+  }
 }

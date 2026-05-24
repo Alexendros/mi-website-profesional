@@ -76,7 +76,7 @@ export async function POST(req: Request): Promise<Response> {
             downloadToken: crypto.randomUUID(),
             downloadExpiresAt: new Date(Date.now() + DOWNLOAD_TTL_MS),
           },
-          update: { status: "payment_completed" },
+          update: {},
         }),
         prisma.stripeEvent.upsert({
           where: { id: event.id },
