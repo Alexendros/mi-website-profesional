@@ -23,7 +23,7 @@ export async function fulfillOrder(
 
   const downloadUrl = `${origin}/descarga/${order.downloadToken}`;
   const expiresLabel = order.downloadExpiresAt
-    ? order.downloadExpiresAt.toLocaleDateString("es-ES")
+    ? `el ${order.downloadExpiresAt.toLocaleDateString("es-ES")}`
     : "en 7 días";
 
   const res = await sendDownloadReady(order.customerEmail, {

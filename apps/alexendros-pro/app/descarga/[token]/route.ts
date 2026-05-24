@@ -28,14 +28,24 @@ export async function GET(
   }
 
   if (!order.product.storagePath) {
-    // Storage aún no provisionado: el token es válido pero no hay objeto.
     return NextResponse.json(
       {
         ok: true,
         product: order.product.title,
-        note: "Almacenamiento pendiente de configurar (bucket privado Supabase + SUPABASE_SERVICE_ROLE_KEY).",
+        note: "Tu descarga estará disponible pronto. Contacta soporte si persiste.",
       },
       { status: 200 },
+    );
+  }
+
+  // Validar que storagePath es una URL absoluta antes de redirigir.
+  let redirectUrl: URL;
+  try {
+    redirectUrl = new URL(order.product.storagePath);
+  } catch {
+    return NextResponse.json(
+      { error: "Descarga no disponible temporalmente" },
+      { status: 503 },
     );
   }
 
@@ -46,5 +56,5 @@ export async function GET(
 
   // TODO(infra): firmar URL del objeto privado en Supabase Storage
   // (createSignedUrl, TTL corto) y redirigir aquí.
-  return NextResponse.redirect(order.product.storagePath);
+  return NextResponse.redirect(redirectUrl);
 }
