@@ -34,7 +34,7 @@ export async function GET(
     return NextResponse.json({ error: "Enlace no válido" }, { status: 404 });
   }
 
-  const blocked: string[] = ["refunded", "failed", "pending"];
+  const blocked: string[] = ["refunded", "failed", "pending", "service_intake_pending"];
   if (blocked.includes(order.status)) {
     return NextResponse.json({ error: "Enlace no válido" }, { status: 404 });
   }

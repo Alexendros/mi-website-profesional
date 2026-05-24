@@ -21,6 +21,10 @@ function getLimiter(): Ratelimit | null {
 export async function checkRateLimit(key: string): Promise<boolean> {
   const l = getLimiter();
   if (!l) return true;
-  const { success } = await l.limit(key);
-  return success;
+  try {
+    const { success } = await l.limit(key);
+    return success;
+  } catch {
+    return true;
+  }
 }
