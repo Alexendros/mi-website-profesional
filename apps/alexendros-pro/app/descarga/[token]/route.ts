@@ -5,15 +5,25 @@
 
 import { NextResponse } from "next/server";
 import { prisma } from "@repo/db";
+import { checkRateLimit } from "../../../lib/ratelimit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function GET(
-  _req: Request,
+  req: Request,
   ctx: { params: Promise<{ token: string }> },
 ): Promise<Response> {
   const { token } = await ctx.params;
+
+  const ip =
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "anon";
+  if (!(await checkRateLimit(ip))) {
+    return NextResponse.json(
+      { error: "Demasiadas solicitudes, inténtalo más tarde" },
+      { status: 429 },
+    );
+  }
 
   const order = await prisma.order.findUnique({
     where: { downloadToken: token },

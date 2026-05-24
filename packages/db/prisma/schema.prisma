@@ -27,6 +27,7 @@ enum DeliveryMode {
 enum OrderStatus {
   pending // sesión Stripe creada, pago no confirmado
   payment_completed // webhook checkout.session.completed recibido
+  fulfilling // transición atómica: fulfillment en curso (evita emails duplicados)
   delivered // entrega digital completada (descarga disponible)
   failed // pago fallido / sesión expirada
   refunded // reembolsado

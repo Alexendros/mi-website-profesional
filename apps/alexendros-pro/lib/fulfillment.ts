@@ -8,16 +8,20 @@ export async function fulfillOrder(
   orderId: string,
   origin: string,
 ): Promise<void> {
+  // Transición atómica: solo un caller concurrente puede reclamar el pedido.
+  const claimed = await prisma.order.updateMany({
+    where: { id: orderId, status: "payment_completed" },
+    data: { status: "fulfilling" },
+  });
+  if (claimed.count === 0) return;
+
   const order = await prisma.order.findUnique({
     where: { id: orderId },
     include: { product: true },
   });
   if (!order || !order.downloadToken) return;
-  // Defensa en profundidad: si ya se entregó, no reenviar (idempotencia).
-  if (order.status === "delivered") return;
 
   if (order.product.deliveryMode === "service_manual") {
-    // Opción B (reservado): entrega/intake manual. No-op en v1.
     return;
   }
 

@@ -10,4 +10,5 @@ export const serverEnv = createServerEnvValidator({
   STRIPE_SECRET_KEY: serverFields.STRIPE_SECRET_KEY,
   STRIPE_WEBHOOK_SECRET: serverFields.STRIPE_WEBHOOK_SECRET,
   DATABASE_URL: serverFields.DATABASE_URL,
+  RESEND_API_KEY: serverFields.RESEND_API_KEY,
 });
