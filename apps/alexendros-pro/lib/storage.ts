@@ -1,7 +1,8 @@
 // Supabase Storage — signed URLs para descargas de productos digitales.
-// Si Supabase no está configurado, retorna null (graceful degradation).
+// Si Supabase no está configurado, retorna error (graceful degradation).
 
 import { getServiceRoleClient } from "@repo/db/supabase";
+import { storageEnv } from "./env";
 
 const SIGNED_URL_TTL_SECONDS = 5 * 60; // 5 minutos
 const BUCKET = "digital-products";
@@ -17,12 +18,17 @@ type SignedUrlResult =
 export async function createSignedDownloadUrl(
   storagePath: string,
 ): Promise<SignedUrlResult> {
-  let client;
+  let env;
   try {
-    client = getServiceRoleClient();
+    env = storageEnv();
   } catch {
     return { ok: false, error: "Supabase no configurado" };
   }
+
+  const client = getServiceRoleClient(
+    env.NEXT_PUBLIC_SUPABASE_URL,
+    env.SUPABASE_SERVICE_ROLE_KEY,
+  );
 
   const { data, error } = await client.storage
     .from(BUCKET)

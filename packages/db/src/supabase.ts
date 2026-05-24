@@ -10,23 +10,14 @@ let serviceClient: SupabaseClient | null = null;
  * Service-role client (bypasa RLS).
  * Uso: Storage signed URLs, admin queries, seed scripts.
  * NUNCA exponer al cliente.
+ *
+ * El caller DEBE pasar valores validados por Zod (via serverEnv / storageEnv).
+ * No leer process.env directamente (CLAUDE.md §3, §7).
  */
-export function getServiceRoleClient(
-  url?: string,
-  key?: string,
-): SupabaseClient {
+export function getServiceRoleClient(url: string, key: string): SupabaseClient {
   if (serviceClient) return serviceClient;
 
-  const resolvedUrl = url ?? process.env["NEXT_PUBLIC_SUPABASE_URL"];
-  const resolvedKey = key ?? process.env["SUPABASE_SERVICE_ROLE_KEY"];
-
-  if (!resolvedUrl || !resolvedKey) {
-    throw new Error(
-      "NEXT_PUBLIC_SUPABASE_URL y SUPABASE_SERVICE_ROLE_KEY requeridos",
-    );
-  }
-
-  serviceClient = createClient(resolvedUrl, resolvedKey, {
+  serviceClient = createClient(url, key, {
     auth: { persistSession: false, autoRefreshToken: false },
   });
   return serviceClient;
