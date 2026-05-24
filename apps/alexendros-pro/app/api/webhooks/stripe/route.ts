@@ -88,8 +88,8 @@ export async function POST(req: Request): Promise<Response> {
       try {
         await fulfillOrder(order.id, new URL(req.url).origin);
       } catch {
-        // El fulfillment no debe tumbar el ack; el Order queda en
-        // payment_completed para reintento fuera de banda.
+        // El fulfillment no debe tumbar el ack; fulfillOrder resetea a
+        // payment_completed en caso de error para reintento fuera de banda.
       }
       return NextResponse.json({ received: true });
     }
