@@ -4,7 +4,8 @@
 
 import { NextResponse } from "next/server";
 import { prisma } from "@repo/db";
-import { verifyWebhook, type Stripe } from "@repo/stripe";
+import { getStripe, verifyWebhook, type Stripe } from "@repo/stripe";
+import { getResend } from "@repo/email";
 import { serverEnv } from "../../../../lib/env";
 import { fulfillOrder } from "../../../../lib/fulfillment";
 
@@ -28,6 +29,9 @@ export async function POST(req: Request): Promise<Response> {
       { status: 503 },
     );
   }
+
+  getStripe(env.STRIPE_SECRET_KEY);
+  getResend(env.RESEND_API_KEY);
 
   const rawBody = await req.text();
   let event: Stripe.Event;

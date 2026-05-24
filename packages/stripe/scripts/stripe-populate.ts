@@ -27,7 +27,9 @@ type Manifest = {
 async function main(): Promise<void> {
   const manifestPath = resolve(process.cwd(), "../../catalog/manifest.json");
   const manifest = JSON.parse(readFileSync(manifestPath, "utf8")) as Manifest;
-  const stripe = getStripe();
+  const key = process.env["STRIPE_SECRET_KEY"];
+  if (!key) throw new Error("STRIPE_SECRET_KEY required");
+  const stripe = getStripe(key);
   let created = 0;
 
   for (const p of manifest.products) {

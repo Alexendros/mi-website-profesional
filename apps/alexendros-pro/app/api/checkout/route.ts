@@ -3,7 +3,7 @@
 
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { createCheckoutSession } from "@repo/stripe";
+import { createCheckoutSession, getStripe } from "@repo/stripe";
 import { serverEnv } from "../../../lib/env";
 import { checkRateLimit } from "../../../lib/ratelimit";
 
@@ -17,14 +17,17 @@ const BodySchema = z.object({
 });
 
 export async function POST(req: Request): Promise<Response> {
+  let env: ReturnType<typeof serverEnv>;
   try {
-    serverEnv();
+    env = serverEnv();
   } catch {
     return NextResponse.json(
       { error: "Servicio no configurado" },
       { status: 503 },
     );
   }
+
+  getStripe(env.STRIPE_SECRET_KEY);
 
   const ip =
     req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "anon";

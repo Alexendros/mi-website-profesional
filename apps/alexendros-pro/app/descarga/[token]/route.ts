@@ -54,11 +54,17 @@ export async function GET(
     );
   }
 
-  // Validar que storagePath es una URL absoluta antes de redirigir.
+  // Validar que storagePath es una URL absoluta HTTPS antes de redirigir.
   let redirectUrl: URL;
   try {
     redirectUrl = new URL(order.product.storagePath);
   } catch {
+    return NextResponse.json(
+      { error: "Descarga no disponible temporalmente" },
+      { status: 503 },
+    );
+  }
+  if (redirectUrl.protocol !== "https:") {
     return NextResponse.json(
       { error: "Descarga no disponible temporalmente" },
       { status: 503 },

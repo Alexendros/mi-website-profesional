@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 
 // Mock @repo/stripe.
 vi.mock("@repo/stripe", () => ({
+  getStripe: vi.fn(),
   createCheckoutSession: vi.fn().mockResolvedValue({
     id: "cs_test_123",
     url: "https://checkout.stripe.com/pay/test",

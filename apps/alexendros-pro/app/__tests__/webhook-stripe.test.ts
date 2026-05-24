@@ -11,7 +11,13 @@ vi.mock("@repo/db", () => ({
 
 // Mock @repo/stripe — verifyWebhook throws for invalid sigs.
 vi.mock("@repo/stripe", () => ({
+  getStripe: vi.fn(),
   verifyWebhook: vi.fn().mockRejectedValue(new Error("Invalid signature")),
+}));
+
+// Mock @repo/email.
+vi.mock("@repo/email", () => ({
+  getResend: vi.fn(),
 }));
 
 // Mock fulfillment.
