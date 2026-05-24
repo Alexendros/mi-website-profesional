@@ -33,6 +33,12 @@ export async function GET(
   if (!order || order.deletedAt) {
     return NextResponse.json({ error: "Enlace no válido" }, { status: 404 });
   }
+
+  const blocked: string[] = ["refunded", "failed", "pending"];
+  if (blocked.includes(order.status)) {
+    return NextResponse.json({ error: "Enlace no válido" }, { status: 404 });
+  }
+
   if (order.downloadExpiresAt && order.downloadExpiresAt < new Date()) {
     return NextResponse.json({ error: "Enlace caducado" }, { status: 410 });
   }

@@ -48,7 +48,6 @@ model User {
 
   orders Order[]
 
-  @@index([email])
   @@index([createdAt(sort: Desc)])
   @@map("users")
 }
@@ -76,7 +75,6 @@ model Product {
   orders Order[]
 
   @@index([category, isActive, displayOrder])
-  @@index([slug])
   @@map("products")
 }
 
@@ -113,7 +111,6 @@ model Order {
   @@index([customerEmail])
   @@index([status, createdAt(sort: Desc)])
   @@index([productSku])
-  @@index([downloadToken])
   @@map("orders")
 }
 

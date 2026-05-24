@@ -51,6 +51,12 @@ export async function POST(req: Request): Promise<Response> {
     const email =
       session.customer_details?.email ?? session.customer_email ?? null;
 
+    if (!sku || !email) {
+      console.error(
+        `checkout.session.completed sin sku/email — session ${session.id}`,
+      );
+    }
+
     if (sku && email) {
       // El registro del evento va ATÓMICO con el Order y ANTES del email:
       // si algo falla tras el envío, el reintento de Stripe encuentra el

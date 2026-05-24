@@ -20,7 +20,12 @@ export async function fulfillOrder(
       where: { id: orderId },
       include: { product: true },
     });
-    if (!order || !order.downloadToken) return;
+    if (!order || !order.downloadToken) {
+      await prisma.order
+        .update({ where: { id: orderId }, data: { status: "payment_completed" } })
+        .catch(() => {});
+      return;
+    }
 
     if (order.product.deliveryMode === "service_manual") {
       await prisma.order.update({
