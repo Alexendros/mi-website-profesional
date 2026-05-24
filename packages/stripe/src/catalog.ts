@@ -1,5 +1,5 @@
 // Catálogo vivo indexado por SKU — sólo productos activos con stripe_price_id.
-// Fuente única: tabla `products` (patrón afiladocs catálogo-como-BD).
+// Fuente única: tabla `products` (catálogo-como-BD).
 // Async plano (sin react cache: @repo/stripe no debe depender de React).
 
 import { prisma } from "@repo/db";

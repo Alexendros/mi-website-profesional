@@ -1,5 +1,5 @@
 // Rate limiter con fallback graceful: si Upstash no está configurado
-// (UPSTASH_REDIS_REST_*), se permite (no rompe dev/local). Patrón afiladocs.
+// (UPSTASH_REDIS_REST_*), se permite (no rompe dev/local).
 
 import { createRatelimit } from "@repo/config/ratelimit";
 import type { Ratelimit } from "@repo/config/ratelimit";
