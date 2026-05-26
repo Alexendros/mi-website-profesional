@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@react-email/components": "^1.0.12",
-    "resend": "^6.12.3"
+    "resend": "^6.12.4"
   },
   "devDependencies": {
     "@eslint/js": "^9.27.0",
@@ -20,6 +20,6 @@
     "@types/node": "^22.19.19",
     "eslint": "^9.27.0",
     "typescript": "^5.8.0",
-    "typescript-eslint": "^8.59.4"
+    "typescript-eslint": "^8.60.0"
   }
 }
