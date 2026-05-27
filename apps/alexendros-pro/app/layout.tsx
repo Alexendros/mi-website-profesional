@@ -122,7 +122,8 @@ export default function RootLayout({
             __html: JSON.stringify(organizationSchema),
           }}
         />
-        <LazyAnalytics />
+        {process.env.VERCEL && <SpeedInsights />}
+        {process.env.VERCEL && <Analytics />}
       </body>
     </html>
   );
