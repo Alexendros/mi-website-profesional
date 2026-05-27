@@ -2,8 +2,10 @@ import localFont from "next/font/local";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import type { Metadata, Viewport } from "next";
-import { LazyParticleBg } from "../components/lazy-particle-bg";
-import { LazyAnalytics } from "../components/lazy-analytics";
+import { getBuildEnv } from "@repo/config/env";
+import { ParticleBg } from "../components/particle-bg";
+
+const { VERCEL } = getBuildEnv();
 
 const geistSans = localFont({
   src: "../public/fonts/GeistVF.woff2",
@@ -122,8 +124,8 @@ export default function RootLayout({
             __html: JSON.stringify(organizationSchema),
           }}
         />
-        {process.env.VERCEL && <SpeedInsights />}
-        {process.env.VERCEL && <Analytics />}
+        {VERCEL && <SpeedInsights />}
+        {VERCEL && <Analytics />}
       </body>
     </html>
   );

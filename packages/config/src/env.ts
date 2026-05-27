@@ -57,6 +57,14 @@ export const serverFields = {
 /** Schema completo del servidor. */
 export const serverSchema = z.object(serverFields);
 
+/**
+ * Variables de plataforma inyectadas automáticamente por el hosting provider.
+ * Opcionales — solo presentes en el entorno correspondiente.
+ */
+export const buildSchema = z.object({
+  VERCEL: z.string().optional(),
+});
+
 /** Schema completo: public + server. */
 export const envSchema = publicSchema.merge(serverSchema);
 
@@ -66,6 +74,7 @@ export const envSchema = publicSchema.merge(serverSchema);
 
 export type PublicEnv = z.infer<typeof publicSchema>;
 export type ServerEnv = z.infer<typeof serverSchema>;
+export type BuildEnv = z.infer<typeof buildSchema>;
 export type Env = z.infer<typeof envSchema>;
 
 // ---------------------------------------------------------------------------
@@ -138,4 +147,12 @@ export function validateEnv(): Env {
     );
   }
   return result.data;
+}
+
+/**
+ * Variables de plataforma (opcionales, nunca lanzan error).
+ * Usar para lógica condicional según el entorno de hosting.
+ */
+export function getBuildEnv(): BuildEnv {
+  return buildSchema.parse(process.env);
 }
