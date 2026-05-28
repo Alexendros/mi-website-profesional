@@ -22,8 +22,9 @@ Convenciones para el código y la documentación.
 
 - Tailwind v4. Evitar CSS suelto salvo en `globals.css` o tokens.
 - Variantes y átomos antes que `@apply`.
-- Tokens vienen del design system (`--color-*`) — definidos en `packages/brand/tokens.ts`.
-- Prohibido hardcodear colores fuera de `packages/brand/tokens.ts`.
+- Tokens vienen del design system (`--color-*`) — definidos en `packages/brand/src/tokens.ts`
+  y expuestos como variables CSS en el `globals.css` de cada app (sistema Vergina Imperial).
+- Prohibido hardcodear colores fuera de `packages/brand/src/tokens.ts`.
 
 ## Naming
 
@@ -40,6 +41,8 @@ Convenciones para el código y la documentación.
   visible.
 - Imágenes con `alt` descriptivo (vacío si decorativas).
 - Contraste mínimo 4.5:1.
+- Tamaño de objetivo táctil ≥ 24px (WCAG 2.2 AA, SC 2.5.8); excepciones
+  para enlaces en línea dentro de texto. Verificado en E2E (`responsive.spec.ts`).
 
 ## Tests
 

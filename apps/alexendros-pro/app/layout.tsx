@@ -38,17 +38,26 @@ const SITE_URL = "https://alexendros.pro";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "alexendros.pro",
+    default: "Alexendros — Desarrollo web y SaaS a medida en Valencia",
     template: "%s | Alexendros",
   },
   description:
-    "alexendros.pro — Productos digitales y presencia profesional por Alexendros.",
+    "Alejandro Domingo Agustí (Alexendros), desarrollador fullstack en Valencia. Diseño y construyo webs y productos SaaS con Next.js, Supabase y Stripe.",
   applicationName: "alexendros.pro",
   authors: [{ name: "Alejandro Domingo Agustí", url: "https://alexendros.me" }],
   creator: "Alexendros",
   publisher: "Alexendros",
   category: "technology",
-  keywords: ["Alexendros", "alexendros.pro", "SaaS"],
+  keywords: [
+    "Alexendros",
+    "desarrollador fullstack Valencia",
+    "desarrollo web a medida",
+    "desarrollo SaaS",
+    "Next.js",
+    "Supabase",
+    "Stripe",
+    "productos digitales",
+  ],
   formatDetection: { telephone: false, email: false, address: false },
   alternates: { canonical: "/" },
   openGraph: {
@@ -56,15 +65,15 @@ export const metadata: Metadata = {
     url: SITE_URL,
     locale: "es_ES",
     siteName: "alexendros.pro",
-    title: "alexendros.pro",
+    title: "Alexendros — Desarrollo web y SaaS a medida",
     description:
-      "Productos digitales y presencia profesional por Alexendros.",
+      "Webs y productos digitales que generan negocio. Next.js, Supabase y Stripe. Cuéntame tu proyecto.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "alexendros.pro",
+    title: "Alexendros — Desarrollo web y SaaS a medida",
     description:
-      "Productos digitales y presencia profesional por Alexendros.",
+      "Webs y productos digitales que generan negocio. Next.js, Supabase y Stripe.",
   },
   robots: {
     index: true,
@@ -90,18 +99,43 @@ export const viewport: Viewport = {
   colorScheme: "dark",
 };
 
-const organizationSchema = {
+const structuredData = {
   "@context": "https://schema.org",
-  "@type": "Organization",
-  name: "Alexendros",
-  url: SITE_URL,
-  logo: `${SITE_URL}/icon`,
-  sameAs: ["https://alexendros.me"],
-  founder: {
-    "@type": "Person",
-    name: "Alejandro Domingo Agustí",
-    url: "https://alexendros.me",
-  },
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": `${SITE_URL}/#person`,
+      name: "Alejandro Domingo Agustí",
+      alternateName: "Alexendros",
+      url: SITE_URL,
+      image: `${SITE_URL}/icon`,
+      jobTitle: "Desarrollador fullstack",
+      knowsAbout: ["Next.js", "TypeScript", "Supabase", "Stripe", "React"],
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Valencia",
+        addressCountry: "ES",
+      },
+      sameAs: ["https://alexendros.me"],
+    },
+    {
+      "@type": "ProfessionalService",
+      "@id": `${SITE_URL}/#service`,
+      name: "Alexendros — Desarrollo web y SaaS",
+      url: SITE_URL,
+      image: `${SITE_URL}/opengraph-image`,
+      logo: `${SITE_URL}/icon`,
+      description:
+        "Desarrollo de webs y productos SaaS a medida con Next.js, Supabase y Stripe, mantenimiento y consultoría técnica.",
+      areaServed: "ES",
+      provider: { "@id": `${SITE_URL}/#person` },
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Valencia",
+        addressCountry: "ES",
+      },
+    },
+  ],
 };
 
 export default function RootLayout({
@@ -122,7 +156,7 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(organizationSchema),
+            __html: JSON.stringify(structuredData),
           }}
         />
         {VERCEL && <LazyAnalytics />}
