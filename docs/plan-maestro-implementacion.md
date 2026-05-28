@@ -1,5 +1,15 @@
 # Plan Maestro: ALEXENDROS — Monorepo
 
+> **⚠️ Documento histórico (estado actualizado 2026-05).** Este plan describe la implementación
+> original. Cambios posteriores que afectan a lo que sigue:
+> - El monorepo se renombró de `alexendros-monorepo` a **`alexendrospro`**.
+> - **FASE 3 (`apps/alexendros-me`) se extrajo a un repositorio standalone** (`~/Apps/alexendros-me/`)
+>   el 2026-04-11. Ya **no existe** dentro de este monorepo; los comandos `--filter=alexendros-me`
+>   de abajo solo aplican a aquel repo, no a este.
+> - StageKit vive en `apps/kitos/stagekit/` (no `apps/stagekit/`).
+> - `alexendros.pro` arrancó (2026-05) como **landing de captación de servicios** (MVP); el hub
+>   completo con backend sigue planificado.
+
 ## Contexto
 
 Implementar desde cero el monorepo `alexendros-monorepo` documentado en Notion (13 docs del Hub).

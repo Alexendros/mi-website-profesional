@@ -51,3 +51,35 @@ test.describe("Landing · smoke tests", () => {
     expect(response?.status()).toBe(200);
   });
 });
+
+test.describe("Landing · captación de servicios", () => {
+  test("muestra secciones de servicios, proceso y contacto", async ({ page }) => {
+    await page.goto("/");
+    await expect(page.getByRole("heading", { name: /Servicios/i })).toBeVisible();
+    await expect(page.getByRole("heading", { name: /Cómo trabajo/i })).toBeVisible();
+    await expect(page.locator("#contacto")).toBeVisible();
+  });
+
+  test("formulario de contacto presente con consentimiento RGPD", async ({ page }) => {
+    await page.goto("/");
+    await expect(page.getByLabel(/Nombre/i)).toBeVisible();
+    await expect(page.getByLabel(/Email/i)).toBeVisible();
+    await expect(page.getByRole("checkbox")).toBeVisible();
+    await expect(
+      page.getByRole("link", { name: /política de privacidad/i })
+    ).toBeVisible();
+    await expect(
+      page.getByRole("button", { name: /Enviar mensaje/i })
+    ).toBeVisible();
+  });
+});
+
+test.describe("Páginas legales", () => {
+  for (const path of ["/privacidad", "/aviso-legal"]) {
+    test(`${path} responde 200 y tiene h1`, async ({ page }) => {
+      const response = await page.goto(path);
+      expect(response?.status()).toBe(200);
+      await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    });
+  }
+});

@@ -1,6 +1,8 @@
 # 06 — Fases de Implementación (Vista Semanal)
 
 > Derivado del plan maestro (`plan-maestro-implementacion.md`). Este documento es la vista operativa semana a semana.
+>
+> **⚠️ Nota histórica (2026-05):** la FASE 3 (`alexendros.me`) se completó y se **extrajo a un repo standalone** el 2026-04-11; ya no forma parte de este monorepo. StageKit vive en `apps/kitos/stagekit/`.
 
 ---
 
@@ -96,7 +98,7 @@
 
 ### S14 — Deploy producción (FASE 9)
 - GitHub Actions: lint + typecheck + test
-- Vercel: 3 proyectos (alexendros-me, alexendros-pro, stagekit)
+- Vercel: 2 proyectos en este monorepo (alexendros-pro, stagekit). `alexendros-me` se extrajo a repo standalone (2026-04-11) y se despliega por separado.
 - Stripe live + webhooks registrados
 - Monitoring: Sentry, PostHog EU, Better Uptime
 

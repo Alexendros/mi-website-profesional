@@ -27,7 +27,7 @@ jobs:
       summary-items: ${{ steps.rebase-loop.outputs.summary-items }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}

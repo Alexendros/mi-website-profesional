@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "alexendros.pro",
     short_name: "Alexendros",
     description:
-      "Plataforma de Alexendros en construcción.",
+      "Desarrollo web y SaaS a medida — Alexendros, desarrollador fullstack en Valencia.",
     start_url: "/",
     display: "standalone",
     background_color: "#080c14",

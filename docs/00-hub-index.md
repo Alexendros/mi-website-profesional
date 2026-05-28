@@ -4,7 +4,7 @@
 >
 > Stack: Next.js **16** · Node **24** · Supabase · Stripe · Vercel · shadcn/ui · Vergina Imperial v0.2.2
 >
-> Última actualización: 2026-05-10
+> Última actualización: 2026-05-29
 
 > **Nota 2026-04-23**: el concepto paraguas anterior quedó retirado; contenido archivado en `.archive/kitos-pre-reformulacion-2026-04-23/`. Pendiente reformular el relato de producto.
 
@@ -12,7 +12,7 @@
 
 | App | Ámbito | Dominio | Estado |
 | --- | --- | --- | --- |
-| **alexendros-pro** | Sitio de marca personal y hub | alexendros.pro | 🟡 En construcción |
+| **alexendros-pro** | Hub y landing de captación de servicios | alexendros.pro | 🟢 Landing de servicios (MVP); hub con backend pendiente |
 | **StageKit** | Artistas música electrónica (techno, tech-house) | stagekit.app | 🟢 MVP activo |
 | *(otras apps)* | Verticales futuros | TBD | 🔲 Por definir |
 

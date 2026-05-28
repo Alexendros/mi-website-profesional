@@ -14,8 +14,11 @@ test.describe("Responsividad · no-overflow + tap targets ≥44px", () => {
     expect(overflow, "overflow horizontal detectado").toBe(false);
   });
 
-  test("tap targets interactivos tienen al menos 44px", async ({ page }) => {
-    const smallTargets = await page.evaluate(() => {
+  // WCAG 2.2 nivel AA · SC 2.5.8 Target Size (Minimum) = 24px.
+  // (El antiguo umbral de 44px corresponde a SC 2.5.5, nivel AAA.)
+  test("tap targets interactivos tienen al menos 24px", async ({ page }) => {
+    const MIN = 24;
+    const smallTargets = await page.evaluate((min) => {
       const targets = [
         ...document.querySelectorAll<HTMLElement>(
           'a, button, [role="button"], input, select, textarea'
@@ -35,7 +38,23 @@ test.describe("Responsividad · no-overflow + tap targets ≥44px", () => {
           ) {
             return false;
           }
-          return rect.width < 44 || rect.height < 44;
+          // Checkbox/radio: el objetivo accesible es su <label> asociado.
+          if (
+            el.tagName === "INPUT" &&
+            ["checkbox", "radio"].includes(
+              (el as HTMLInputElement).type
+            )
+          ) {
+            return false;
+          }
+          // Enlaces en línea dentro de texto corrido (excepción de SC 2.5.8).
+          if (
+            el.tagName === "A" &&
+            getComputedStyle(el).display === "inline"
+          ) {
+            return false;
+          }
+          return rect.width < min || rect.height < min;
         })
         .map((el) => ({
           tag: el.tagName.toLowerCase(),
@@ -43,15 +62,18 @@ test.describe("Responsividad · no-overflow + tap targets ≥44px", () => {
           width: Math.round(el.getBoundingClientRect().width),
           height: Math.round(el.getBoundingClientRect().height),
         }));
-    });
+    }, MIN);
 
     if (smallTargets.length > 0) {
-      console.warn("Tap targets <44px:", JSON.stringify(smallTargets, null, 2));
+      console.warn(
+        `Tap targets <${MIN}px:`,
+        JSON.stringify(smallTargets, null, 2)
+      );
     }
 
     expect(
       smallTargets,
-      `${smallTargets.length} elemento(s) con tap target < 44px`
+      `${smallTargets.length} elemento(s) con tap target < ${MIN}px`
     ).toHaveLength(0);
   });
 });

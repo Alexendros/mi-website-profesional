@@ -49,12 +49,17 @@ repo: Turborepo monorepo (github.com/alexendros/alexendros-monorepo — pendient
 apps:
   alexendros-pro:
     domain: alexendros.pro
-    status: PLANNED
-    notes: Hub central. Auth, dashboard, tRPC, pagos. Fase 6 del roadmap.
+    status: TIENDA_DIGITAL + LANDING_SERVICIOS (MVP, 2026-05)
+    notes: >-
+      Hoy: tienda de productos digitales (Stripe checkout + webhooks + descargas)
+      y landing de servicios + contacto (formulario/Resend, Calendly, WhatsApp).
+      Pendiente: hub completo con auth, dashboard y tRPC (Fase 6).
+    path: apps/alexendros-pro
   stagekit:
     domain: stagekit.app
     status: MVP_ACTIVE
     theme_token: dark-acid
+    path: apps/kitos/stagekit
   lexkit:
     domain: lexkit.pro
     status: ROADMAP_Q3_2026
@@ -164,11 +169,11 @@ packages:
 
 ```bash
 # Desarrollo
-pnpm dev --filter=alexendros-me
+pnpm dev --filter=alexendros-pro
 pnpm dev --filter=stagekit
 
 # Build
-pnpm turbo build --filter=alexendros-me
+pnpm turbo build --filter=alexendros-pro
 
 # DB
 pnpm --filter=@repo/db prisma migrate dev --name <descripcion>
@@ -176,10 +181,10 @@ pnpm --filter=@repo/db prisma studio
 
 # Tests
 pnpm turbo test
-pnpm --filter=alexendros-me playwright test
+pnpm --filter=alexendros-pro playwright test
 
 # CWV
-npx @unlighthouse/cli https://alexendros.me
+npx @unlighthouse/cli https://alexendros.pro
 
 # Stripe webhooks local
 stripe listen --forward-to localhost:3000/api/webhooks/stripe
@@ -253,20 +258,27 @@ Todas las variables se validan al arrancar con Zod en `lib/env.ts` (ver spec com
 
 ---
 
-## 8. FASE ACTUAL (Abril 2026)
+## 8. FASE ACTUAL (Mayo 2026)
 
 ### Completadas (dentro de este monorepo)
 - **Phase 1 — Monorepo Scaffold:** Turborepo, TypeScript strict, Zod env validation, globalEnv
 - **Phase 2 — Design System:** 31 tokens oklch, Geist fonts, Tailwind v4 CSS-first, 15 shadcn/ui components
 - **Phase 3 — alexendros.me:** Completada. **Extraida a repositorio standalone `~/Apps/alexendros-me/` el 2026-04-11** (commit origen `a180d73`). Pendiente deploy Vercel + DNS en ese repo.
+- **alexendros.pro — Tienda de productos digitales (Stripe, #28):** `(tienda)`, `/api/checkout`,
+  webhooks Stripe verificados, descargas firmadas y tests RLS.
+- **alexendros.pro — Landing de captación de servicios (MVP, 2026-05):** home de servicios +
+  CTA a la tienda, formulario `/api/contact` (Resend + rate-limit `checkRateLimit` + RGPD),
+  Calendly, WhatsApp/email, páginas legales y SEO (JSON-LD Person/ProfessionalService). Sin auth.
+  Ver `apps/alexendros-pro/CLAUDE.md`.
 
 ### En curso
 - **Phase 4 — Base de Datos:** Planificada (2 plans). Pendiente credenciales Supabase en `.env.local`
 
 ### Proximas
 - Phase 5 — Pagos y Email (Stripe + React Email)
-- Phase 6 — Hub alexendros.pro (Auth, dashboard, tRPC) — app `apps/alexendros-pro/`
+- Phase 6 — Hub alexendros.pro completo (Auth, dashboard, tRPC, pagos) sobre la landing actual
 - Phase 7 — StageKit MVP — app `apps/kitos/stagekit/`
+- Phase 8 — Automatización n8n (CRM, dunning) · Phase 9 — Hardening (Sentry, tests, compliance)
 
 ---
 
@@ -441,13 +453,16 @@ Plataforma SaaS multi-producto de kits digitales temáticos para profesionales, 
 <!-- GSD:conventions-start source:CONVENTIONS.md -->
 ## Conventions
 
-Conventions not yet established. Will populate as patterns emerge during development.
+Convenciones de código (TypeScript, React, Tailwind v4, accesibilidad, naming, tests y commits)
+documentadas en [`STYLEGUIDE.md`](STYLEGUIDE.md) en la raíz del repositorio.
 <!-- GSD:conventions-end -->
 
 <!-- GSD:architecture-start source:ARCHITECTURE.md -->
 ## Architecture
 
-Architecture not yet mapped. Follow existing patterns found in the codebase.
+Arquitectura del monorepo (3 apps + packages, Vercel, rate limiting, auth SSR) en
+[`docs/01-stack-arquitectura.md`](docs/01-stack-arquitectura.md). Índice general en
+[`docs/00-hub-index.md`](docs/00-hub-index.md).
 <!-- GSD:architecture-end -->
 
 <!-- GSD:skills-start source:skills/ -->

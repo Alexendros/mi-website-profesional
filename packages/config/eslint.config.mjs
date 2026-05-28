@@ -31,6 +31,11 @@ export default tseslint.config(
     },
   },
   {
+    // Scripts CLI (seed, populate, etc.): imprimir a stdout es su propósito.
+    files: ["**/scripts/**"],
+    rules: { "no-console": "off" },
+  },
+  {
     ignores: ["node_modules/", "dist/", ".next/", "out/", ".turbo/", "next-env.d.ts"],
   },
 );

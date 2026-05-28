@@ -33,11 +33,9 @@ alexendros-monorepo/
 │       ├── deploy-vercel.md
 │       └── gdpr-audit.md
 ├── apps/
-│   ├── alexendros-me/CLAUDE.md
 │   ├── alexendros-pro/CLAUDE.md
-│   ├── stagekit/CLAUDE.md
-│   ├── lexkit/CLAUDE.md
-│   └── gestkit/CLAUDE.md
+│   └── kitos/
+│       └── stagekit/CLAUDE.md       # lexkit/, gestkit/ → roadmap Q3/Q4 2026
 └── packages/
     ├── brand/CLAUDE.md
     ├── ui/CLAUDE.md
@@ -52,9 +50,9 @@ Claude Code carga en orden:
 2. [CLAUDE.md](http://CLAUDE.md) del subdirectorio donde se lanza la sesión
 3. Todos los [CLAUDE.md](http://CLAUDE.md) en directorios intermedios
 
-Ejemplo: si lanzas `claude` desde `apps/alexendros-me/`:
+Ejemplo: si lanzas `claude` desde `apps/alexendros-pro/`:
 
-→ Carga raíz/[CLAUDE.md](http://CLAUDE.md) + apps/alexendros-me/[CLAUDE.md](http://CLAUDE.md) automáticamente.
+→ Carga raíz/[CLAUDE.md](http://CLAUDE.md) + apps/alexendros-pro/[CLAUDE.md](http://CLAUDE.md) automáticamente.
 
 ---
 
@@ -191,11 +189,11 @@ packages:
 
 ```bash
 # Desarrollo
-pnpm dev --filter=alexendros-me
+pnpm dev --filter=alexendros-pro
 pnpm dev --filter=stagekit
 
 # Build
-pnpm turbo build --filter=alexendros-me
+pnpm turbo build --filter=alexendros-pro
 
 # DB
 pnpm --filter=@repo/db prisma migrate dev --name <descripcion>
@@ -203,10 +201,10 @@ pnpm --filter=@repo/db prisma studio
 
 # Tests
 pnpm turbo test
-pnpm --filter=alexendros-me playwright test
+pnpm --filter=alexendros-pro playwright test
 
 # CWV
-npx @unlighthouse/cli https://alexendros.me
+npx @unlighthouse/cli https://alexendros.pro
 
 # Stripe webhooks local
 stripe listen --forward-to localhost:3000/api/webhooks/stripe
@@ -352,8 +350,8 @@ Ver checklist: Notion → PRE-FASE — Brand Audit & Reposicionamiento [Alexendr
 
 | Archivo | Contexto específico que añade |
 | --- | --- |
-| apps/alexendros-me/[CLAUDE.md](http://CLAUDE.md) | Reglas web personal, copywriting, waitlist, GDPR |
-| apps/alexendros-pro/[CLAUDE.md](http://CLAUDE.md) | Reglas SaaS hub Alexendros, arquitectura multi-app |
+| apps/alexendros-pro/[CLAUDE.md](http://CLAUDE.md) | Reglas hub Alexendros: landing de servicios, contacto, arquitectura multi-app |
+| apps/kitos/stagekit/[CLAUDE.md](http://CLAUDE.md) | Reglas StageKit: EPK, booking, planes |
 | packages/brand/[CLAUDE.md](http://CLAUDE.md) | Tokens, logos, paletas, reglas visuales |
 | packages/db/[CLAUDE.md](http://CLAUDE.md) | Schema, RLS, convenciones Prisma/Supabase |
 | packages/ui/[CLAUDE.md](http://CLAUDE.md) | Componentes shadcn, CVA, accesibilidad |
