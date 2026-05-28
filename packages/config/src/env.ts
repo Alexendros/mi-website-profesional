@@ -7,6 +7,9 @@ import { z } from "zod";
 /**
  * Variables expuestas al cliente (prefijo NEXT_PUBLIC_).
  * Seguras para incluir en el bundle del navegador.
+ *
+ * Nota: NEXT_PUBLIC_SUPABASE_URL apunta al endpoint self-hosted
+ * `https://supabase.alexendros.pro` desde 2026-05-28 (ADR-0003).
  */
 export const publicSchema = z.object({
   NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
@@ -25,10 +28,14 @@ export const publicSchema = z.object({
  * SUPABASE_SERVICE_ROLE_KEY jamás con prefijo NEXT_PUBLIC_.
  */
 export const serverSchema = z.object({
-  // Supabase
+  // Supabase (self-hosted Dokploy)
   SUPABASE_SERVICE_ROLE_KEY: z.string().min(1),
+  SUPABASE_PROJECT_URL: z
+    .string()
+    .url()
+    .default("https://supabase.alexendros.pro"),
 
-  // Prisma — pooler (6543) para queries, directo (5432) para migraciones
+  // Prisma — pooler Supavisor (6543) para queries, directo (5432) para migraciones
   DATABASE_URL: z.string().min(1),
   DIRECT_URL: z.string().min(1),
 
@@ -38,6 +45,12 @@ export const serverSchema = z.object({
   STRIPE_CONNECT_CLIENT_ID: z.string().min(1),
   STRIPE_PRICE_STAGEKIT_PRO_MONTHLY: z.string().startsWith("price_"),
   STRIPE_PRICE_STAGEKIT_AGENCY_MONTHLY: z.string().startsWith("price_"),
+
+  // OAuth providers — sólo los client_id viven en la app Next.
+  // Los `secret` se quedan en Dokploy/GoTrue, no en Next.
+  GOOGLE_OAUTH_CLIENT_ID: z.string().min(1).optional(),
+  GITHUB_OAUTH_CLIENT_ID: z.string().min(1).optional(),
+  APPLE_OAUTH_CLIENT_ID: z.string().min(1).optional(),
 
   // Email
   RESEND_API_KEY: z.string().startsWith("re_"),

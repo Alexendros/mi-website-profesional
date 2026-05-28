@@ -1,0 +1,22 @@
+[Unit]
+Description=Backup nocturno Supabase Postgres + restic
+Wants=supabase-backup.timer
+After=network-online.target docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+User=root
+EnvironmentFile=/etc/default/supabase-backup
+ExecStart=/opt/alexendros/supabase-backup.sh
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+NoNewPrivileges=true
+ReadWritePaths=/var/log /var/cache/restic /tmp
+
+[Install]
+WantedBy=multi-user.target

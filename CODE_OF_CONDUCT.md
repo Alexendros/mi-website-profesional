@@ -61,7 +61,7 @@ representante designada en un evento online u offline.
 ## Aplicación
 
 Las conductas abusivas, acosadoras o inaceptables se pueden notificar a las
-personas responsables del proyecto a través de contacto@alexendros.pro. Todas las
+personas responsables del proyecto a través de contacto@alexendros.me. Todas las
 quejas se revisarán e investigarán de manera rápida y justa.
 
 Las personas responsables están obligadas a respetar la privacidad y la

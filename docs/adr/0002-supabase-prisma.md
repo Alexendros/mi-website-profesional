@@ -1,8 +1,10 @@
 # ADR-0002 · Supabase + Prisma 5 como capa de datos
 
 - Fecha: 2026-05-10
-- Estado: Aceptado
+- Estado: **Superseded by [ADR-0003](0003-supabase-self-hosted-dokploy.md)** (2026-05-28)
 - Decisor: Alexendros
+
+> Nota 2026-05-28: la decisión de usar Supabase Cloud gestionado en `eu-west-1` queda **reemplazada** por una instancia Supabase self-hosted desplegada en Dokploy sobre VPS Hostinger EU. Ver ADR-0003 para justificación, arquitectura y migraciones.
 
 ## Contexto
 

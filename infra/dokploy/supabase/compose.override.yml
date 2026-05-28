@@ -1,0 +1,130 @@
+# Override del compose oficial supabase/supabase para despliegue en Dokploy.
+# Aplica:
+#   - Labels Traefik para Kong (HTTPS) y Studio (HTTPS + basicAuth + ipAllowList).
+#   - Labels Traefik TCP para Supavisor (puerto 6543, SNI + TLS passthrough).
+#   - mem_limit por servicio para evitar OOM en convivencia con n8n.
+#   - Reinicio resiliente y healthchecks.
+#
+# Dokploy descubre los servicios por nombre del compose upstream. Cualquier
+# servicio no listado aquí hereda la configuración upstream sin cambios.
+
+services:
+  # ---------------- Plano de datos ----------------
+  db:
+    mem_limit: 1536m
+    cpus: 1.5
+    restart: unless-stopped
+    # Postgres NO se expone por Traefik HTTP. Acceso directo (5432)
+    # limitado por firewall del host. Dokploy lo deja en red interna.
+
+  supavisor:
+    mem_limit: 256m
+    cpus: 0.5
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.tcp.routers.supavisor.entrypoints=postgres"
+      - "traefik.tcp.routers.supavisor.rule=HostSNI(`db.supabase.alexendros.pro`)"
+      - "traefik.tcp.routers.supavisor.tls=true"
+      - "traefik.tcp.routers.supavisor.tls.passthrough=true"
+      - "traefik.tcp.services.supavisor.loadbalancer.server.port=6543"
+
+  # ---------------- Auth ----------------
+  auth:
+    mem_limit: 256m
+    cpus: 0.5
+    restart: unless-stopped
+    environment:
+      GOTRUE_SITE_URL: "${SITE_URL}"
+      GOTRUE_URI_ALLOW_LIST: "${ADDITIONAL_REDIRECT_URLS}"
+      GOTRUE_DISABLE_SIGNUP: "${GOTRUE_DISABLE_SIGNUP:-false}"
+      GOTRUE_MAILER_AUTOCONFIRM: "${GOTRUE_MAILER_AUTOCONFIRM:-false}"
+      GOTRUE_RATE_LIMIT_EMAIL_SENT: "${GOTRUE_RATE_LIMIT_EMAIL_SENT:-10}"
+      GOTRUE_SMTP_HOST: "${SMTP_HOST}"
+      GOTRUE_SMTP_PORT: "${SMTP_PORT}"
+      GOTRUE_SMTP_USER: "${SMTP_USER}"
+      GOTRUE_SMTP_PASS: "${SMTP_PASS}"
+      GOTRUE_SMTP_ADMIN_EMAIL: "${SMTP_ADMIN_EMAIL}"
+      GOTRUE_SMTP_SENDER_NAME: "${SMTP_SENDER_NAME}"
+      GOTRUE_EXTERNAL_GOOGLE_ENABLED: "${GOTRUE_EXTERNAL_GOOGLE_ENABLED:-false}"
+      GOTRUE_EXTERNAL_GOOGLE_CLIENT_ID: "${GOTRUE_EXTERNAL_GOOGLE_CLIENT_ID:-}"
+      GOTRUE_EXTERNAL_GOOGLE_SECRET: "${GOTRUE_EXTERNAL_GOOGLE_SECRET:-}"
+      GOTRUE_EXTERNAL_GOOGLE_REDIRECT_URI: "${GOTRUE_EXTERNAL_GOOGLE_REDIRECT_URI:-}"
+      GOTRUE_EXTERNAL_GITHUB_ENABLED: "${GOTRUE_EXTERNAL_GITHUB_ENABLED:-false}"
+      GOTRUE_EXTERNAL_GITHUB_CLIENT_ID: "${GOTRUE_EXTERNAL_GITHUB_CLIENT_ID:-}"
+      GOTRUE_EXTERNAL_GITHUB_SECRET: "${GOTRUE_EXTERNAL_GITHUB_SECRET:-}"
+      GOTRUE_EXTERNAL_GITHUB_REDIRECT_URI: "${GOTRUE_EXTERNAL_GITHUB_REDIRECT_URI:-}"
+      GOTRUE_EXTERNAL_APPLE_ENABLED: "${GOTRUE_EXTERNAL_APPLE_ENABLED:-false}"
+      GOTRUE_EXTERNAL_APPLE_CLIENT_ID: "${GOTRUE_EXTERNAL_APPLE_CLIENT_ID:-}"
+      GOTRUE_EXTERNAL_APPLE_SECRET: "${GOTRUE_EXTERNAL_APPLE_SECRET:-}"
+      GOTRUE_EXTERNAL_APPLE_REDIRECT_URI: "${GOTRUE_EXTERNAL_APPLE_REDIRECT_URI:-}"
+
+  rest:
+    mem_limit: 256m
+    cpus: 0.5
+    restart: unless-stopped
+
+  realtime:
+    mem_limit: 256m
+    cpus: 0.5
+    restart: unless-stopped
+
+  storage:
+    mem_limit: 256m
+    cpus: 0.5
+    restart: unless-stopped
+
+  imgproxy:
+    mem_limit: 128m
+    cpus: 0.3
+    restart: unless-stopped
+
+  meta:
+    mem_limit: 192m
+    cpus: 0.3
+    restart: unless-stopped
+
+  # ---------------- Kong ----------------
+  kong:
+    mem_limit: 256m
+    cpus: 0.5
+    restart: unless-stopped
+    volumes:
+      - ./kong.yml:/var/lib/kong/kong.yml:ro
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.supabase-api.rule=Host(`supabase.alexendros.pro`)"
+      - "traefik.http.routers.supabase-api.entrypoints=websecure"
+      - "traefik.http.routers.supabase-api.tls=true"
+      - "traefik.http.routers.supabase-api.tls.certresolver=letsencrypt"
+      - "traefik.http.services.supabase-api.loadbalancer.server.port=8000"
+      - "traefik.http.routers.supabase-api.middlewares=supabase-sec-headers@docker"
+      - "traefik.http.middlewares.supabase-sec-headers.headers.stsSeconds=63072000"
+      - "traefik.http.middlewares.supabase-sec-headers.headers.stsIncludeSubdomains=true"
+      - "traefik.http.middlewares.supabase-sec-headers.headers.stsPreload=true"
+      - "traefik.http.middlewares.supabase-sec-headers.headers.contentTypeNosniff=true"
+      - "traefik.http.middlewares.supabase-sec-headers.headers.referrerPolicy=strict-origin-when-cross-origin"
+
+  # ---------------- Studio ----------------
+  studio:
+    mem_limit: 256m
+    cpus: 0.5
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.supabase-studio.rule=Host(`studio.supabase.alexendros.pro`)"
+      - "traefik.http.routers.supabase-studio.entrypoints=websecure"
+      - "traefik.http.routers.supabase-studio.tls=true"
+      - "traefik.http.routers.supabase-studio.tls.certresolver=letsencrypt"
+      - "traefik.http.services.supabase-studio.loadbalancer.server.port=3000"
+      - "traefik.http.routers.supabase-studio.middlewares=supabase-studio-auth@docker,supabase-studio-allowlist@docker,supabase-studio-noindex@docker"
+      # basicAuth: el valor debe generarse con `htpasswd -nbB admin <pass>` y guardarse en Dokploy
+      - "traefik.http.middlewares.supabase-studio-auth.basicauth.users=${DASHBOARD_BASIC_AUTH}"
+      - "traefik.http.middlewares.supabase-studio-allowlist.ipallowlist.sourcerange=${OPERATOR_ALLOWLIST}"
+      - "traefik.http.middlewares.supabase-studio-noindex.headers.customresponseheaders.X-Robots-Tag=noindex,nofollow"
+
+# Dokploy provisiona la red automáticamente.
+networks:
+  default:
+    name: dokploy-network
+    external: true

@@ -16,13 +16,15 @@
         "components/**",
         "lib/**",
         "public/**",
+        "prisma/**",
+        "src/**",
         "package.json",
         "tsconfig.json",
         "next.config.*",
         "tailwind.config.*",
         "postcss.config.*"
       ],
-      "outputs": [".next/**", "!.next/cache/**", "dist/**", "out/**"]
+      "outputs": [".next/**", "!.next/cache/**", "dist/**", "out/**", "node_modules/.prisma/**"]
     },
     "dev": {
       "cache": false,

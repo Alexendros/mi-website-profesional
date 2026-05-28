@@ -174,4 +174,4 @@ No las publiques en issues. Sigue lo descrito en [SECURITY.md](SECURITY.md) y el
 
 ## Contacto
 
-Para dudas sobre el proceso escribe a contacto@alexendros.pro.
+Para dudas sobre el proceso escribe a contacto@alexendros.me.

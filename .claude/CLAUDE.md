@@ -1,3 +1,13 @@
+<!-- MCEOD:BEGIN v2.0.0 -->
+- Versión MCEOD: 2.0.0
+- Nivel: L2
+- Scope: `/home/alexendros/Repositorios/alexendrospro`
+- Fecha consolidación: 2026-05-28T04:48:11Z
+- Hereda de: `~/.claude/CLAUDE.md` (L0) y, si existe, del CLAUDE.md de la categoría padre (L1).
+- Owners: Alexendros <spiderwebtraveler@gmail.com>
+
+> Cabecera gestionada por MCEOD (entre los marcadores BEGIN/END). El cuerpo del documento, fuera de este bloque, fue generado por `/init` de Claude Code y no se modifica.
+<!-- MCEOD:END -->
 # CLAUDE.md — alexendrospro
 
 > Extensión de `~/.claude/CLAUDE.md` (canon)

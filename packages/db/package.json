@@ -7,15 +7,22 @@
     ".": "./src/index.ts"
   },
   "scripts": {
-    "typecheck": "tsc --noEmit",
+    "build": "prisma generate",
+    "typecheck": "prisma generate && tsc --noEmit",
     "lint": "eslint .",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
-    "db:studio": "prisma studio"
+    "db:studio": "prisma studio",
+    "db:seed": "tsx prisma/seed.ts"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
-    "@prisma/client": "^5.22.0"
+    "@prisma/client": "^5.22.0",
+    "@supabase/ssr": "^0.5.2",
+    "@supabase/supabase-js": "^2.48.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.27.0",
@@ -23,6 +30,7 @@
     "@types/node": "^22.19.19",
     "eslint": "^9.27.0",
     "prisma": "^5.22.0",
+    "tsx": "^4.20.3",
     "typescript": "^5.8.0",
     "typescript-eslint": "^8.59.3"
   }

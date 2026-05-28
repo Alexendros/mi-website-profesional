@@ -1,28 +1,449 @@
-// @repo/db — Prisma schema scaffold
-// Ampliar con los modelos reales de cada Kit antes de la primera migración.
+// @repo/db — Prisma schema (alexendros-pro, Fase 4)
+//
+// 13 modelos + RLS aplicada vía SQL bruto en packages/db/prisma/sql/.
+// Convenciones (ver packages/db/CLAUDE.md):
+//   - id @id @default(cuid())
+//   - createdAt + updatedAt obligatorios
+//   - @@map("snake_case_plural")
+//   - tablas Kit-específicas llevan kitId
+//   - PII: comentario // RGPD Art.6.1.X · purpose=...
+//   - Soft-delete con deletedAt DateTime? en tablas críticas
+//   - User enlaza con auth.users de Supabase via supabaseAuthId
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  directUrl  = env("DIRECT_URL")
+  extensions = [pgcrypto, citext]
 }
 
-// ---------------------------------------------------------------------------
-// Scaffold: User
-// Replace / extend with real models before running prisma migrate dev.
-// ---------------------------------------------------------------------------
+// =============================================================================
+// Enums
+// =============================================================================
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum PlanTier {
+  FREE
+  PRO
+  AGENCY
+}
+
+enum PriceInterval {
+  ONE_TIME
+  MONTH
+  YEAR
+}
+
+enum SubscriptionStatus {
+  INCOMPLETE
+  INCOMPLETE_EXPIRED
+  TRIALING
+  ACTIVE
+  PAST_DUE
+  CANCELED
+  UNPAID
+  PAUSED
+}
+
+enum InboundRequestStatus {
+  NEW
+  CONTACTED
+  CONVERTED
+  ARCHIVED
+  SPAM
+}
+
+enum PayoutStatus {
+  PENDING
+  IN_TRANSIT
+  PAID
+  FAILED
+  CANCELED
+}
+
+enum DocumentType {
+  CONTRACT
+  DPA
+  TERMS_ACCEPTANCE
+  PRIVACY_ACCEPTANCE
+  CONSENT_MARKETING
+}
+
+enum ConsentPurpose {
+  MARKETING_EMAIL
+  ANALYTICS
+  COOKIES_NONESSENTIAL
+  TERMS_ACCEPTANCE
+  PRIVACY_ACCEPTANCE
+}
+
+enum LegalBasis {
+  CONSENT
+  CONTRACT
+  LEGITIMATE_INTEREST
+  LEGAL_OBLIGATION
+}
+
+enum KitInterest {
+  STAGEKIT
+  LEXKIT
+  GESTKIT
+  UNDECIDED
+}
+
+// =============================================================================
+// 1. User — espejo de auth.users (Supabase)
+// =============================================================================
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique // RGPD Art.6.1.b
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id               String     @id @default(cuid())
+  supabaseAuthId   String     @unique // FK lógica a auth.users.id
+  email            String     @unique // RGPD Art.6.1.b · purpose=identificacion/contacto
+  role             UserRole   @default(USER)
+  stripeCustomerId String?    @unique
+  deletedAt        DateTime?
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+
+  clientProfile        ClientProfile?
+  affiliate            Affiliate?
+  subscriptions        Subscription[]
+  kitProfiles          KitProfile[]
+  consentRecords       ConsentRecord[]
+  digitalRegistrations DigitalRegistration[]
+  leadsConverted       Lead[]                @relation("LeadConvertedUser")
+  auditLogs            AuditLog[]            @relation("AuditLogActor")
 
   @@index([email])
+  @@index([supabaseAuthId])
   @@index([createdAt(sort: Desc)])
   @@map("users")
+}
+
+// =============================================================================
+// 2. Kit — catálogo de productos verticales (sin PII)
+// =============================================================================
+
+model Kit {
+  id         String   @id @default(cuid())
+  slug       String   @unique // stagekit | lexkit | gestkit
+  name       String
+  themeToken String // dark-acid | legal-navy | gestoria-slate
+  domain     String   @unique
+  active     Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  plans         Plan[]
+  subscriptions Subscription[]
+  kitProfiles   KitProfile[]
+
+  @@index([slug])
+  @@map("kits")
+}
+
+// =============================================================================
+// 3. Plan — categoría comercial por Kit (sin PII)
+// =============================================================================
+
+model Plan {
+  id          String   @id @default(cuid())
+  kitId       String
+  slug        String // free | pro | agency | priority-support | compliance-pack
+  name        String
+  tier        PlanTier
+  description String?
+  features    Json     @default("[]")
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  kit           Kit            @relation(fields: [kitId], references: [id], onDelete: Restrict)
+  prices        Price[]
+  subscriptions Subscription[]
+
+  @@unique([kitId, slug])
+  @@index([kitId])
+  @@map("plans")
+}
+
+// =============================================================================
+// 4. Price — Stripe Price (sin PII)
+// =============================================================================
+
+model Price {
+  id             String        @id @default(cuid())
+  planId         String
+  stripePriceId  String        @unique
+  currency       String        @db.Char(3)
+  unitAmount     Int // céntimos
+  interval       PriceInterval
+  intervalCount  Int           @default(1)
+  trialDays      Int?
+  active         Boolean       @default(true)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  plan          Plan           @relation(fields: [planId], references: [id], onDelete: Restrict)
+  subscriptions Subscription[]
+
+  @@index([planId])
+  @@index([stripePriceId])
+  @@map("prices")
+}
+
+// =============================================================================
+// 5. Subscription — RGPD Art.6.1.b ejecución del contrato
+// =============================================================================
+
+model Subscription {
+  id                   String             @id @default(cuid())
+  userId               String
+  kitId                String
+  planId               String
+  priceId              String
+  stripeSubscriptionId String             @unique
+  status               SubscriptionStatus
+  currentPeriodStart   DateTime?
+  currentPeriodEnd     DateTime?
+  cancelAtPeriodEnd    Boolean            @default(false)
+  canceledAt           DateTime?
+  trialEndsAt          DateTime?
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  kit   Kit   @relation(fields: [kitId], references: [id], onDelete: Restrict)
+  plan  Plan  @relation(fields: [planId], references: [id], onDelete: Restrict)
+  price Price @relation(fields: [priceId], references: [id], onDelete: Restrict)
+
+  @@index([userId])
+  @@index([kitId])
+  @@index([status])
+  @@index([currentPeriodEnd])
+  @@map("subscriptions")
+}
+
+// =============================================================================
+// 6. ClientProfile — RGPD Art.6.1.b
+// =============================================================================
+
+model ClientProfile {
+  id          String    @id @default(cuid())
+  userId      String    @unique
+  displayName String // RGPD Art.6.1.b · purpose=facturacion/contrato
+  phone       String? // RGPD Art.6.1.a · purpose=contacto opcional
+  taxId       String? // RGPD Art.6.1.c · purpose=obligacion fiscal
+  countryIso2 String?   @db.Char(2)
+  city        String?
+  postalCode  String?
+  addressLine String?
+  deletedAt   DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("client_profiles")
+}
+
+// =============================================================================
+// 7. KitProfile — datos públicos del cliente en cada Kit
+// =============================================================================
+
+model KitProfile {
+  id          String    @id @default(cuid())
+  userId      String
+  kitId       String
+  slug        String    @unique // p.ej. stagekit.app/p/<slug>
+  publicData  Json      @default("{}") // RGPD Art.6.1.a · purpose=publicacion explicita
+  published   Boolean   @default(false)
+  publishedAt DateTime?
+  deletedAt   DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  kit             Kit              @relation(fields: [kitId], references: [id], onDelete: Restrict)
+  inboundRequests InboundRequest[]
+
+  @@unique([userId, kitId])
+  @@index([kitId, published])
+  @@map("kit_profiles")
+}
+
+// =============================================================================
+// 8. InboundRequest — formularios entrantes hacia un KitProfile
+// =============================================================================
+
+model InboundRequest {
+  id           String               @id @default(cuid())
+  kitProfileId String
+  fromName     String? // RGPD Art.6.1.a + 6.1.f · purpose=contacto solicitado
+  fromEmail    String // RGPD Art.6.1.a + 6.1.f
+  subject      String?
+  message      String               @db.Text
+  status       InboundRequestStatus @default(NEW)
+  ipHash       String? // hash SHA-256 con salt servidor — minimizacion (Art.5.1.c)
+  userAgent    String?              @db.Text
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
+
+  kitProfile KitProfile @relation(fields: [kitProfileId], references: [id], onDelete: Cascade)
+
+  @@index([kitProfileId, createdAt(sort: Desc)])
+  @@index([status])
+  @@map("inbound_requests")
+}
+
+// =============================================================================
+// 9. Affiliate — RGPD Art.6.1.b
+// =============================================================================
+
+model Affiliate {
+  id                      String   @id @default(cuid())
+  userId                  String   @unique
+  code                    String   @unique
+  stripeConnectAccountId  String   @unique
+  payoutsEnabled          Boolean  @default(false)
+  commissionRate          Decimal  @default(0.15) @db.Decimal(5, 4)
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+
+  user    User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  payouts AffiliatePayout[]
+
+  @@map("affiliates")
+}
+
+// =============================================================================
+// 10. AffiliatePayout
+// =============================================================================
+
+model AffiliatePayout {
+  id               String       @id @default(cuid())
+  affiliateId      String
+  stripeTransferId String       @unique
+  amount           Int // céntimos
+  currency         String       @db.Char(3)
+  status           PayoutStatus @default(PENDING)
+  periodStart      DateTime
+  periodEnd        DateTime
+  paidAt           DateTime?
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+
+  affiliate Affiliate @relation(fields: [affiliateId], references: [id], onDelete: Restrict)
+
+  @@index([affiliateId, periodEnd(sort: Desc)])
+  @@map("affiliate_payouts")
+}
+
+// =============================================================================
+// 11. AuditLog — RGPD Art.6.1.c registro de actividad
+// =============================================================================
+
+model AuditLog {
+  id             String   @id @default(cuid())
+  actorUserId    String?
+  action         String // p.ej. "subscription.created"
+  entity         String // p.ej. "Subscription"
+  entityId       String?
+  metadata       Json     @default("{}")
+  stripeEventId  String?  @unique // idempotencia Stripe (CP-02)
+  ipHash         String?
+  userAgent      String?  @db.Text
+  createdAt      DateTime @default(now())
+
+  actor User? @relation("AuditLogActor", fields: [actorUserId], references: [id], onDelete: SetNull)
+
+  @@index([actorUserId])
+  @@index([entity, entityId])
+  @@index([createdAt(sort: Desc)])
+  @@map("audit_log")
+}
+
+// =============================================================================
+// 12. DigitalRegistration — append-only · RGPD Art.7 + eIDAS Reg.910/2014
+// =============================================================================
+
+model DigitalRegistration {
+  id              String       @id @default(cuid())
+  userId          String
+  documentType    DocumentType
+  documentVersion String
+  documentHash    String // SHA-256 hex del PDF firmado
+  signedAt        DateTime     @default(now())
+  ipHash          String
+  userAgent       String       @db.Text
+
+  user User @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+  @@index([userId, documentType, signedAt(sort: Desc)])
+  @@map("digital_registrations")
+}
+
+// =============================================================================
+// 13. ConsentRecord — append-only · RGPD Art.7 (carga de prueba)
+// =============================================================================
+
+model ConsentRecord {
+  id                  String         @id @default(cuid())
+  userId              String?
+  leadId              String?
+  purpose             ConsentPurpose
+  legalBasis          LegalBasis
+  consentTextVersion  String
+  consentTextHash     String
+  granted             Boolean
+  grantedAt           DateTime       @default(now())
+  revokedAt           DateTime?
+  ipHash              String
+  userAgent           String         @db.Text
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+  lead Lead? @relation(fields: [leadId], references: [id], onDelete: SetNull)
+
+  @@index([userId, purpose, grantedAt(sort: Desc)])
+  @@index([leadId, purpose, grantedAt(sort: Desc)])
+  @@map("consent_records")
+}
+
+// =============================================================================
+// Lead — captura de visitantes + atribución
+// =============================================================================
+
+model Lead {
+  id                String       @id @default(cuid())
+  email             String // RGPD Art.6.1.a · purpose=marketing/contacto solicitado
+  name              String?
+  kitInterest       KitInterest  @default(UNDECIDED)
+  utmSource         String?
+  utmMedium         String?
+  utmCampaign       String?
+  utmContent        String?
+  utmTerm           String?
+  referrer          String?      @db.Text
+  landingPath       String?
+  convertedUserId   String?
+  convertedAt       DateTime?
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+
+  convertedUser User?           @relation("LeadConvertedUser", fields: [convertedUserId], references: [id], onDelete: SetNull)
+  consents      ConsentRecord[]
+
+  @@index([email])
+  @@index([utmCampaign])
+  @@index([createdAt(sort: Desc)])
+  @@map("leads")
 }

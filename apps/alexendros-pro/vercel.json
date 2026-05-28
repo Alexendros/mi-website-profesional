@@ -20,7 +20,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' https://vitals.vercel-insights.com https://va.vercel-scripts.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://supabase.alexendros.pro; font-src 'self' data:; connect-src 'self' https://vitals.vercel-insights.com https://va.vercel-scripts.com https://supabase.alexendros.pro wss://supabase.alexendros.pro; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://supabase.alexendros.pro"
         },
         { "key": "X-DNS-Prefetch-Control", "value": "on" },
         { "key": "Cross-Origin-Opener-Policy", "value": "same-origin" },

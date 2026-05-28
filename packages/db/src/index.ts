@@ -1,19 +1,14 @@
-// @repo/db — PrismaClient singleton
-// Run `pnpm --filter=@repo/db db:generate` after schema changes.
+// @repo/db — punto de entrada del paquete.
+//
+// Re-exporta Prisma y los factories Supabase. Apps no deben importar
+// `@prisma/client` directamente: siempre via `@repo/db`.
 
-import { PrismaClient } from "@prisma/client";
-
-// Avoid multiple instances in development (Next.js hot-reload creates new
-// module instances on each reload). In production a single instance per
-// process is always created.
-const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
-
-export const prisma: PrismaClient =
-  globalForPrisma.prisma ?? new PrismaClient();
-
-if (process.env["NODE_ENV"] !== "production") {
-  globalForPrisma.prisma = prisma;
-}
-
+export { prisma } from "./prisma";
+export {
+  createServerSupabase,
+  createBrowserSupabase,
+  createServiceRoleSupabase,
+} from "./supabase";
+export type { ServerSupabase, BrowserSupabase } from "./supabase";
 export type { PrismaClient } from "@prisma/client";
 export * from "@prisma/client";

@@ -26,7 +26,7 @@ No abras issues públicos. Sigue [SECURITY.md](SECURITY.md).
 
 ## 5. Contacto comercial
 
-Para asuntos comerciales o de licencia escribe a contacto@alexendros.pro.
+Para asuntos comerciales o de licencia escribe a contacto@alexendros.me.
 
 ## Tiempos de respuesta esperados
 
