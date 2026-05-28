@@ -1,0 +1,38 @@
+{
+  "$comment": "SSOT del catálogo alexendros.pro (Opción A: productos digitales descargables). Editar aquí; `pnpm --filter=@repo/db seed:products` hace upsert a la tabla products; `stripe:populate` crea productos/precios en Stripe y rellena stripe_price_id. is_active=false hasta go-live. Entradas de ejemplo — sustituir por el catálogo real.",
+  "version": "0.1.0",
+  "currency": "eur",
+  "products": [
+    {
+      "sku": "ALX-PLANTILLA-001",
+      "slug": "plantilla-ejemplo-uno",
+      "title": "Plantilla de ejemplo (placeholder)",
+      "description_md": "Descripción markdown del producto digital. Sustituir por contenido real antes del go-live.",
+      "category": "plantillas",
+      "price_cents": 1900,
+      "currency": "eur",
+      "delivery_mode": "download",
+      "stripe_price_id": null,
+      "storage_path": null,
+      "is_active": false,
+      "display_order": 10
+    },
+    {
+      "sku": "ALX-RECURSO-001",
+      "slug": "recurso-ejemplo-uno",
+      "title": "Recurso descargable de ejemplo (placeholder)",
+      "description_md": "Segundo producto de ejemplo para validar el flujo end-to-end.",
+      "category": "recursos",
+      "price_cents": 4900,
+      "currency": "eur",
+      "delivery_mode": "download",
+      "stripe_price_id": null,
+      "storage_path": null,
+      "is_active": false,
+      "display_order": 20
+    }
+  ],
+  "changelog": [
+    { "date": "2026-05-19", "change": "Manifiesto inicial (F0) con 2 SKU placeholder." }
+  ]
+}

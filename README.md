@@ -16,7 +16,10 @@ Aplicación web construida sobre **Next.js 15 (App Router)** y desplegada en
 - TypeScript estricto
 - Tailwind CSS v4 (tokens OKLCH)
 - Geist Sans / Geist Mono · iconografía Lucide
-- pnpm 9 · Node.js LTS
+- Stripe (checkout productos digitales)
+- Resend + React Email (transaccionales)
+- Prisma 5 + Supabase (DB)
+- pnpm 10 · Node.js 24
 - Vitest (unit) · Playwright (E2E)
 - Vercel (despliegue) · Hostinger (DNS)
 
@@ -59,10 +62,14 @@ NEXT_PUBLIC_SITE_URL=https://alexendros.pro
 ## Estructura
 
 ```
-app/                  · rutas y layouts (App Router)
-components/           · componentes reutilizables
-lib/                  · utilidades de dominio
-public/               · estáticos
+apps/alexendros-pro/  · hub principal (Next.js App Router)
+apps/kitos/stagekit/  · StageKit MVP
+packages/brand/       · design tokens + logos
+packages/ui/          · componentes shadcn/ui compartidos
+packages/db/          · Prisma schema + Supabase client
+packages/stripe/      · lógica de pagos compartida
+packages/email/       · React Email templates
+packages/config/      · tsconfig, eslint, env, ratelimit
 docs/adr/             · decisiones de arquitectura (MADR 4.0.0)
 .github/workflows/    · CI
 ```

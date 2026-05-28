@@ -16,6 +16,8 @@
         "components/**",
         "lib/**",
         "public/**",
+        "src/**",
+        "prisma/**",
         "package.json",
         "tsconfig.json",
         "next.config.*",
@@ -23,6 +25,11 @@
         "postcss.config.*"
       ],
       "outputs": [".next/**", "!.next/cache/**", "dist/**", "out/**"]
+    },
+    "@repo/db#build": {
+      "dependsOn": ["^build"],
+      "inputs": ["prisma/schema.prisma", "package.json"],
+      "outputs": []
     },
     "dev": {
       "cache": false,

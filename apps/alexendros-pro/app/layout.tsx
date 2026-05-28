@@ -1,10 +1,9 @@
 import localFont from "next/font/local";
 import { Inter } from "next/font/google";
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 import type { Metadata, Viewport } from "next";
-import { ParticleBg } from "../components/particle-bg";
+import { LazyParticleBg } from "../components/lazy-particle-bg";
+import { LazyAnalytics } from "../components/lazy-analytics";
 
 const geistSans = localFont({
   src: "../public/fonts/GeistVF.woff2",
@@ -22,12 +21,12 @@ const geistMono = localFont({
   preload: false,
 });
 
-// Vergina Imperial v0.2.2 · Inter weight 700/800/900 para hero h1.display.
+// Vergina Imperial v0.2.2 · Inter weight 700 para hero h1.display.
 // Outfit/Bricolage descatalogados (Inter aprobada como reemplazo definitivo).
 const interDisplay = Inter({
   subsets: ["latin"],
   variable: "--font-display",
-  weight: ["700", "800", "900"],
+  weight: ["700"],
   display: "swap",
 });
 
@@ -36,11 +35,11 @@ const SITE_URL = "https://alexendros.pro";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "alexendros.pro — En construcción",
+    default: "alexendros.pro",
     template: "%s | Alexendros",
   },
   description:
-    "alexendros.pro — Plataforma de Alexendros en construcción. Vuelve pronto.",
+    "alexendros.pro — Productos digitales y presencia profesional por Alexendros.",
   applicationName: "alexendros.pro",
   authors: [{ name: "Alejandro Domingo Agustí", url: "https://alexendros.me" }],
   creator: "Alexendros",
@@ -54,22 +53,22 @@ export const metadata: Metadata = {
     url: SITE_URL,
     locale: "es_ES",
     siteName: "alexendros.pro",
-    title: "alexendros.pro — En construcción",
+    title: "alexendros.pro",
     description:
-      "Plataforma de Alexendros. Afinando los últimos detalles.",
+      "Productos digitales y presencia profesional por Alexendros.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "alexendros.pro — En construcción",
+    title: "alexendros.pro",
     description:
-      "Plataforma de Alexendros. Afinando los últimos detalles.",
+      "Productos digitales y presencia profesional por Alexendros.",
   },
   robots: {
     index: true,
-    follow: false,
+    follow: true,
     googleBot: {
       index: true,
-      follow: false,
+      follow: true,
       "max-snippet": -1,
       "max-image-preview": "large",
       "max-video-preview": -1,
@@ -115,7 +114,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${interDisplay.variable}`}
     >
       <body>
-        <ParticleBg />
+        <LazyParticleBg />
         {children}
         <script
           type="application/ld+json"
@@ -123,8 +122,7 @@ export default function RootLayout({
             __html: JSON.stringify(organizationSchema),
           }}
         />
-        <SpeedInsights />
-        <Analytics />
+        <LazyAnalytics />
       </body>
     </html>
   );

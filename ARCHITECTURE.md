@@ -57,10 +57,17 @@ flowchart TD
 - `proxy.ts` (no `middleware.ts`) para auth SSR — patrón Next.js 16.
 
 ### API Layer (`app/api/`)
+- `app/api/checkout/route.ts` — crea sesión Stripe Checkout (rate-limited, Zod, art.103.m TRLGDCU)
+- `app/api/webhooks/stripe/route.ts` — webhook con verificación de firma, idempotencia atómica (`StripeEvent` + `Order` en `$transaction`), fulfillment con guarda TOCTOU
 - `app/api/trpc/[trpc]/route.ts` — tRPC v11 con `fetchRequestHandler`
-- `app/api/webhooks/stripe/route.ts` — webhook con verificación de firma
 - `app/api/consent/route.ts` — AEPD ConsentLog
-- Rate limiting Upstash Redis en `/api/trpc/*` y `/api/auth/*`
+- Rate limiting Upstash Redis en endpoints públicos (excepto webhooks Stripe)
+
+### Download endpoint (`app/descarga/[token]/`)
+- Token único + caducidad 7 días
+- Rate-limited, validación URL antes de redirect
+- Contabiliza descargas (`downloadCount`)
+- TODO(infra): firmar URL del objeto privado en Supabase Storage
 
 ### Shared packages
 
@@ -69,10 +76,10 @@ flowchart TD
 | `@repo/brand` | Tokens OKLCH, logos SVG, fuentes — fuente de verdad visual |
 | `@repo/ui` | Componentes shadcn/ui sobre tokens Vergina Imperial |
 | `@repo/db` | Schema Prisma 5, factories Supabase (`createServerClient`, `createBrowserClient`) |
-| `@repo/stripe` | Lógica de pagos compartida, helpers de webhooks |
-| `@repo/email` | Templates React Email para transaccionales |
+| `@repo/stripe` | Cliente lazy, catálogo-como-BD, `createCheckoutSession`, `verifyWebhook` |
+| `@repo/email` | Resend lazy, `DownloadReady` template, `safeSendEmail` (never-throw) |
 | `@repo/seo` | Factories Schema.org (JSON-LD) |
-| `@repo/config` | `tsconfig.base.json`, `eslint.config.mjs`, tailwind base |
+| `@repo/config` | `tsconfig.base.json`, `eslint.config.mjs`, `env` (validación composable), `ratelimit` (Upstash factory) |
 
 ## Flujo de datos (petición autenticada)
 
@@ -82,6 +89,19 @@ Navegador → Vercel Edge → proxy.ts (Supabase session refresh)
           → Prisma query (DATABASE_URL pooler 6543)
           → Supabase Postgres (RLS aplicado)
           → RSC serializa → streamed to client
+```
+
+## Flujo de pago digital (productos descargables)
+
+```
+Navegador → POST /api/checkout (rate-limit + Zod + consentimiento)
+          → createCheckoutSession → Stripe Checkout (hosted)
+          → Stripe webhook checkout.session.completed
+          → POST /api/webhooks/stripe (firma verificada, StripeEvent+Order atómico)
+          → fulfillOrder (claim atómico: payment_completed → fulfilling)
+          → sendDownloadReady (Resend) → status: delivered
+          → Cliente recibe email → GET /descarga/[token] (rate-limit + caducidad)
+          → redirect a storagePath (URL validada)
 ```
 
 ## Decisiones cardinales

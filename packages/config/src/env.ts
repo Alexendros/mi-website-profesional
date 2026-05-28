@@ -21,10 +21,10 @@ export const publicSchema = z.object({
 });
 
 /**
- * Variables del servidor — NUNCA exponer al cliente.
+ * Campos individuales del servidor — permite composición parcial por app.
  * SUPABASE_SERVICE_ROLE_KEY jamás con prefijo NEXT_PUBLIC_.
  */
-export const serverSchema = z.object({
+export const serverFields = {
   // Supabase
   SUPABASE_SERVICE_ROLE_KEY: z.string().min(1),
 
@@ -52,7 +52,10 @@ export const serverSchema = z.object({
   // Rate Limiting (Upstash Redis)
   UPSTASH_REDIS_REST_URL: z.string().url(),
   UPSTASH_REDIS_REST_TOKEN: z.string().min(1),
-});
+} as const;
+
+/** Schema completo del servidor. */
+export const serverSchema = z.object(serverFields);
 
 /** Schema completo: public + server. */
 export const envSchema = publicSchema.merge(serverSchema);
@@ -71,6 +74,28 @@ export type Env = z.infer<typeof envSchema>;
 
 function formatErrors(issues: z.ZodIssue[]): string {
   return issues.map((i) => `  - ${i.path.join(".")}: ${i.message}`).join("\n");
+}
+
+/**
+ * Crea un validador lazy (con cache) para un subconjunto de variables de servidor.
+ * Las apps componen su esquema a partir de `serverFields`.
+ */
+export function createServerEnvValidator<T extends z.ZodRawShape>(
+  shape: T,
+): () => z.infer<z.ZodObject<T>> {
+  const schema = z.object(shape);
+  let cached: z.infer<z.ZodObject<T>> | null = null;
+  return (): z.infer<z.ZodObject<T>> => {
+    if (cached) return cached;
+    const result = schema.safeParse(process.env);
+    if (!result.success) {
+      throw new Error(
+        `Variables de entorno del servidor inválidas:\n${formatErrors(result.error.issues)}`,
+      );
+    }
+    cached = result.data;
+    return cached;
+  };
 }
 
 /**

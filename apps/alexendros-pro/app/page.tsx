@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { ArrowUpRight, Bell } from "lucide-react";
+import Link from "next/link";
+import { ArrowUpRight, ArrowRight } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "alexendros.pro — Próximamente",
+  title: { absolute: "alexendros.pro — Productos digitales" },
   description:
-    "Plataforma de Alexendros. Apúntate a la waitlist y sé el primero en acceder.",
+    "Productos digitales descargables y presencia profesional por Alexendros.",
   alternates: { canonical: "/" },
 };
 
@@ -68,18 +69,18 @@ export default function Home() {
 
         {/* Action row */}
         <div className="mt-2 flex flex-wrap items-center gap-3">
-          <a
-            href="mailto:contacto@alexendros.me?subject=Waitlist%20alexendros.pro&body=Hola%2C%20me%20interesa%20la%20plataforma.%20Mi%20email%20es%3A%20"
-            aria-label="Avísame cuando esté listo — apuntarse a la waitlist por email"
+          <Link
+            href="/tienda"
+            aria-label="Ver la tienda de productos digitales"
             className="group inline-flex items-center gap-2 rounded-[var(--radius-md)] border border-[var(--color-brand-primary-hc)] bg-[var(--color-brand-primary)] px-5 py-3 text-sm font-medium text-[var(--color-brand-primary-fg)] transition-[background-color,box-shadow] hover:bg-[var(--color-brand-primary-hc)] hover:shadow-[var(--shadow-glow-brand)]"
             style={{
               transitionDuration: "var(--dur-base)",
               transitionTimingFunction: "var(--ease-expo)",
             }}
           >
-            <Bell size={18} strokeWidth={1.75} aria-hidden="true" />
-            <span>Avísame cuando esté listo</span>
-          </a>
+            <span>Ver la tienda</span>
+            <ArrowRight size={18} strokeWidth={1.75} aria-hidden="true" />
+          </Link>
 
           <a
             href="https://alexendros.me"

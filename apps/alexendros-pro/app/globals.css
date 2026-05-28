@@ -162,6 +162,9 @@
   --color-brand-primary-fg: var(--accent-fg);
   --color-brand-accent: var(--accent-dim);
   --color-brand-accent-fg: var(--accent-fg);
+
+  --color-feedback-error: oklch(0.70 0.18 25);
+  --color-feedback-success: oklch(0.72 0.16 155);
 }
 
 /* H1 hero · Vergina Imperial v0.2.2 · fade vertical color→semi-transparente.

@@ -1,5 +1,7 @@
-// @repo/db — Prisma schema scaffold
-// Ampliar con los modelos reales de cada Kit antes de la primera migración.
+// @repo/db — Prisma schema
+// Catálogo de productos digitales + pedidos Stripe (Opción A).
+// Convenciones: packages/db/CLAUDE.md (RLS en todas las tablas, @@map
+// snake_case_plural, soft delete en críticas, RGPD en datos personales).
 
 generator client {
   provider = "prisma-client-js"
@@ -12,8 +14,30 @@ datasource db {
 }
 
 // ---------------------------------------------------------------------------
-// Scaffold: User
-// Replace / extend with real models before running prisma migrate dev.
+// Enums
+// ---------------------------------------------------------------------------
+
+enum DeliveryMode {
+  download // Opción A: descarga inmediata tras pago
+  service_manual // Opción B (reservado): servicio con entrega manual
+
+  @@map("delivery_mode")
+}
+
+enum OrderStatus {
+  pending // sesión Stripe creada, pago no confirmado
+  payment_completed // webhook checkout.session.completed recibido
+  fulfilling // transición atómica: fulfillment en curso (evita emails duplicados)
+  delivered // entrega digital completada (descarga disponible)
+  failed // pago fallido / sesión expirada
+  refunded // reembolsado
+  service_intake_pending // Opción B (reservado): requiere intake/servicio
+
+  @@map("order_status")
+}
+
+// ---------------------------------------------------------------------------
+// User (scaffold) — back-relation con Order para preparar portal/cuentas
 // ---------------------------------------------------------------------------
 
 model User {
@@ -22,7 +46,84 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@index([email])
+  orders Order[]
+
   @@index([createdAt(sort: Desc)])
   @@map("users")
+}
+
+// ---------------------------------------------------------------------------
+// Product — catálogo (SSOT de IDs externos en catalog/manifest.json)
+// ---------------------------------------------------------------------------
+
+model Product {
+  sku           String       @id
+  slug          String       @unique
+  title         String
+  descriptionMd String       @map("description_md")
+  category      String
+  priceCents    Int          @map("price_cents")
+  currency      String       @default("eur")
+  stripePriceId String?      @unique @map("stripe_price_id")
+  storagePath   String?      @map("storage_path") // objeto en bucket privado Supabase
+  deliveryMode  DeliveryMode @default(download) @map("delivery_mode")
+  isActive      Boolean      @default(false) @map("is_active")
+  displayOrder  Int          @default(0) @map("display_order")
+  createdAt     DateTime     @default(now()) @map("created_at")
+  updatedAt     DateTime     @updatedAt @map("updated_at")
+
+  orders Order[]
+
+  @@index([category, isActive, displayOrder])
+  @@map("products")
+}
+
+// ---------------------------------------------------------------------------
+// Order — pedido. v1 invitado (customerEmail); customerId nullable deja
+// listo el portal/cuentas sin migración disruptiva.
+// ---------------------------------------------------------------------------
+
+model Order {
+  id                  String      @id @default(cuid())
+  customerEmail       String      @map("customer_email") // RGPD Art.6.1.b
+  customerId          String?     @map("customer_id")
+  productSku          String      @map("product_sku")
+  stripeSessionId     String?     @unique @map("stripe_session_id")
+  stripePaymentIntent String?     @map("stripe_payment_intent")
+  amountCents         Int         @map("amount_cents")
+  currency            String      @default("eur")
+  status              OrderStatus @default(pending)
+  // Consentimiento expreso art. 103.m TRLGDCU: pérdida del derecho de
+  // desistimiento al ejecutar contenido digital. Sello temporal del checkbox.
+  withdrawalWaivedAt  DateTime?   @map("withdrawal_waived_at")
+  downloadToken       String?     @unique @map("download_token")
+  downloadExpiresAt   DateTime?   @map("download_expires_at")
+  downloadCount       Int         @default(0) @map("download_count")
+  invoiceId           String?     @map("invoice_id")
+  invoicePdfPath      String?     @map("invoice_pdf_path")
+  createdAt           DateTime    @default(now()) @map("created_at")
+  updatedAt           DateTime    @updatedAt @map("updated_at")
+  deletedAt           DateTime?   @map("deleted_at") // soft delete
+
+  product  Product @relation(fields: [productSku], references: [sku])
+  customer User?   @relation(fields: [customerId], references: [id])
+
+  @@index([customerEmail])
+  @@index([status, createdAt(sort: Desc)])
+  @@index([productSku])
+  @@map("orders")
+}
+
+// ---------------------------------------------------------------------------
+// StripeEvent — idempotencia de webhooks (id = stripe event id evt_...)
+// ---------------------------------------------------------------------------
+
+model StripeEvent {
+  id        String   @id
+  type      String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([type, createdAt(sort: Desc)])
+  @@map("stripe_events")
 }

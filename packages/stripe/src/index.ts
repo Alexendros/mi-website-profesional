@@ -1,13 +1,12 @@
-// @repo/stripe — Shared Stripe client
-// STRIPE_SECRET_KEY must be set in server-side env before importing this module.
+// @repo/stripe — núcleo Stripe (Opción A: productos digitales, pago único).
+// Cliente lazy + catálogo-como-BD + webhook con verificación de firma.
+// STRIPE_SECRET_KEY sólo en entorno server.
 
-import Stripe from "stripe";
-
-const key = process.env["STRIPE_SECRET_KEY"];
-if (!key) {
-  throw new Error("Missing env variable: STRIPE_SECRET_KEY");
-}
-
-export const stripe = new Stripe(key);
+export { getStripe } from "./client";
+export { getActiveCatalog, getCatalogEntry } from "./catalog";
+export type { CatalogEntry } from "./catalog";
+export { createCheckoutSession } from "./checkout";
+export type { CreateCheckoutInput, CreateCheckoutResult } from "./checkout";
+export { verifyWebhook } from "./webhook";
 
 export type { Stripe } from "stripe";
