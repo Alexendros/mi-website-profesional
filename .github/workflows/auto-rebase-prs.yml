@@ -5,6 +5,10 @@ name: Auto-rebase PRs on main push
 # resuelve conflictos manualmente.
 #
 # Regla de resolución: ver `.gitattributes` líneas 3-18.
+#
+# Reforma "Pipelines 2026-05": NO cambia la estrategia (es política documentada).
+# Añade: job-summary final con resultados + sticky-comment en cada PR rebased
+# (UN solo comentario actualizable por marker, sin spam).
 
 on:
   push:
@@ -19,6 +23,8 @@ jobs:
   rebase:
     name: Rebase open PRs
     runs-on: ubuntu-latest
+    outputs:
+      summary-items: ${{ steps.rebase-loop.outputs.summary-items }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -32,32 +38,81 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Rebase each open PR onto main
+        id: rebase-loop
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OWNER: ${{ github.repository_owner }}
         run: |
-          set -euo pipefail
-          prs=$(gh pr list --state open --base main --json number,headRefName,headRepositoryOwner --jq '.[] | select(.headRepositoryOwner.login == "${{ github.repository_owner }}") | "\(.number) \(.headRefName)"')
+          set -Eeuo pipefail
+          prs=$(gh pr list --state open --base main \
+                  --json number,headRefName,headRepositoryOwner \
+                  --jq ".[] | select(.headRepositoryOwner.login == \"$OWNER\") | \"\(.number) \(.headRefName)\"")
 
           if [ -z "$prs" ]; then
             echo "No hay PRs abiertos hacia main."
+            echo "summary-items=none=info=sin PRs abiertos" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
-          echo "$prs" | while read -r pr_number head_ref; do
+          ITEMS=""
+          while read -r pr_number head_ref; do
+            [ -z "$pr_number" ] && continue
             echo "::group::Rebasing PR #${pr_number} (${head_ref})"
 
             git fetch origin "${head_ref}":"${head_ref}" --force
             git checkout "${head_ref}"
 
+            STATE="ok"
+            DETAIL="rebased onto main"
             if git rebase -X theirs origin/main; then
               git push --force-with-lease origin "${head_ref}"
               echo "✓ PR #${pr_number} rebased"
+              STICKY_BODY=$(printf '## ✅ Auto-rebase OK\n\nPR rebased onto `main` (estrategia `-X theirs`, política `.gitattributes`).\n\n- Run: [#%s](%s/%s/actions/runs/%s)\n- Commit: `%s`\n' \
+                "${GITHUB_RUN_NUMBER}" "${GITHUB_SERVER_URL}" "${GITHUB_REPOSITORY}" "${GITHUB_RUN_ID}" "${GITHUB_SHA}")
             else
               git rebase --abort || true
               gh pr comment "${pr_number}" --body "⚠️ Auto-rebase falló (conflicto irresoluble incluso con \`-X theirs\`). Requiere revisión manual del operador."
               echo "✗ PR #${pr_number} requires manual review"
+              STATE="fail"
+              DETAIL="conflicto irresoluble · revisión manual"
             fi
 
+            # Sticky comment (idempotente via marker)
+            MARKER="<!-- bot:auto-rebase -->"
+            BODY_FILE="$(mktemp)"
+            {
+              echo "$MARKER"
+              printf '## %s Auto-rebase\n\n- Estado: %s\n- Detalle: %s\n- Run: [#%s](%s/%s/actions/runs/%s)\n' \
+                "${STATE/ok/🟢}${STATE/fail/🔴}" "$STATE" "$DETAIL" \
+                "${GITHUB_RUN_NUMBER}" "${GITHUB_SERVER_URL}" "${GITHUB_REPOSITORY}" "${GITHUB_RUN_ID}"
+            } > "$BODY_FILE"
+            EXISTING=$(gh api "repos/$GITHUB_REPOSITORY/issues/$pr_number/comments" --paginate \
+              --jq "[.[] | select(.body | startswith(\"$MARKER\"))] | .[0].id // empty" || true)
+            if [ -n "$EXISTING" ]; then
+              gh api -X PATCH "repos/$GITHUB_REPOSITORY/issues/comments/$EXISTING" -F body=@"$BODY_FILE" >/dev/null || true
+            else
+              gh api -X POST "repos/$GITHUB_REPOSITORY/issues/$pr_number/comments" -F body=@"$BODY_FILE" >/dev/null || true
+            fi
+
+            ITEMS="${ITEMS}PR#${pr_number}=${STATE}=${head_ref} · ${DETAIL}"$'\n'
             git checkout main
             echo "::endgroup::"
-          done
+          done <<< "$prs"
+
+          # Multiline output
+          {
+            echo "summary-items<<EOF_ITEMS"
+            printf '%s' "$ITEMS"
+            echo "EOF_ITEMS"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Job summary
+        if: always()
+        uses: Alexendros/plantillas/.github/actions/job-summary@main
+        with:
+          title: "Auto-rebase PRs"
+          status: ${{ job.status }}
+          items: ${{ steps.rebase-loop.outputs.summary-items }}
+          notes: |
+            Política: feature-branch wins (`-X theirs`).
+            Documentado en `.gitattributes` líneas 3-18.
