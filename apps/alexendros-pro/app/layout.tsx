@@ -3,7 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import type { Metadata, Viewport } from "next";
 import { getBuildEnv } from "@repo/config/env";
-import { ParticleBg } from "../components/particle-bg";
+import { LazyParticleBg } from "../components/lazy-particle-bg";
+import { LazyAnalytics } from "../components/lazy-analytics";
 
 const { VERCEL } = getBuildEnv();
 
@@ -124,8 +125,7 @@ export default function RootLayout({
             __html: JSON.stringify(organizationSchema),
           }}
         />
-        {VERCEL && <SpeedInsights />}
-        {VERCEL && <Analytics />}
+        {VERCEL && <LazyAnalytics />}
       </body>
     </html>
   );
