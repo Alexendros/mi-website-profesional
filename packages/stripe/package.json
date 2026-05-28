@@ -12,6 +12,7 @@
     "stripe:populate": "node scripts/stripe-populate.ts"
   },
   "dependencies": {
+    "@repo/db": "workspace:*",
     "stripe": "^22.2.0"
   },
   "devDependencies": {
