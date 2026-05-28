@@ -186,7 +186,7 @@ jobs:
           status: ${{ job.status }}
           items: |
             playwright=${{ steps.run-e2e.outcome == 'success' && 'ok' || 'fail' }}=${{ steps.run-e2e.outcome }}
-          artifacts: ${{ failure() && 'playwright-report' || '' }}
+          artifacts: ${{ job.status == 'failure' && 'playwright-report' || '' }}
 
   # ────────────────────────────────────────────────────────────────────
   # Lighthouse CI. SKIP en Dependabot patch/minor.
