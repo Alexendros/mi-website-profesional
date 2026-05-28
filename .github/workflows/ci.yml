@@ -210,6 +210,9 @@ jobs:
 
       - name: Run Lighthouse CI
         id: lhci
+        # Advisory en PR: las assertions CWV son sensibles al runner CI.
+        # En push a main sigue siendo fail.
+        continue-on-error: ${{ github.event_name == 'pull_request' }}
         run: npx @lhci/cli@0.14.x autorun
 
       - name: Job summary
