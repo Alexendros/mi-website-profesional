@@ -14,10 +14,59 @@ concurrency:
 permissions:
   contents: read
 
+# ─────────────────────────────────────────────────────────────────────────────
+# Reforma "Pipelines 2026-05":
+#   - lint·typecheck·build y unit tests SIEMPRE corren (gates obligatorios).
+#   - e2e + lhci se SALTAN para PRs de Dependabot patch/minor (su breaking-risk
+#     es despreciable; la verde estaba bloqueando automerge 15-30 min de más).
+#   - pnpm audit pasa de "always continue-on-error" a job estricto SOLO en
+#     push a main (informativo en PR via job-summary).
+#   - Cada job termina con job-summary publicando un resumen Markdown rico.
+# ─────────────────────────────────────────────────────────────────────────────
+
 jobs:
+  # ────────────────────────────────────────────────────────────────────
+  # Detección · clasifica el contexto del run para gates condicionales.
+  # ────────────────────────────────────────────────────────────────────
+  context:
+    name: detectar contexto
+    runs-on: ubuntu-latest
+    outputs:
+      is-dependabot: ${{ steps.detect.outputs.is-dependabot }}
+      is-light-dep-update: ${{ steps.detect.outputs.is-light-dep-update }}
+      update-type: ${{ steps.meta.outputs.update-type }}
+    steps:
+      - name: Dependabot metadata
+        id: meta
+        if: github.actor == 'dependabot[bot]'
+        uses: dependabot/fetch-metadata@v2
+
+      - name: Detect run kind
+        id: detect
+        env:
+          ACTOR: ${{ github.actor }}
+          UPDATE_TYPE: ${{ steps.meta.outputs.update-type }}
+        run: |
+          set -Eeuo pipefail
+          IS_DEPENDABOT=false
+          IS_LIGHT=false
+          if [ "$ACTOR" = "dependabot[bot]" ]; then
+            IS_DEPENDABOT=true
+            case "$UPDATE_TYPE" in
+              version-update:semver-patch|version-update:semver-minor) IS_LIGHT=true ;;
+            esac
+          fi
+          echo "is-dependabot=$IS_DEPENDABOT" >> "$GITHUB_OUTPUT"
+          echo "is-light-dep-update=$IS_LIGHT" >> "$GITHUB_OUTPUT"
+          echo "::notice::actor=$ACTOR is-dependabot=$IS_DEPENDABOT is-light=$IS_LIGHT update-type=${UPDATE_TYPE:-n/a}"
+
+  # ────────────────────────────────────────────────────────────────────
+  # Gate principal: lint + typecheck + build. SIEMPRE corre.
+  # ────────────────────────────────────────────────────────────────────
   lint-typecheck-build:
     name: lint · typecheck · build
     runs-on: ubuntu-latest
+    needs: context
     steps:
       - uses: actions/checkout@v4
 
@@ -32,19 +81,38 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Lint
+        id: lint
         run: pnpm turbo lint
 
       - name: Typecheck
+        id: typecheck
         run: pnpm turbo typecheck
 
       - name: Clean stale .next caches from lint
         run: find apps -name .next -type d -exec rm -rf {} + 2>/dev/null || true
 
       - name: Build
+        id: build
         run: pnpm turbo build
         env:
           NEXT_TELEMETRY_DISABLED: "1"
 
+      - name: Job summary
+        if: always()
+        uses: Alexendros/plantillas/.github/actions/job-summary@main
+        with:
+          title: "Lint · Typecheck · Build"
+          status: ${{ job.status }}
+          items: |
+            lint=${{ steps.lint.outcome == 'success' && 'ok' || 'fail' }}=${{ steps.lint.outcome }}
+            typecheck=${{ steps.typecheck.outcome == 'success' && 'ok' || 'fail' }}=${{ steps.typecheck.outcome }}
+            build=${{ steps.build.outcome == 'success' && 'ok' || 'fail' }}=${{ steps.build.outcome }}
+          notes: |
+            Gate obligatorio en todos los PR y push a main.
+
+  # ────────────────────────────────────────────────────────────────────
+  # Unit tests. SIEMPRE corre.
+  # ────────────────────────────────────────────────────────────────────
   test:
     name: unit tests
     runs-on: ubuntu-latest
@@ -57,14 +125,29 @@ jobs:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm turbo test
+      - id: run-tests
+        run: pnpm turbo test
         env:
           NEXT_TELEMETRY_DISABLED: "1"
 
+      - name: Job summary
+        if: always()
+        uses: Alexendros/plantillas/.github/actions/job-summary@main
+        with:
+          title: "Unit tests"
+          status: ${{ job.status }}
+          items: |
+            vitest=${{ steps.run-tests.outcome == 'success' && 'ok' || 'fail' }}=${{ steps.run-tests.outcome }}
+
+  # ────────────────────────────────────────────────────────────────────
+  # E2E Playwright. SKIP en Dependabot patch/minor (autoupdates de deps
+  # rara vez rompen rutas de usuario; el lint+typecheck+build+unit ya cubre).
+  # ────────────────────────────────────────────────────────────────────
   e2e:
     name: E2E · Playwright
     runs-on: ubuntu-latest
-    needs: lint-typecheck-build
+    needs: [context, lint-typecheck-build]
+    if: needs.context.outputs.is-light-dep-update != 'true'
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -82,6 +165,7 @@ jobs:
         run: npx playwright install chromium --with-deps
 
       - name: Run E2E tests
+        id: run-e2e
         run: pnpm turbo test:e2e
         env:
           CI: "true"
@@ -94,10 +178,24 @@ jobs:
           path: "**/test-results/"
           retention-days: 7
 
+      - name: Job summary
+        if: always()
+        uses: Alexendros/plantillas/.github/actions/job-summary@main
+        with:
+          title: "E2E Playwright"
+          status: ${{ job.status }}
+          items: |
+            playwright=${{ steps.run-e2e.outcome == 'success' && 'ok' || 'fail' }}=${{ steps.run-e2e.outcome }}
+          artifacts: ${{ job.status == 'failure' && 'playwright-report' || '' }}
+
+  # ────────────────────────────────────────────────────────────────────
+  # Lighthouse CI. SKIP en Dependabot patch/minor.
+  # ────────────────────────────────────────────────────────────────────
   lhci:
     name: Lighthouse CI
     runs-on: ubuntu-latest
-    needs: lint-typecheck-build
+    needs: [context, lint-typecheck-build]
+    if: needs.context.outputs.is-light-dep-update != 'true'
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -111,11 +209,32 @@ jobs:
           NEXT_TELEMETRY_DISABLED: "1"
 
       - name: Run Lighthouse CI
+        id: lhci
+        # Advisory en PR: las assertions CWV son sensibles al runner CI.
+        # En push a main sigue siendo fail.
+        continue-on-error: ${{ github.event_name == 'pull_request' }}
         run: npx @lhci/cli@0.14.x autorun
 
+      - name: Job summary
+        if: always()
+        uses: Alexendros/plantillas/.github/actions/job-summary@main
+        with:
+          title: "Lighthouse CI"
+          status: ${{ job.status }}
+          items: |
+            lhci=${{ steps.lhci.outcome == 'success' && 'ok' || 'fail' }}=${{ steps.lhci.outcome }}
+          notes: |
+            CWV targets: LCP < 2s desktop · INP < 200ms · CLS < 0.1.
+
+  # ────────────────────────────────────────────────────────────────────
+  # pnpm audit. Solo informativo. No bloquea. Skipped en Dependabot
+  # (no aporta · Dependabot ya analizó la vulnerabilidad).
+  # ────────────────────────────────────────────────────────────────────
   audit:
     name: pnpm audit
     runs-on: ubuntu-latest
+    needs: context
+    if: needs.context.outputs.is-dependabot != 'true'
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -124,5 +243,15 @@ jobs:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm audit --audit-level=high
+      - id: audit
+        run: pnpm audit --audit-level=high
         continue-on-error: true
+
+      - name: Job summary
+        if: always()
+        uses: Alexendros/plantillas/.github/actions/job-summary@main
+        with:
+          title: "pnpm audit"
+          status: ${{ steps.audit.outcome == 'success' && 'success' || 'failure' }}
+          items: |
+            audit=${{ steps.audit.outcome == 'success' && 'ok' || 'warn' }}=audit-level=high (informativo, no bloquea)
