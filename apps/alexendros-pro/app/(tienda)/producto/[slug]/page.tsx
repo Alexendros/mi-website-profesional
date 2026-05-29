@@ -62,7 +62,13 @@ export default async function ProductoPage({
       >
         {mdToPlainText(product.descriptionMd)}
       </p>
-      <p className="mt-6 font-mono text-[var(--color-brand-accent)]">
+      <p
+        className="mt-6 font-semibold"
+        style={{
+          fontSize: "var(--text-h3)",
+          color: "var(--color-brand-accent)",
+        }}
+      >
         {formatPrice(product.priceCents, product.currency)}
       </p>
 

@@ -13,7 +13,7 @@ import { getContactPublicConfig } from "../lib/env";
 import { ContactForm } from "../components/contact-form";
 
 export const metadata: Metadata = {
-  title: { absolute: "Alexendros — Desarrollo web y SaaS a medida en Valencia" },
+  title: { absolute: "Alexendros · Desarrollo web y SaaS a medida en Valencia" },
   description:
     "Alejandro Domingo Agustí (Alexendros), desarrollador fullstack en Valencia. Diseño y construyo webs y productos SaaS con Next.js, Supabase y Stripe. Cuéntame tu proyecto.",
   alternates: { canonical: "/" },
@@ -93,7 +93,7 @@ export default function Home() {
             Soy{" "}
             <span className="text-[var(--color-text-primary)]">Alejandro Domingo Agustí</span>{" "}
             (Alexendros), desarrollador fullstack en Valencia. Diseño y construyo webs y
-            productos SaaS con Next.js, Supabase y Stripe — rápidos, accesibles y listos para
+            productos SaaS con Next.js, Supabase y Stripe: rápidos, accesibles y listos para
             escalar.
           </p>
 
@@ -118,10 +118,12 @@ export default function Home() {
 
         {/* ── Servicios ──────────────────────────────────────────── */}
         <section aria-labelledby="servicios-title" className="flex flex-col gap-8">
-          <div className={sectionLabel}>
-            <span aria-hidden="true" className={labelRule} />
-            <h2 id="servicios-title">Servicios</h2>
-          </div>
+          <h2
+            id="servicios-title"
+            className="text-[1.625rem] font-semibold leading-tight text-[var(--color-text-primary)]"
+          >
+            Servicios
+          </h2>
           <div className="grid gap-4 md:grid-cols-3">
             {SERVICES.map(({ icon: Icon, title, body }) => (
               <article key={title} className={card}>
@@ -137,10 +139,12 @@ export default function Home() {
 
         {/* ── Proceso ────────────────────────────────────────────── */}
         <section aria-labelledby="proceso-title" className="flex flex-col gap-8">
-          <div className={sectionLabel}>
-            <span aria-hidden="true" className={labelRule} />
-            <h2 id="proceso-title">Cómo trabajo</h2>
-          </div>
+          <h2
+            id="proceso-title"
+            className="text-[1.625rem] font-semibold leading-tight text-[var(--color-text-primary)]"
+          >
+            Cómo trabajo
+          </h2>
           <div className="grid gap-4 md:grid-cols-3">
             {PROCESS.map(({ step, title, body }) => (
               <div key={step} className="flex flex-col gap-2">
@@ -156,10 +160,12 @@ export default function Home() {
 
         {/* ── Productos digitales (tienda) ───────────────────────── */}
         <section aria-labelledby="tienda-title" className="flex flex-col gap-8">
-          <div className={sectionLabel}>
-            <span aria-hidden="true" className={labelRule} />
-            <h2 id="tienda-title">Productos digitales</h2>
-          </div>
+          <h2
+            id="tienda-title"
+            className="text-[1.625rem] font-semibold leading-tight text-[var(--color-text-primary)]"
+          >
+            Productos digitales
+          </h2>
           <article className={`${card} md:flex-row md:items-center md:justify-between`}>
             <div className="flex flex-col gap-2">
               <h3 className="text-base font-semibold text-[var(--color-text-primary)]">

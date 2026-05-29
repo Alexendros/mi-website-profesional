@@ -38,7 +38,7 @@ const SITE_URL = "https://alexendros.pro";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Alexendros — Desarrollo web y SaaS a medida en Valencia",
+    default: "Alexendros · Desarrollo web y SaaS a medida en Valencia",
     template: "%s | Alexendros",
   },
   description:
@@ -65,13 +65,13 @@ export const metadata: Metadata = {
     url: SITE_URL,
     locale: "es_ES",
     siteName: "alexendros.pro",
-    title: "Alexendros — Desarrollo web y SaaS a medida",
+    title: "Alexendros · Desarrollo web y SaaS a medida",
     description:
       "Webs y productos digitales que generan negocio. Next.js, Supabase y Stripe. Cuéntame tu proyecto.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Alexendros — Desarrollo web y SaaS a medida",
+    title: "Alexendros · Desarrollo web y SaaS a medida",
     description:
       "Webs y productos digitales que generan negocio. Next.js, Supabase y Stripe.",
   },

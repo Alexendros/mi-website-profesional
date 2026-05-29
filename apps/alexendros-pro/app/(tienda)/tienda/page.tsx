@@ -46,7 +46,7 @@ export default async function TiendaPage() {
 
       {products.length === 0 ? (
         <p className="mt-16 font-mono text-sm text-[var(--color-text-tertiary)]">
-          Catálogo en preparación — vuelve pronto.
+          Catálogo en preparación. Vuelve pronto.
         </p>
       ) : (
         <ul className="mt-12 grid gap-4 sm:grid-cols-2">
@@ -56,13 +56,13 @@ export default async function TiendaPage() {
                 href={`/producto/${p.slug}`}
                 className="block rounded-[var(--radius-lg)] border border-[var(--color-border-subtle)] bg-[var(--color-surface-100)] p-6 transition-colors hover:border-[var(--color-border-strong)] hover:bg-[var(--color-surface-200)]"
               >
-                <h2 className="font-medium text-[var(--color-text-primary)]">
+                <h2 className="text-base font-semibold text-[var(--color-text-primary)]">
                   {p.title}
                 </h2>
                 <p className="mt-2 line-clamp-2 text-sm text-[var(--color-text-secondary)]">
                   {mdExcerpt(p.descriptionMd)}
                 </p>
-                <p className="mt-4 font-mono text-sm text-[var(--color-brand-accent)]">
+                <p className="mt-4 font-mono text-base font-semibold text-[var(--color-brand-accent)]">
                   {formatPrice(p.priceCents, p.currency)}
                 </p>
               </Link>
