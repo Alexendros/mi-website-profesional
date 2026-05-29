@@ -151,8 +151,11 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${interDisplay.variable}`}
     >
       <body>
+        <a href="#main" className="skip-link">
+          Saltar al contenido
+        </a>
         <LazyParticleBg />
-        {children}
+        <main id="main">{children}</main>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

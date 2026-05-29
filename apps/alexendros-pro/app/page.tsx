@@ -60,14 +60,11 @@ export default function Home() {
 
   return (
     <>
-      <a
-        href="#contacto"
-        className="sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:top-3 focus-visible:left-3 focus-visible:z-50 focus-visible:rounded-[var(--radius-md)] focus-visible:border focus-visible:border-[var(--color-border-subtle)] focus-visible:bg-[var(--color-surface-100)] focus-visible:px-3 focus-visible:py-2 focus-visible:font-mono focus-visible:text-sm focus-visible:text-[var(--color-text-primary)]"
-      >
+      <a href="#contacto" className="skip-link">
         Saltar al formulario de contacto
       </a>
 
-      <main className="relative mx-auto flex w-full max-w-[64rem] flex-col gap-24 px-6 py-20 md:px-10 md:py-28">
+      <div className="relative mx-auto flex w-full max-w-[64rem] flex-col gap-24 px-6 py-20 md:px-10 md:py-28">
         {/* ── Hero ───────────────────────────────────────────────── */}
         <section className="hero flex flex-col items-start gap-6">
           <div className={sectionLabel}>
@@ -239,7 +236,7 @@ export default function Home() {
             <Link href="/privacidad" className="inline-flex items-center py-1.5 hover:text-[var(--color-text-primary)]">Privacidad</Link>
           </nav>
         </footer>
-      </main>
+      </div>
     </>
   );
 }

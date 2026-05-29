@@ -9,10 +9,7 @@ export const metadata: Metadata = {
 
 export default function PagoExitosoPage() {
   return (
-    <main
-      id="main"
-      className="mx-auto flex min-h-svh w-full max-w-[40rem] flex-col items-start justify-center gap-5 px-6 py-24 md:px-10"
-    >
+    <div className="mx-auto flex min-h-svh w-full max-w-[40rem] flex-col items-start justify-center gap-5 px-6 py-24 md:px-10">
       <h1
         className="font-semibold text-[var(--color-text-primary)]"
         style={{
@@ -35,6 +32,6 @@ export default function PagoExitosoPage() {
       >
         Volver a la tienda
       </Link>
-    </main>
+    </div>
   );
 }

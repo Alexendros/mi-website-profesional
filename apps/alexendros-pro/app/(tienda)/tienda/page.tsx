@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { prisma } from "@repo/db";
-import { formatPrice } from "../../../lib/format";
+import { formatPrice, mdExcerpt } from "../../../lib/format";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -27,10 +27,7 @@ export default async function TiendaPage() {
   });
 
   return (
-    <main
-      id="main"
-      className="mx-auto w-full max-w-[64rem] px-6 py-20 md:px-10 md:py-28"
-    >
+    <div className="mx-auto w-full max-w-[64rem] px-6 py-20 md:px-10 md:py-28">
       <h1
         className="font-semibold text-[var(--color-text-primary)]"
         style={{
@@ -63,7 +60,7 @@ export default async function TiendaPage() {
                   {p.title}
                 </h2>
                 <p className="mt-2 line-clamp-2 text-sm text-[var(--color-text-secondary)]">
-                  {p.descriptionMd}
+                  {mdExcerpt(p.descriptionMd)}
                 </p>
                 <p className="mt-4 font-mono text-sm text-[var(--color-brand-accent)]">
                   {formatPrice(p.priceCents, p.currency)}
@@ -73,6 +70,6 @@ export default async function TiendaPage() {
           ))}
         </ul>
       )}
-    </main>
+    </div>
   );
 }

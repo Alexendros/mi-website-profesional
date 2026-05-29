@@ -12,7 +12,7 @@ export function LegalPageLayout({
   children: ReactNode;
 }) {
   return (
-    <main className="mx-auto flex w-full max-w-[48rem] flex-col gap-6 px-6 py-20 md:px-10 md:py-28">
+    <div className="mx-auto flex w-full max-w-[48rem] flex-col gap-6 px-6 py-20 md:px-10 md:py-28">
       <Link
         href="/"
         className="font-mono text-xs uppercase tracking-[0.14em] text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)]"
@@ -26,7 +26,7 @@ export function LegalPageLayout({
       >
         {children}
       </div>
-    </main>
+    </div>
   );
 }
 
