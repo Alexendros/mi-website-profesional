@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { prisma } from "@repo/db";
 import { BuyButton } from "../../../../components/buy-button";
-import { formatPrice } from "../../../../lib/format";
+import { formatPrice, mdExcerpt, mdToPlainText } from "../../../../lib/format";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -31,7 +31,7 @@ export async function generateMetadata({
   if (!product) return { title: "Producto no encontrado" };
   return {
     title: product.title,
-    description: product.descriptionMd.slice(0, 160),
+    description: mdExcerpt(product.descriptionMd),
     alternates: { canonical: `/producto/${product.slug}` },
   };
 }
@@ -46,10 +46,7 @@ export default async function ProductoPage({
   if (!product) notFound();
 
   return (
-    <main
-      id="main"
-      className="mx-auto w-full max-w-[48rem] px-6 py-20 md:px-10 md:py-28"
-    >
+    <div className="mx-auto w-full max-w-[48rem] px-6 py-20 md:px-10 md:py-28">
       <h1
         className="font-semibold text-[var(--color-text-primary)]"
         style={{
@@ -63,13 +60,13 @@ export default async function ProductoPage({
         className="mt-4 whitespace-pre-line text-[var(--color-text-secondary)]"
         style={{ maxWidth: "var(--measure-prose)" }}
       >
-        {product.descriptionMd}
+        {mdToPlainText(product.descriptionMd)}
       </p>
-      <p className="mt-6 font-mono text-[var(--color-brand-accent)]">
+      <p className="mt-6 text-2xl font-semibold text-[var(--color-brand-accent)]">
         {formatPrice(product.priceCents, product.currency)}
       </p>
 
       <BuyButton sku={product.sku} />
-    </main>
+    </div>
   );
 }

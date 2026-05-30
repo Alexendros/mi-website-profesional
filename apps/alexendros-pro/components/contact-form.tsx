@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import { Send } from "lucide-react";
 import { contactSchema } from "../lib/contact-schema";
@@ -19,6 +19,12 @@ export function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [serverMsg, setServerMsg] = useState<string>("");
 
+  // Refs para mover el foco al primer campo inválido en error de cliente.
+  const nameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const messageRef = useRef<HTMLTextAreaElement>(null);
+  const consentRef = useRef<HTMLInputElement>(null);
+
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setServerMsg("");
@@ -36,13 +42,23 @@ export function ContactForm() {
     const parsed = contactSchema.safeParse(payload);
     if (!parsed.success) {
       const flat = parsed.error.flatten().fieldErrors;
-      setErrors({
+      const fieldErrors: FieldErrors = {
         name: flat.name?.[0],
         email: flat.email?.[0],
         message: flat.message?.[0],
         consent: flat.consent?.[0],
-      });
+      };
+      setErrors(fieldErrors);
       setStatus("error");
+
+      // Mover foco al primer campo inválido para asistencia a teclado/lector.
+      requestAnimationFrame(() => {
+        if (fieldErrors.name) nameRef.current?.focus();
+        else if (fieldErrors.email) emailRef.current?.focus();
+        else if (fieldErrors.message) messageRef.current?.focus();
+        else if (fieldErrors.consent) consentRef.current?.focus();
+      });
+
       return;
     }
 
@@ -87,11 +103,13 @@ export function ContactForm() {
           type="text"
           autoComplete="name"
           required
+          ref={nameRef}
           aria-invalid={!!errors.name}
+          aria-describedby={errors.name ? "name-error" : undefined}
           className={fieldBase}
           placeholder="Tu nombre"
         />
-        {errors.name ? <p className={errorBase}>{errors.name}</p> : null}
+        {errors.name ? <p id="name-error" className={errorBase}>{errors.name}</p> : null}
       </div>
 
       <div className="grid gap-2">
@@ -104,11 +122,13 @@ export function ContactForm() {
           type="email"
           autoComplete="email"
           required
+          ref={emailRef}
           aria-invalid={!!errors.email}
+          aria-describedby={errors.email ? "email-error" : undefined}
           className={fieldBase}
           placeholder="tu@email.com"
         />
-        {errors.email ? <p className={errorBase}>{errors.email}</p> : null}
+        {errors.email ? <p id="email-error" className={errorBase}>{errors.email}</p> : null}
       </div>
 
       <div className="grid gap-2">
@@ -120,11 +140,13 @@ export function ContactForm() {
           name="message"
           rows={5}
           required
+          ref={messageRef}
           aria-invalid={!!errors.message}
+          aria-describedby={errors.message ? "message-error" : undefined}
           className={`${fieldBase} resize-y`}
           placeholder="Cuéntame brevemente tu proyecto, plazos y presupuesto orientativo."
         />
-        {errors.message ? <p className={errorBase}>{errors.message}</p> : null}
+        {errors.message ? <p id="message-error" className={errorBase}>{errors.message}</p> : null}
       </div>
 
       <div className="grid gap-2">
@@ -134,7 +156,9 @@ export function ContactForm() {
             name="consent"
             type="checkbox"
             required
+            ref={consentRef}
             aria-invalid={!!errors.consent}
+            aria-describedby={errors.consent ? "consent-error" : undefined}
             className="mt-1 h-4 w-4 shrink-0 accent-[var(--color-brand-primary)]"
           />
           <span>
@@ -148,7 +172,7 @@ export function ContactForm() {
             . Trataré tus datos solo para responder a tu consulta.
           </span>
         </label>
-        {errors.consent ? <p className={errorBase}>{errors.consent}</p> : null}
+        {errors.consent ? <p id="consent-error" className={errorBase}>{errors.consent}</p> : null}
       </div>
 
       <button
@@ -164,7 +188,7 @@ export function ContactForm() {
       {/* Feedback accesible. */}
       <p role="status" aria-live="polite" className="min-h-5 text-sm">
         {status === "ok" ? (
-          <span className="text-[var(--color-brand-primary-hc)]">
+          <span className="text-[var(--color-feedback-success)]">
             ¡Mensaje enviado! Te responderé lo antes posible.
           </span>
         ) : null}

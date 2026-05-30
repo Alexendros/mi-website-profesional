@@ -20,16 +20,49 @@ export function ParticleBg() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    let cleanup: (() => void) | undefined;
-    if (typeof requestIdleCallback === "function") {
-      const id = requestIdleCallback(() => setMounted(true), { timeout: 3000 });
-      cleanup = () => cancelIdleCallback(id);
-    } else {
-      const id = window.setTimeout(() => setMounted(true), 1500);
-      cleanup = () => clearTimeout(id);
+    const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    let idleId: number | undefined;
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
+
+    const scheduleMount = () => {
+      if (typeof requestIdleCallback === "function") {
+        idleId = requestIdleCallback(() => setMounted(true), { timeout: 3000 });
+      } else {
+        timeoutId = setTimeout(() => setMounted(true), 1500);
+      }
+    };
+
+    const cancelPending = () => {
+      if (idleId !== undefined) {
+        cancelIdleCallback(idleId);
+        idleId = undefined;
+      }
+      if (timeoutId !== undefined) {
+        clearTimeout(timeoutId);
+        timeoutId = undefined;
+      }
+    };
+
+    const handleChange = (e: MediaQueryListEvent) => {
+      if (e.matches) {
+        cancelPending();
+        setMounted(false);
+      } else {
+        scheduleMount();
+      }
+    };
+
+    if (!mql.matches) {
+      scheduleMount();
     }
-    return cleanup;
+
+    mql.addEventListener("change", handleChange);
+
+    return () => {
+      cancelPending();
+      mql.removeEventListener("change", handleChange);
+    };
   }, []);
 
   useEffect(() => {

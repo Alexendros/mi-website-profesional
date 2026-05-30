@@ -113,3 +113,17 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Respeta la preferencia de movimiento reducido del sistema operativo.
+   Neutraliza animaciones y transiciones para todos los consumidores
+   de la librería (stagekit, lexkit, gestkit). */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

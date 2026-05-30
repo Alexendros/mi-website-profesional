@@ -1,19 +1,35 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import { z } from "zod";
 
 const CheckoutOk = z.object({ url: z.string().url() });
 const CheckoutErr = z.object({ error: z.string() });
+const emailSchema = z.string().email();
 
 export function BuyButton({ sku }: { sku: string }): React.ReactElement {
+  const emailId = useId();
+  const hintId = useId();
   const [email, setEmail] = useState("");
   const [consent, setConsent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  async function onBuy(): Promise<void> {
+  const emailValid = emailSchema.safeParse(email).success;
+
+  async function onSubmit(
+    event: React.FormEvent<HTMLFormElement>,
+  ): Promise<void> {
+    event.preventDefault();
     setError(null);
+    if (!emailValid) {
+      setError("Introduce un email válido para recibir la descarga.");
+      return;
+    }
+    if (!consent) {
+      setError("Marca la casilla de consentimiento para continuar.");
+      return;
+    }
     setLoading(true);
     try {
       const res = await fetch("/api/checkout", {
@@ -36,15 +52,24 @@ export function BuyButton({ sku }: { sku: string }): React.ReactElement {
   }
 
   return (
-    <div className="mt-8 flex flex-col gap-4">
-      <label className="flex flex-col gap-1 text-sm text-[var(--color-text-secondary)]">
+    <form onSubmit={onSubmit} noValidate className="mt-8 flex flex-col gap-4">
+      <label
+        htmlFor={emailId}
+        className="flex flex-col gap-1 text-sm text-[var(--color-text-secondary)]"
+      >
         Email para recibir la descarga
         <input
+          id={emailId}
+          name="email"
           type="email"
           required
+          autoComplete="email"
+          inputMode="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="rounded-[var(--radius-md)] border border-[var(--color-border-default)] bg-[var(--color-surface-100)] px-3 py-2 text-[var(--color-text-primary)]"
+          aria-invalid={email.length > 0 && !emailValid}
+          aria-describedby={hintId}
+          className="field"
         />
       </label>
 
@@ -62,19 +87,32 @@ export function BuyButton({ sku }: { sku: string }): React.ReactElement {
       </label>
 
       <button
-        type="button"
-        onClick={onBuy}
-        disabled={loading || !consent || email.length === 0}
-        className="inline-flex w-fit items-center gap-2 rounded-[var(--radius-md)] border border-[var(--color-brand-primary-hc)] bg-[var(--color-brand-primary)] px-5 py-3 text-sm font-medium text-[var(--color-brand-primary-fg)] transition-colors hover:bg-[var(--color-brand-primary-hc)] disabled:opacity-50"
+        type="submit"
+        disabled={loading}
+        aria-busy={loading}
+        aria-describedby={hintId}
+        className="btn-primary"
       >
-        {loading ? "Redirigiendo…" : "Comprar"}
+        {loading ? "Redirigiendo al pago seguro…" : "Comprar"}
       </button>
+
+      <p id={hintId} className="text-sm text-[var(--color-text-tertiary)]">
+        {!emailValid
+          ? "Introduce un email válido para recibir la descarga."
+          : !consent
+            ? "Marca la casilla de consentimiento para continuar."
+            : "Te llevaremos al pago seguro de Stripe."}
+      </p>
+
+      <p role="status" aria-live="polite" className="sr-only">
+        {loading ? "Redirigiendo al pago seguro…" : ""}
+      </p>
 
       {error ? (
         <p role="alert" className="text-sm text-[var(--color-feedback-error)]">
           {error}
         </p>
       ) : null}
-    </div>
+    </form>
   );
 }

@@ -137,6 +137,9 @@
   --color-border-strong: var(--color-surface-700);
   --color-border-focus: var(--accent);
 
+  --color-feedback-error: oklch(0.70 0.18 25);
+  --color-feedback-success: oklch(0.72 0.16 155);
+
   --shadow-overlay: 0 16px 40px -8px oklch(0 0 0 / 0.55);
 
   color-scheme: dark;
@@ -162,9 +165,6 @@
   --color-brand-primary-fg: var(--accent-fg);
   --color-brand-accent: var(--accent-dim);
   --color-brand-accent-fg: var(--accent-fg);
-
-  --color-feedback-error: oklch(0.70 0.18 25);
-  --color-feedback-success: oklch(0.72 0.16 155);
 }
 
 /* H1 hero · Vergina Imperial v0.2.2 · fade vertical color→semi-transparente.
@@ -252,5 +252,71 @@ h1.display, .hero h1 {
     html {
       scroll-behavior: auto;
     }
+  }
+}
+
+@layer components {
+  /* Enlace de salto al contenido: oculto salvo al recibir foco de teclado. */
+  .skip-link {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .skip-link:focus-visible {
+    position: fixed;
+    inset: 0.75rem auto auto 0.75rem;
+    z-index: 50;
+    width: auto;
+    height: auto;
+    margin: 0;
+    padding: 0.5rem 0.75rem;
+    overflow: visible;
+    clip-path: none;
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-md);
+    background: var(--color-surface-100);
+    font-family: var(--font-mono);
+    font-size: var(--text-small);
+    color: var(--color-text-primary);
+  }
+
+  /* Botón de acción primaria (CTA / submit). */
+  .btn-primary {
+    display: inline-flex;
+    width: fit-content;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    border: 1px solid var(--color-brand-primary-hc);
+    border-radius: var(--radius-md);
+    background-color: var(--color-brand-primary);
+    color: var(--color-brand-primary-fg);
+    font-size: var(--text-small);
+    font-weight: 500;
+    transition: background-color var(--dur-base) var(--ease-expo);
+  }
+  .btn-primary:hover {
+    background-color: var(--color-brand-primary-hc);
+  }
+  .btn-primary:disabled {
+    opacity: 0.5;
+  }
+
+  /* Campo de formulario de una línea. */
+  .field {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    background-color: var(--color-surface-100);
+    color: var(--color-text-primary);
+    transition: border-color var(--dur-base) var(--ease-expo);
+  }
+  .field:focus-visible {
+    border-color: var(--color-border-focus);
   }
 }
